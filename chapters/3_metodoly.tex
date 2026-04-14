@@ -1,0 +1,225 @@
+\chapter{Soluci\'on Propuesta}
+Como se explic\'o en el cap\'itulo anterior, existen numerosas aplicaciones y sitios webs
+con un enfoque similar a DermaUH, todos por supuesto con sus ventajas y desventajas para el 
+cliente objetivo, los dermat\'ologos cubanos. La competencia, la exigencia, el tiempo del
+que se dispone para desarrollo, provoca una planificaci\'on milim\'etrica si se desean cumplir
+con todas los requerimientos y objetivos planteados al inicio del documento. El presente cap\'itulo
+explicar\'a desde el punto de vista metodol\'ogico y anal\'itico la soluci\'on propuesta de DermaUH 3.0, haciendo
+enf\'asis en la Metodolog\'ia, los Requerimientos y el Dise\~no.
+
+\section{Metodolog\'ia}
+Una metodología de desarrollo de software es un marco de trabajo que se
+usa para estructurar, planificar y controlar el proceso de desarrollo de
+sistemas de información. Las metodologías de Desarrollo de Software (DS.) han experimentado un
+proceso histórico y evolutivo que inicia en los años 40 con la aparición de las
+primeras computadoras. Hoy en d\'ia existen dos tipos de metodolog\'ias, tradicionales y \'agiles. \cite{metodology}
+
+\begin{enumerate}
+    \item[1-] \textbf{Metodolog\'ias Tradicionales:} Centran su atenci\'on en llevar una documentaci\'on exhaustiva de todo el proyecto, planificaci\'on y control del mismo. Imponen una disciplina rigurosa, con el fin de lograr un software m\'as eficiente. Algunas de estas metodolog\'ias son:
+    \subitem 1.1- \textbf{Cascada:} Consiste en fases secuenciales donde cada una debe completarse antes de pasar a la fase siguiente. Es muy f\'acil de entender y gestionar, es ideal cuando los requisitos son estables y bien conocidos, sin embargo es muy r\'igida antes cambios y el cliente solo ve el producto final.
+    \subitem 1.2- \textbf{V-Model:} Es una variante del Cascada que enfatiza la verificaci\'on y validaci\'on (V\&V), cada fase de desarrollo tiene una fase de prueba correspondiente. Presenta una alta calidad y trazabilidad, adem\'as las pruebas se planifican desde el inicio. Por otro lado sigue siendo r\'igido como Cascada y no es apto para requisitos cambiantes.
+    \subitem 1.3- \textbf{Modelo Espiral:} Propuesto por Barry Boehm, combina Cascada con gestión de riesgos mediante iteraciones que aumentan en detalle. Este enfoque permite iteraciones controladas y es bueno para proyectos grandes con incertidumbre t\'ecnica, sin embargo es complejo de gestionar y puede ser costoso en cuanto a recursos.
+
+    \item[2-] \textbf{Metodolog\'ias \'Agiles:} Generalmente son procesos \textit{Incrementales} (entregas en ciclos cortos y r\'apidos), \textit{Cooperativo} (clientes y desarrolladores trabajan constantemente con una comunicación muy fina y constante), Sencillo (el método es fácil de aprender y modificar para el equipo) y finalmente Adaptativo (capaz de permitir cambios de último momento). Estas metodologías ponen de relevancia que la capacidad de respuesta a un cambio es más importante que el seguimiento estricto de un plan \cite{metodologiasAgiles}. Entre las m\'as conocidas se pueden apreciar:
+    \subitem 2.1- \textbf{Scrum:} Se basa en ciclos de trabajos cortos llamados \textit{Sprints} que tienen una duraci\'on de entre 2 y 4 semanas. Es ideal para proyectos complejos que requieren flexibilidad y entregas r\'apidas. \cite{scrumAbstract}
+    \subitem 2.2- \textbf{Kanban:} Kanban se centra en visualizar el flujo de trabajo y limitar el trabajo en progreso (WIP, por sus siglas en inglés). No utiliza iteraciones de tiempo fijo como Scrum, sino que se basa en un flujo continuo de tareas. Es ideal para equipos que buscan mejorar la eficiencia y la gestión de tareas, pero puede ser menos estructurado que Scrum.
+    \subitem 2.3- \textbf{Extreme Programming (XP):} XP se enfoca en las prácticas de ingeniería de software para producir código de alta calidad y adaptarse a requisitos cambiantes. Es especialmente adecuado para proyectos con requisitos muy volátiles. Promueve prácticas como la programación en parejas (dos desarrolladores trabajan en el mismo código), el desarrollo guiado por pruebas (TDD), la integración continua y las refactorizaciones frecuentes para mejorar el diseño del código. 
+\end{enumerate}
+
+Para el desarrollo de DermaUH 3.0 se ha decidido utilizar la metodología Scrum, debido a que es una metodología ágil que 
+se adapta bien a proyectos complejos y con requisitos cambiantes, como es el caso de DermaUH. Además, Scrum permite entregas rápidas y 
+frecuentes, lo que facilita la retroalimentación constante del cliente y la adaptación a sus necesidades.
+Para ello se dividi\'o el proceso de desarrollo en $X$ sprints, con una duraci\'on promedio de entre dos y tres semanas cada uno.
+Al final de cada sprint se realiz\'o una evaluaci\'on y validaci\'on de los resultados obtenidos. Los sprints en los que fue dividido el proceso
+son los siguientes:
+
+\begin{enumerate}
+    \item Desarrollo de toda la secci\'on de Registro e Inicio de Sesi\'on de los usuarios. Definir roles y permisos de cada uno.
+    \item Implementar un servicio de correo, el cual notifica al usuario administrador de nuevas solicitudes y a los usuarios les notifica la respuesta de su solicitud.
+    \item Desarrollar las funcionalidades b\'asicas de la Aplicaci\'on, gesti\'on pacientes, lesiones y diagn\'osticos.
+    \item Entrenar los nuevos modelos a integrar con el nuevo conjunto im\'agenes entregado por las organizaciones de la salud.
+    \item Desarrollar el servicio de consulta de Imagen y vincular el modelo a la aplicaci\'on DermaUH 3.0
+    \item Realizar pruebas de rendimiento y ejecuci\'on con doctores para posteriormente lanzar la aplicaci\'on.
+\end{enumerate}
+
+\section{Levantamiento de Requerimientos}
+El levantamiento de requerimientos es el proceso mediante el cual se identifican, 
+documentan y acuerdan las necesidades, expectativas y restricciones que debe cumplir un 
+sistema de software. Incluye tanto los requerimientos funcionales (qué debe hacer el sistema) 
+como los no funcionales (cómo debe hacerlo: rendimiento, seguridad, usabilidad, etc.). 
+Este proceso involucra a los stakeholders (clientes, usuarios finales, desarrolladores) y 
+constituye la base sobre la que se construye todo el proyecto.
+
+Los requerimientos son importantes porque actúan como el contrato implícito entre el equipo de desarrollo y los interesados. 
+Unos requerimientos claros y bien gestionados permiten: definir el alcance realista del proyecto, 
+evitar malentendidos y retrabajos costosos, establecer criterios objetivos de validación y aceptación y
+priorizar funcionalidades según el valor que aportan. La falta de una buena gestión de requerimientos 
+es una de las causas más frecuentes de fracaso en proyectos de software, ya que conduce a entregas 
+que no satisfacen las necesidades reales, sobrecostes y demoras.
+
+\subsection{Requerimientos Funcionales}
+Seg\'un un art\'iculo de Michel Arias Chaves, para la revista InterSede \cite{requerimientosFuncionales}
+los requerimientos funcionales son los que definen las funciones que el sistema ser\'a capaz de realizar,
+describen las transformaciones que el sistema realiza sobre las entradas para producir salidas.Es
+importante que se describa el ¿Qué? y no el ¿Cómo? se deben hacer esas transformaciones. Estos
+requerimientos al tiempo que avanza el proyecto de software se convierten en los algoritmos, la lógica y
+gran parte del código del sistema. Siguiendo este concepto, los requerimientos funcionales de DermaUH 3.0 son:
+\begin{enumerate}
+    \item[RF1] El usuario autenticado puede hacer \textbf{CRUD} sobre las entidades Paciente, Lesi\'on y diagn\'ostico.
+    \item[RF2] Los usuarios podr\'an obtener informaci\'on de lesiones registradas, solo de sus propios pacientes, podr\'an acceder a otras lesiones si estas se hacen p\'ublicas o se comparten con el mismo.
+    \item[RF3] El usuario puede enviar una imagen al sistema y recibir un diagn\'ostico de la misma.
+    \item[RF4] Solamante el administrador tiene permiso para eliminar cuentas y activar usuarios en el sistema y consultar detalles de cualquier cuenta.
+    \item[RF5] Cualquier persona puede enviar una solicitud de registro a la aplicaci\'on, la cual despu\'es ser\'a aprobada por el Administrador.
+\end{enumerate}
+
+\subsection{Requerimientos No Funcionales}
+los requerimientos no funcionales tienen que ver con características que de una u otra
+forma puedan limitar el sistema, como por ejemplo, el rendimiento (en tiempo y espacio), interfaces de
+usuario, fiabilidad (robustez del sistema, disponibilidad de equipo), mantenimiento, seguridad,
+portabilidad, estándares, etc. Siguiendo esta l\'inea se concluye que los requerimientos no funcionales
+de DermaUH son:
+\begin{enumerate}
+    \item[RNF1] La autenticaci\'on debe ser mediante email y password generando un JSON Web Token (JWT) el cual definir\'a los permisos del usuario que hace inicio de sesi\'on. El JWT a su vez debe tener un tiempo de expiraci\'on y ser renovable 
+    \item[RNF2] La comunicación entre cliente y servidor debe estar cifrada mediante HTTPS.
+    \item[RNF3] El tiempo de operaci\'on de una petici\'on y la generaci\'on de la respuesta debe ser inferior a dos segundos con internet estable.
+    \item[RNF4] La interfaz web debe ser responsive (adaptable para m\'oviles, tabletas y ordenadores).
+    \item[RNF5] Cualquier respuesta a una solicitud, sea positiva o de error debe mostrarse con mensajes claros a los usuarios.
+\end{enumerate}
+
+\section{Análisis y Diseño}
+
+Una vez definidos los requisitos funcionales y no funcionales que debe cumplir el sistema, 
+el siguiente paso consiste en modelar su estructura y comportamiento desde una perspectiva técnica. 
+Este capítulo presenta los artefactos de diseño que guiarán la implementación de la versión 3.0 de 
+DermaUH. Se abordar\'an temas como: casos de uso que aparecen en la aplicac\'on, arquitectura 
+de software seleccionada así como estructura, dise\~no y modelaci\'on de las entidades de 
+la base de datos. 
+
+\subsection{Diagrama de Casos de Uso}
+Los diagramas de casos de uso se utilizan durante la fase de análisis de un proyecto para
+identificar y dividir la funcionalidad del sistema. Normalmente contienen: casos de uso,
+actores y relaciones entre ellos: de asociación, de dependencia y/o de generalización\cite{diagramaUML}. 
+En otras palabras es una forma de esquematizar y representar los requerimientos funcionales planteados
+en el ep\'igrafe anterior.
+
+\begin{itemize}
+    \item \textbf{Casos de Uso:} Los casos de uso describen el comportamiento del sistema cuando uno de los actores envía un estímulo concreto.
+    \item \textbf{Actores:} Los actores interpretan papeles que pueden ser representados por los usuarios del sistema. Dichos usuarios pueden ser humanos, otros ordenadores o incluso otros sistemas de software 
+\end{itemize}
+
+A continuaci\'on se mostrar\'an los diagramas de casos de uso, realizados con la herramienta \href{https://app.diagrams.net/?src=about#}{diagrams.net}
+debido a que ofrece una gran variedad de opciones de forma gratuita. Normalmente en un diagrama de casos de uso
+se visualizan todos los actores y los casos de uso, por simplicidad y para que sea m\'as entendible 
+para el lector, se separaron los diagramas por actores.
+
+\begin{figure}[h] 
+    \centering
+    \includegraphics[width=0.8\textwidth]{figures/DiagramaAdmin.png}
+    \caption{Diagrama UML del actor Admin} 
+    \label{adminUML}
+\end{figure}
+
+La figura \ref{adminUML} muestra las acciones permitidas cuando el usuario entra al sistema 
+con permisos de administrador. A continuaci\'on una breve explicaci\'on de cada una:
+
+En la pestaña \textit{Usuarios}:
+\begin{itemize}
+    \item \textbf{Eliminar Cuenta del Usuario:} Esta opci\'on permite eliminar la cuenta de un usuario de la aplicaci\'on, sin importar los permisos del usuario ni el tiempo que lleve activo en el sistema.
+    \item \textbf{Ver Detalles del Usuario:} Esta opci\'on le muestra al administrador todos los datos personales que el usuario ingres\'o en el formulario de registro, como su nombre completo, hospital al que pertenece, correo entre otros. En caso del usuario ingresar como residente, muestra tambi\'en el correo del doctor encargado de tutorearlo.
+\end{itemize}
+
+En la pestaña \textit{Solicitudes}:
+\begin{itemize}
+    \item \textbf{Rechazar Solicitud de Usuario:} Con esta opci\'on el administrador rechaza, lo cual es sin\'onimo de eliminar, al menos en este contexto, la solicitud de registro enviada por un usuario.
+    \item \textbf{Aceptar Solicitud de Usuario:} Permite al administrador aceptar la solicitud de registro de un usuario y este ya podrá utilizar la aplicación en dependencia de los permisos asignados por el administrador.
+    \item \textbf{Asignar Roles al Usuario:} Una vez aceptada la solicitud de registro, el adminsitrador debe asignarle permisos a dicho usuario. Los permisos permitidos son administrador y/o doctor.
+    \item \textbf{Enviar correo:} Esta acci\'on se dispara autom\'aticamente cuando se acepta o rechaza una solicitud de registro de un usuario. En caso de rechazo se le explicar\'a las posibles causas del mismo, as\'i como todos los datos ingresados por el usuario durante su registro, sin incluir la contraseña.
+\end{itemize}
+
+Evidentemente el usuario con permisos de Administrador es el único que tiene poder y potestad
+para manejar todo lo relacionados con las cuentas de los usuarios y las solicitudes de registro.
+A continuación se mostrará que ocurre en caso del usuario tener permisos de doctor
+
+\begin{figure}[h] 
+    \centering
+    \includegraphics[width=0.8\textwidth]{figures/DiagramaDoctor.png}
+    \caption{Diagrama UML del actor Doctor} 
+    \label{doctorUML}
+\end{figure}
+
+\begin{itemize}
+    \item \textbf{Registrar Nuevos Pacientes:} En el panel principal de la aplicaci\'on, arriba a la derecha, aparece un bot\'on para registrar pacientes nuevos en el sistema. Al presionarlo se muestra un formulario que debe ser rellenado con informaci\'on personal del paciente, nombre, edad, sexo, profesi\'on etc. Una vez rellenado el formulario, se presiona el bot\'on de finalizar registro y el paciente queda registrado en el sistema. 
+    \item \textbf{Ver detalles de un Paciente:} Los pacientes son representados como tarjetas en el panel principal. A la derecha de cada tarjeta se muestra un bot\'on con la etiqueta \textit{Detalles} que permite al doctor visualizar los datos personales del paciente, separada en tres secciones, informaci\'on personal, informaci\'on \'etnica y direcci\'on.
+    \item \textbf{Ver lesiones de un Paciente:} Similar a la opci\'on anterior, a la derecha del paciente se muestra el bot\'on \textit{Lesiones}. Este le permite al doctor observar el registro de lesiones del paciente en cuesti\'on.
+    \item \textbf{Registrar nuevas lesiones:} Se puede llegar a esta opcio\'on de dos formas diferentes, cuando se registra un nuevo paciente y se presiona el bot\'on finalizar registro, aparece un nuevo formulario para registrar la neuva lesi\'on y la otra es al acceder al listado de lesiones de un paciente se muestra un bot\'on para agregar una lesi\'on nueva. 
+    \item \textbf{Eliminar un Paciente:} Similar a ver lesiones de un paciente y ver detalles se accede a esta opci\'on mediante un bot\'on ubicado a la derecha de la tarjeta del paciente.
+    \item \textbf{Listar y buscar pacientes mediante filtros:} En la parte superior del panel principal aparece una barra de b\'usqueda, donde el doctor podr\'a introducir una consulta y la aplicaci\'on filtrar\'a a los pacientes por la consulta del doctor. Adem\'as aparece una opci\'on para ordenar los pacientes por alg\'un campo.
+    \item \textbf{Compartir lesiones con otros doctores:} Con esta opci\'on, el doctor tiene la posibilidad de compartir una lesi\'on con otros colegas del personal de la salud. Los doctores escogidos para compartir tendr\'an la posibilidad de ver solamente el nombre y apellido del paciente y las im\'agenes de la lesi\'on.
+    \item \textbf{Solicitar diagn\'ostico a trav\'es de la imagen:} Esta opci\'on permite al doctor tomar una fotograf\'ia, ya sea con el m\'ovil o con el dermatoscopio y solicitar un diagn\'ostico aproximado de confianza proporcionado por un modelo de ML especializado en procesamiento de im\'agenes.
+\end{itemize}
+
+\subsection{Propuesta Arquitectura}
+Como se mencion\'o al inicio del documento uno de los objetivos de esta tesis era el desarrollo desde cero
+tanto del frontend como el backend de la aplicaci\'on. Debido al stack tecnol\'ogico seleccionado (el cual 
+se explicar\'a en el pr\'oximo cap\'itulo) se opt\'o por una arquitectura por capas. En este ep\'igrafe se 
+explicar\'a con m\'as detalle esta arquitectura y se visualizar\'a un diagrama de la misma.
+
+La arquitectura en capas consta en dividir la aplicación en capas, con la intención de que 
+cada capa tenga un rol muy definido, como podría ser, una capa de presentación (UI), una capa 
+de reglas de negocio (servicios) y una capa de acceso a datos (DAO). En la práctica, la mayoría 
+de las veces este estilo arquitectónico es implementado en 4 capas, presentación, negocio, 
+persistencia y base de datos, sin embargo, es habitual ver que la capa de negocio y persistencia 
+se combinan en una solo capa, sobre todo cuando la lógica de persistencia está incrustada dentro 
+de la capa de negocio, como es el caso de DermaUH. En una arquitectura en capas, todas 
+las capas se colocan de forma horizontal, de tal forma que cada capa solo puede comunicarse 
+con la capa que está inmediatamente por debajo, por lo que, si una capa quiere comunicarse 
+con otras que están mucho más abajo, tendrán que hacerlo mediante la capa que está inmediatamente 
+por debajo\cite{capas}.
+
+La separación de la aplicación en capas busca cumplir con el principio de separación de 
+preocupaciones, de tal forma que cada capa se encargue una tarea muy definida, por ejemplo, 
+la capa de presentación solo se preocupa por presentar la información de forma agradable al 
+usuario, pero no le interesa de donde viene la información ni la lógica de negocio que hay detrás, 
+en su lugar, solo sabe que existe una capa de negocio que le proporcionará la información. 
+Por otra parte, la capa de negocio solo se encarga de aplicar todas las reglas de negocio y 
+validaciones, pero no le interesa como recuperar los datos, guardarlos o borrarlos, ya que para 
+eso tiene una capa de persistencia que se encarga de eso. Por otro lado, la capa de persistencia 
+es la encargada de comunicarse a la base de datos, crear las instrucciones SQL para consultar, 
+insertar, actualizar o borrar registros y retornarlos en un formato independiente a la base de 
+datos. De esta forma, cada capa se preocupa por una cosa y no le interesa como le haga la capa de 
+abajo para servirle los datos que requiere. A continuaci\'on se muestra un resumen de las ventajas
+de optar por una arquitectura por capas.
+
+\begin{itemize}
+    \item \textbf{Separación de responsabilidades:} Permite la separación de preocupaciones (SoC), ya que cada capa tiene una sola responsabilidad.
+    \item \textbf{Fácil de desarrollar:} Este estilo arquitectónico es especialmente fácil de implementar, además de que es muy conocido y una gran mayoría de las aplicaciones la utilizan.
+    \item \textbf{Fácil de probar:} Debido a que la aplicación construida por capas, es posible ir probando de forma individual cada capa, lo que permite probar por separada cada capa.
+    \item \textbf{Fácil de mantener:} Debido a que cada capa hace una tarea muy específica, es fácil detectar el origen de un error para corregirlo, o simplemente se puede identificar donde se debe aplicar un cambio.
+    \item \textbf{Seguridad:} La separación de capas permite el aislamiento de los servidores en subredes diferentes, lo que hace más difícil realizar ataques.
+\end{itemize}
+
+\begin{figure}[h] 
+    \centering
+    \includegraphics[width=0.8\textwidth]{figures/capas.png}
+    \caption{Arquitectura basada en capas} 
+    \label{capas}
+\end{figure}
+
+Una vez analizadas las ventajas de esta arquitectura, el stack tecnol\'ogico utilizado y la experiencia
+en el desarrollo de aplicaciones con esta arquitectura, se lleg\'o a la conclusi\'on de que es la mejor
+propuesta para llevar a cabo el desarrollo de la versi\'on 3.0 de la aplicaci\'on DermaUH. Para ello 
+se decidi\'o utilizar tres capas: la primera ser\'a la de presentaci\'on (UI), en esta estar\'a todo el
+desarrollo del frontend y ser\'a la encargada de hablar con el usuario; la segunda capa es la l\'ogica 
+de negocio y persistencia, en esta estar\'a todo lo relacionado con el backend de la aplicaci\'on y la 
+comunicaci\'on con la Base de Datos (BD), ser\'a el puente entre la UI y la BD; finalmente, la tercera capa,
+que es la BD, en ella se almacenar\'an todos los datos de doctores, pacientes, lesiones y ser\'a el n\'ucleo
+de la generaci\'on de respuestas a peticiones del usuario.
+
+\subsection{Modelado de la Base de Datos}
+
+Definida la arquitectura del sistema, el siguiente paso consiste en estructurar los datos que 
+persistirán y las relaciones entre ellos. El presente apartado describe el modelo de datos de 
+DermaUH 3.0, incluyendo las entidades principales (usuario, paciente, lesión, imagen, 
+diagnóstico automático, entre otras), sus atributos, las claves primarias y foráneas, y 
+las asociaciones que garantizan la integridad y coherencia de la información. Se presenta 
+tanto el diagrama entidad-relación (DER) como el modelo relacional normalizado resultante.

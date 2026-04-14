@@ -1,0 +1,54 @@
+\documentclass[12pt,a4paper]{report}
+
+% Idioma
+\usepackage[spanish]{babel}
+
+% Codificacion
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+
+% Margenes
+\usepackage{geometry}
+\geometry{margin=2.5cm}
+
+% Graficos
+\usepackage{graphicx}
+
+
+% Hipervinculos
+\usepackage{hyperref}
+
+% Bibliografia
+\usepackage{cite}
+
+% Espaciado
+\usepackage{setspace}
+\onehalfspacing
+
+\title{DermaUH versi\'on 3.0: Integraci\'on de nuevos modelos para procesamiento de im\'agenes entrenados con im\'agenes de dermat\'ologos cubanos}
+\author{Jos\'e Miguel Leyva De la Cruz}
+\date{\today}
+
+\begin{document}
+
+% Portada
+\maketitle
+\thispagestyle{empty}
+\newpage
+
+% \input{chapters/0_abstract}
+
+% Indice
+\tableofcontents
+\newpage
+
+% Capítulos
+\input{chapters/1_introduction}
+\input{chapters/2_state_of_the_art}
+\input{chapters/3_metodoly.tex}
+
+% Bibliografía
+\bibliographystyle{plain}
+\bibliography{references}
+
+\end{document}

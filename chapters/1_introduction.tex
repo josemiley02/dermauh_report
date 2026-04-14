@@ -1,0 +1,135 @@
+\chapter{Introducci\'on}
+Desde tiempos inmemorables se ha buscado una forma de vincular las ciencias m\'edicas con
+el desarrollo tecnol\'ogico, mejorando o creando herramientas digitales que permitan mejores
+resultados y ayuden incluso a doctores con gran experiencia. La dermatolog\'ia, rama encargada 
+de estudiar enfermedades producidas sobre la superficie de la piel, es una interesante propuesta 
+para llevar a cabo esta conexi\'on t\'ecnico-medicinal. El dermat\'ologo debe dar seguimiento
+a las lesiones cut\'aneas de sus pacientes, de esa forma si estos poseen una enfermedad 
+grave, ser\'a diagnosticada a tiempo, elevando las posibilidades de cura o evoluci\'on positiva.
+
+Para este seguimiento, una herramienta fundamental es el dermatoscopio, un instrumento 
+\'optico que permite visualizar estructuras de la piel no visibles a simple vista, 
+ampliando las im\'agenes y eliminando el reflejo de la luz superficial. Las im\'agenes 
+dermatosc\'opicas resultantes son el insumo principal para el an\'alisis de lesiones 
+pigmentadas y no pigmentadas, ya que revelan patrones y caracter\'isticas morfol\'ogicas 
+clave (como atipias, redes pigmentarias o vasos anormales) que orientan al especialista 
+hacia un diagn\'ostico m\'as certero. De esta forma, la combinaci\'on del dermatoscopio 
+con el registro digital de im\'agenes ha abierto la puerta a soluciones automatizadas 
+que asisten al m\'edico en la detecci\'on temprana de patolog\'ias como el melanoma.
+
+Según los autores del libro de referencia en la materia, Stuart Russell y Peter Norvig, 
+la Inteligencia Artificial se define como el estudio de agentes computacionales que operan 
+de forma autónoma, perciben su entorno, se adaptan al cambio y persiguen objetivos\cite{inteligenciaArtificial}
+Como un subcampo de esta, el Machine Learning (o aprendizaje automático) es el estudio 
+de algoritmos que permiten a los programas informáticos mejorar automáticamente su 
+rendimiento a través de la experiencia\cite{machineLearning}. En esencia, el aprendizaje automático dota a los 
+sistemas de la capacidad de aprender sin ser programados explícitamente para cada tarea.
+
+Con el desarrollo y crecimiento de la Inteligencia Artificial (IA), espec\'ificamente el Aprendizaje
+de M\'aquinas (ML, por sus siglas en ingl\'es) se han desarrollado diversas herramientas que ayudan 
+no solo a dermat\'ologos, sino al personal de salud en general, en sus diagn\'osticos a pacientes.
+Hoy en d\'ia el procesamiento de im\'agenes ha abierto nuevas puertas que permiten a los m\'edicos
+dar un seguimiento m\'as sencillo y c\'omodo de las distintas lesiones, disminuyendo la fatiga visual y
+el uso de equipos externos, adem\'as de ser usado para adiestramiento de futuros doctores. 
+
+\section{Motivaci\'on y Justificaci\'on}
+La medicina tiene vital importancia para la sociedad, por ese motivo,
+lograr que los m\'edicos tengan una herramienta que les facilite su trabajo,
+adem\'as de ser un reto para cualquier persona apasionada por la tecnolog\'ia, constituye una
+motivaci\'on tanto social como humana. En el contexto cubano, es de gran ayuda informatizar la mayor
+cantidad de procesos, debido a las dificultades log\'isticas que muchas veces se presentan.
+Dotar al personal de la salud de una aplicaci\'on web que les permita desde la comodidad de su 
+tel\'efono dar seguimiento a sus pacientes y verificar si presentan alguna lesi\'on grave con tan
+solo una fotograf\'ia, provocar\'ia un gran avance en el sector medicinal de la naci\'on.
+Esa herramienta ya existe desde hace varios a\~nos, concretamente desde 2023 con el desarrollo
+del sitio web DermaUH, el cual era capaz de suplir todas estas necesidades mencionadas y brindar las 
+comodidades planteadas. Sin embargo, con el alto crecimiento que han tenido las herramientas de IA 
+y los modelos de ML, acompa\~nado de la falta de un buen conjunto de im\'agenes de pieles cubanas para entrenar
+el modelo desarrollado en su momento, se hace necesario desarrollar una nueva versi\'on de DermaUH y 
+vincularle un nuevo modelo m\'as potente con altos porcentajes de efectividad clasificando im\'agenes
+de pieles cubanas.
+
+\section{Antecedentes}
+
+El ecosistema DermaUH ha evolucionado a través de dos hitos fundamentales previos a la presente versión 3.0.
+
+\paragraph{Versión 2.0: Sitio web DermaUH (Mauricio Salim Mahmud Sánchez, 2024)}
+La versión 2.0 consistió en una plataforma web de apoyo al diagnóstico dermatoscópico, 
+desarrollada como una aplicación de una sola página (SPA) con arquitectura cliente-servidor. 
+El frontend se construyó con Vue.js y TypeScript, mientras que el backend implementó una API RESTful
+construida con Django y Django Rest Framework, utilizando PostgreSQL como sistema gestor de base 
+de datos. La plataforma permite a los médicos registrarse (con verificación por administradores), 
+gestionar pacientes (CRUD completo), registrar lesiones cutáneas asociadas a cada paciente, y 
+almacenar imágenes clínicas y dermatoscópicas por cada lesión. Entre sus funcionalidades avanzadas 
+se incluyen: clasificación automática de lesiones mediante un ensemble de redes neuronales 
+convolucionales (previamente desarrollado por Claudia Olavarrieta), segmentación de imágenes 
+mediante arquitectura U-Net (desarrollada por Marcos Valdivié), y un sistema de colaboración 
+que permite compartir lesiones entre especialistas para recibir diagnósticos adicionales. 
+La plataforma también expone una API para fines investigativos, accesible por usuarios con 
+permisos especiales. Todas las herramientas utilizadas son de código abierto. Esta versión sentó 
+las bases del ecosistema, pero dependía completamente de conectividad a internet y estaba 
+diseñada exclusivamente para uso en navegador web.
+
+\paragraph{Versión móvil: Aplicación offline con sincronización eventual (Lázaro David Alba Ajete, 2025)}
+Posteriormente, se desarrolló una aplicación móvil nativa (Android) que extiende el ecosistema 
+al entorno offline. Implementada con Flutter y Dart, sigue los principios de Clean Architecture y 
+el patrón MVVM. Utiliza Isar DB como base de datos local embebida y Riverpod para la gestión de estado. 
+La aplicación permite a los dermatólogos, en ausencia de conexión a internet, registrar pacientes, 
+capturar imágenes de lesiones (clínicas y dermatoscópicas), y ejecutar un modelo de clasificación 
+de lesiones (Melanoma, Carcinoma Basocelular, Carcinoma Escamoso) mediante TensorFlow Lite embebido 
+en el dispositivo. Los datos se almacenan localmente con campos de sincronización (\texttt{synced}, 
+\texttt{deleted}, \texttt{remoteId}) y se transmiten de forma unidireccional al servidor central 
+de DermaUH cuando se restablece la conectividad, mediante la API REST preexistente. 
+La sincronización puede ser manual o automática diaria configurable. Esta versión resolvió el 
+problema de la dependencia de internet, pero su modelo de IA es únicamente clasificador 
+(sin capacidades explicativas) y el procesamiento de imágenes se limita a la inferencia del 
+modelo previamente entrenado.
+
+\section{Formulaci\'on Del Problema}
+DermaUH pretende ser una herramienta potente de apoyo a especialistas en dermatolog\'ia para
+el diagn\'ostico de las lesiones m\'as frecuentes de c\'ancer de la piel. La versi\'on 2.0, que
+actualmente corre, ha sido evaluada y se han detectado varios problemas que implicar\'an desarrollar
+nuevamente el frontend y el backend de la misma. Adem\'as el modelo actual de diagn\'ostico, que 
+es un ensemble de 3 redes neuronales no fue entrenado con im\'agenes cubanas.
+Por este motivo se desea desarrollar una nueva versi\'on del sitio DermaUH, la cual tendr\'a como 
+principal mejora, la incorporaci\'on de nuevos modelos de procesamiento de im\'agenes. A continuaci\'on
+se expondr\'an las limitantes y/o deficiencias detectadas en las versiones anteriores del sitio 
+web DermaUH.
+
+\begin{enumerate}
+    \item El modelo de ML utilizado para clasificar im\'agenes no se entren\'o con im\'agenes de pieles cubanas, alej\'andose en ese aspecto del cliente objetivo, los dermat\'ologos cubanos.
+    \item El diagn\'ostico asistido no viene acompa\~nado de una justificaci\'on que responda a la interrogante ¿Por qué se obtuvo este resultado?.
+    \item El frontend de la aplicaci\'on tarda alrededor de diez segundos en cargar todos los elementos, haciendo lenta y molesta la experiencia del usuario.
+    %TODO: Ver que otras cosas tiene mal la version anterior
+\end{enumerate}
+
+Por ende el problema de este trabajo puede ser enunciado como la carencia de algunas funcionalidades que 
+presenta la aplicación anterior. Dando paso a la siguiente pregunta científica \textbf{¿Ser\'a posible
+dotar a la aplicaci\'on web DermaUH de una actualizaci\'on que supere todas las limitantes
+antes planteadas y continue cumpliendo con todos los requerimientos que se expondr\'an en este documento?}
+
+\section{Objetivos Generales y Espec\'ificos}
+Como objetivo general se tendr\'a desarrollar la versi\'on 3.0 de DermaUH, la cual tendr\'a un nuevo
+modelo de procesamiento de im\'agenes entrenado con im\'agenes de pieles cubanas, mejorar\'a el rendimiento
+de la aplicaci\'on tanto del frontend como el backend, mejorar\'a el protocolo de seguridad y manejo de solicitudes
+y notificaciones mediante un cliente de correo Email. Adem\'as esta versi\'on ser\'a validad en 2026
+en ensayo cl\'inico. De aqu\'i se derivan varios objetivos espec\'ificos:
+
+\begin{enumerate}
+    \item Analizar herramientas existentes para el trabajo con im\'agenes dermatosc\'opicas as\'i como sus ventajas y desventajas para el contexto cubano.
+    \item Lograr el desarrollo del frontend y backend que supere las deficiencias presentadas en la v2.0.
+    \item Mejorar las m\'etricas de los modelos desarrollados e incorporarlos a la app una vez que sean reentrenados con el nuevo conjunto de im\'agenes de pieles cubanas.
+    \item Lograr una app web y explique al especialista la decisi\'on del diagn\'ostico mediante el modelo explicativo (XAI) desarrollado por la Lic.Amanda Noris.
+    \item Intercambiar con los especialistas en cada etapa del trabajo
+\end{enumerate}
+
+\section{Justificaci\'on}
+Se ceunta con una alta capacidad para el desarrollo de la versi\'on 3.0 de DermaUH, debido a todos 
+los conocimientos que se sienten sobre el stack tecnol\'ogico seleccionado y los adquiridos durante 
+la carrera de Ciencias de la Computaci\'on. Adem\'as de eso existe abundante bibiliograf\'ia sobre 
+los temas abordados (IA, ML, Procesamiento de im\'agenes), lo cual facilita mucho la b\'usqueda de 
+informaci\'on para el desarrollo. Por \'ultimo, la facultad MatCom ya tiene experiencia en el desarrollo
+de aplicaciones con un alto componente de IA, sobre todo en aquellas que su principal cualidad
+est\'a vinculada al procesamiento de im\'agenes.
+
+\section{Estructura del Trabajo}
