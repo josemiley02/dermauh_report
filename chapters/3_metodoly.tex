@@ -222,4 +222,60 @@ persistirán y las relaciones entre ellos. El presente apartado describe el mode
 DermaUH 3.0, incluyendo las entidades principales (usuario, paciente, lesión, imagen, 
 diagnóstico automático, entre otras), sus atributos, las claves primarias y foráneas, y 
 las asociaciones que garantizan la integridad y coherencia de la información. Se presenta 
-tanto el diagrama entidad-relación (DER) como el modelo relacional normalizado resultante.
+el Modelo Entidad-Relación, tambi\'en conocido como Diagrama de Entidad Relaci\'on (DER).
+
+\subsubsection{Modelo de Entidad Relación (DER)}
+
+Seg\'un un art\'iculo obtenido del sitio web UNIR, herramienta elaborada, desarrollada
+y dise\~nada con el prop\'osito de ayudar a los estudiantes de universidades europeas,
+El modelo entidad relación (ERD o modelos ER) es una herramienta que permite representar 
+de manera simplificada cómo personas, objetos o conceptos se relacionan entre sí. 
+Se utiliza para exponer cómo se organiza la información en una base de datos\cite{DER}. 
+La creación del modelo entidad relación para su aplicación en el diseño de bases de 
+datos se le atribuye a Peter Chen, profesor del MIT, quien publicó en 1976 el documento  
+“Modelo entidad-relación: hacia una visión unificada de los datos”. A continuaci\'on se
+expone el DER utilizado para la modelaci\'on de la base de datos.
+
+TODO: HACER EL DIAGRAMA CUANDO LA HERRAMIENTA LE DE LA GANA
+
+\subsubsection{Paciente}
+El modelo de datos, \textbf{Paciente}, es la entidad m\'as importante, ya que es el n\'ucleo
+de una de las principales funcionalidades de DermaUH 3.0. A continuaci\'on una descripci\'on 
+de los atributos de dicha entidad.
+\begin{itemize}
+    \item idPaciente: Llave primaria (PK), identificador \'unico de tipo entero. Es generado auto\'aticamente por el sistema de manera incremental.
+    \item name, lastName1, lastName2: Campos para obtener el nombre completo del paciente. Todos son de tipo varchar, con una longitud m\'axima de cien caracteres por cada campo.
+    \item yeras, sex, skinColor: Campos relacionados con la informaci\'on \'etnica del paciente. Estos campos su principal funcionalidad es brindar m\'as informaci\'on para obtener un mejor diagn\'ostico asistido por parte de los modelos ML integrados en la nueva versi\'on.
+    \item addres, city, state, jobProfession: Campos para reflejar la direcci\'on y profesi\'on laboral del paciente. Todos son de tipo varchar sin l\'imites. Estas propiedades son importantes para saber el nivel exposici\'on de la piel al sol, debido la heterogeneidad del clima en diferentes sitios del pa\'is.
+    \item registerData: Campo de tipo Date para tener control de cuando fue que el paciente fue registrado por primera vez en el sistema de DermaUH.
+\end{itemize}
+
+\subsubsection{Dermat\'ologo}
+Esta es una entidad fuerte, ya que no depende de otras entidades para instanciarse. El modelo
+\textbf{Dermat\'ologo}, es el responsable de representar la informaci\'on de los usaurios del 
+sistema. En pocas palabras, un dermat\'ologo es un usuario de DermaUH 3.0.
+\begin{itemize}
+    \item idDermatologo: Llave primaria (PK), identificador \'unico de tipo entero. Es generado auto\'aticamente por el sistema de manera incremental.
+    \item name, lastName1, lastName2: Campos para obtener el nombre completo del dermat\'ologo. Todos son de tipo varchar, con una longitud m\'axima de cien caracteres por cada campo.
+    \item email: Campo de tipo text, se usa para guardar el email del dermat\'ologo. En el sistema este campo es utilizado como username (nombre de usuario) y como el identificador para hacer inicio de sesi\'on.
+    \item ci: Carnet de Identidad del Usuario, campo de tipo varchar.
+    \item phoneNumber: Campo para guardar el n\'umero telef\'onico del usuario.
+    \item hospital, state, city: Campos de tipo de varchar para guardar el hospital, municipio y provincia respectivamente del usuario.
+    \item doctorId: Identificador que se genera seg\'un el hospital, municipio y provincia del dermat\'ologo.
+    \item userType: Campo de tipo varchar. Solo hay tres posibles valores para este campo: Admin, Doctor, Resident, es utilizado para manejar los permisos y roles de los usuarios de la aplicaci\'on.
+    \item tutorEmail: Campo de tipo varchar, almacena el correo del tutor en caso del usuario ser residente, o estudiante de intercambio. En caso contrario este campo se puede mantener null.
+\end{itemize}
+
+\subsubsection{Lesi\'on}
+Entidad d\'ebil, modela el comportamiento de las lesiones que puede presentar un paciente. Un
+paciente puede presentar muchas una o muchas lesiones, por tanto el modelo \textbf{Lesi\'on}
+depende de que exista un paciente. Se configur\'o con eliminaci\'on \textbf{Cascada}, por 
+ende si un paciente es eliminado del sistema, se eliminar\'an todas sus lesiones asociadas.
+\begin{itemize}
+    \item date: Fecha en la que se registra la lesi\'on. Es un campo de tipo date, no editable.
+    \item phototype: Campo de tipo entero, solo puede tomar valores en el intervalo $[1;6]$ que se usa para almacenar el fototipo de la piel donde se encuentra ubicada la lesi\'on. El fototipo no es m\'as que la reacci\'on de la piel ante la exposici\'on a la luz solar.
+    \item localizarion: Campo de tipo entero, toma valores en el intervalo $[1;10]$ y almacena la parte del cuerpo donde se encuentra la lesi\'on. 
+    \item histopathologicalDiagnosis: Campo de tipo bool. Indica si la lesi\'on fue diagnosticada histopat\'ologicamente, en otras palabras, afirma que se utilizaron equipos m\'edicos para obtener el diagn\'ostico.
+    \item injuryType: Llave for\'anea (FK) que referencia a la entidad \textbf{Tipo de Lesi\'on}. Es un campo de tipo entero.
+    \item patientId: Llave for\'anea (FK) que referencia a la entidad \textbf{Paciente}. Es un campo de tipo entero.
+\end{itemize}
