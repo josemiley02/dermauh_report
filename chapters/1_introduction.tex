@@ -17,6 +17,11 @@ hacia un diagn\'ostico m\'as certero. De esta forma, la combinaci\'on del dermat
 con el registro digital de im\'agenes ha abierto la puerta a soluciones automatizadas 
 que asisten al m\'edico en la detecci\'on temprana de patolog\'ias como el melanoma.
 
+Detrás de estas soluciones automatizadas se encuentra la inteligencia artificial, 
+una disciplina que busca replicar capacidades humanas mediante sistemas computacionales. 
+Para comprender el fundamento de estas soluciones y su aplicación en el análisis de imágenes dermatológicas, 
+es necesario partir de una definición formal.
+
 Según los autores del libro de referencia en la materia, Stuart Russell y Peter Norvig, 
 la Inteligencia Artificial se define como el estudio de agentes computacionales que operan 
 de forma autónoma, perciben su entorno, se adaptan al cambio y persiguen objetivos\cite{inteligenciaArtificial}
@@ -32,7 +37,7 @@ Hoy en d\'ia el procesamiento de im\'agenes ha abierto nuevas puertas que permit
 dar un seguimiento m\'as sencillo y c\'omodo de las distintas lesiones, disminuyendo la fatiga visual y
 el uso de equipos externos, adem\'as de ser usado para adiestramiento de futuros doctores. 
 
-\section{Motivaci\'on y Justificaci\'on}
+\section{Motivaci\'on}
 La medicina tiene vital importancia para la sociedad, por ese motivo,
 lograr que los m\'edicos tengan una herramienta que les facilite su trabajo,
 adem\'as de ser un reto para cualquier persona apasionada por la tecnolog\'ia, constituye una
@@ -100,13 +105,19 @@ web DermaUH.
     \item El modelo de ML utilizado para clasificar im\'agenes no se entren\'o con im\'agenes de pieles cubanas, alej\'andose en ese aspecto del cliente objetivo, los dermat\'ologos cubanos.
     \item El diagn\'ostico asistido no viene acompa\~nado de una justificaci\'on que responda a la interrogante ¿Por qué se obtuvo este resultado?.
     \item El frontend de la aplicaci\'on tarda alrededor de diez segundos en cargar todos los elementos, haciendo lenta y molesta la experiencia del usuario.
-    %TODO: Ver que otras cosas tiene mal la version anterior
 \end{enumerate}
 
-Por ende el problema de este trabajo puede ser enunciado como la carencia de algunas funcionalidades que 
-presenta la aplicación anterior. Dando paso a la siguiente pregunta científica \textbf{¿Ser\'a posible
-dotar a la aplicaci\'on web DermaUH de una actualizaci\'on que supere todas las limitantes
-antes planteadas y continue cumpliendo con todos los requerimientos que se expondr\'an en este documento?}
+Por lo tanto, el problema que aborda este trabajo se formula de la siguiente manera: 
+la versión 2.0 de DermaUH presenta limitaciones en el modelo de clasificación 
+(entrenado sin imágenes cubanas), la ausencia de explicabilidad en los diagnósticos, y 
+deficiencias de rendimiento en el frontend. A partir de esto, se plantea la siguiente 
+pregunta científica:
+
+\begin{quote}
+\textbf{¿Es posible desarrollar una versión 3.0 de DermaUH que incorpore un nuevo modelo 
+de procesamiento de imágenes (entrenado con pieles cubanas), un modelo explicativo de los 
+diagnósticos, y mejore el rendimiento y la seguridad de la plataforma?}
+\end{quote}
 
 \section{Objetivos Generales y Espec\'ificos}
 Como objetivo general se tendr\'a desarrollar la versi\'on 3.0 de DermaUH, la cual tendr\'a un nuevo
@@ -120,16 +131,25 @@ en ensayo cl\'inico. De aqu\'i se derivan varios objetivos espec\'ificos:
     \item Lograr el desarrollo del frontend y backend que supere las deficiencias presentadas en la v2.0.
     \item Mejorar las m\'etricas de los modelos desarrollados e incorporarlos a la app una vez que sean reentrenados con el nuevo conjunto de im\'agenes de pieles cubanas.
     \item Lograr una app web y explique al especialista la decisi\'on del diagn\'ostico mediante el modelo explicativo (XAI) desarrollado por la Lic.Amanda Noris.
-    \item Intercambiar con los especialistas en cada etapa del trabajo
 \end{enumerate}
 
 \section{Justificaci\'on}
-Se ceunta con una alta capacidad para el desarrollo de la versi\'on 3.0 de DermaUH, debido a todos 
-los conocimientos que se sienten sobre el stack tecnol\'ogico seleccionado y los adquiridos durante 
-la carrera de Ciencias de la Computaci\'on. Adem\'as de eso existe abundante bibiliograf\'ia sobre 
+Se cuenta con una alta capacidad para el desarrollo de la versi\'on 3.0 de DermaUH, debido a todos 
+los conocimientos que se tienen sobre el stack tecnol\'ogico seleccionado y los adquiridos durante 
+la carrera de Ciencias de la Computaci\'on. Adem\'as de eso existe abundante bibliograf\'ia sobre 
 los temas abordados (IA, ML, Procesamiento de im\'agenes), lo cual facilita mucho la b\'usqueda de 
 informaci\'on para el desarrollo. Por \'ultimo, la facultad MatCom ya tiene experiencia en el desarrollo
 de aplicaciones con un alto componente de IA, sobre todo en aquellas que su principal cualidad
 est\'a vinculada al procesamiento de im\'agenes.
 
 \section{Estructura del Trabajo}
+El presente trabajo se organiza en cuatro capítulos, además de las conclusiones y recomendaciones finales.
+
+\begin{itemize}
+    \item \textbf{Capítulo I. Estado del Arte:} Se analizan sistemas y plataformas existentes para el diagnóstico dermatológico asistido por IA, destacando sus ventajas y limitaciones en el contexto cubano. También se revisan técnicas de procesamiento de imágenes y modelos explicativos (XAI).
+    \item \textbf{Capítulo II. Análisis y Diseño:} Se presentan los requisitos funcionales y no funcionales, los diagramas de casos de uso, la arquitectura del sistema (capas, cliente-servidor, API REST) y el diseño detallado de la base de datos.
+    \item \textbf{Capítulo III. Implementación:} Se describen las tecnologías utilizadas (Django, React, PostgreSQL), la integración de los modelos de IA y procesamiento de imágenes, y las decisiones de implementación más relevantes.
+    \item \textbf{Capítulo IV. Pruebas y Resultados:} Se muestran las pruebas funcionales realizadas, las métricas de rendimiento y la validación del sistema con especialistas.
+\end{itemize}
+
+Finalmente, se exponen las conclusiones del trabajo y las recomendaciones para futuras líneas de desarrollo.

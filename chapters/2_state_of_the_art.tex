@@ -1,1 +1,187 @@
 \chapter{Estado del Arte}
+
+Para fundamentar la solución propuesta en esta tesis, resulta imprescindible analizar el 
+panorama actual de las herramientas digitales y los modelos computacionales aplicados al 
+diagnóstico dermatológico. El presente capítulo aborda, en primer lugar, una revisión de 
+plataformas comerciales ampliamente utilizadas a nivel internacional, como DermEngine, 
+SkinVision y VisualDx, evaluando sus características funcionales, costos de acceso y 
+limitaciones para su implementación en el contexto cubano. En segundo lugar, se examinan 
+sistemas académicos de referencia, incluyendo el archivo ISIC (International Skin 
+Imaging Collaboration) y el conjunto de datos HAM10000, así como los modelos de 
+aprendizaje automático derivados de ellos. A continuación, se describen las técnicas 
+más relevantes de aprendizaje de máquinas en dermatología, con énfasis en las redes 
+neuronales convolucionales (CNN), el aprendizaje por transferencia y los enfoques de 
+inteligencia artificial explicable (XAI), estos últimos particularmente importantes 
+para el objetivo de dotar al sistema de un modelo que justifique sus diagnósticos. 
+Finalmente, se identifica una brecha clara entre las soluciones existentes y los 
+requerimientos específicos del ecosistema DermaUH 3.0, lo que justifica el desarrollo 
+de una nueva versión adaptada a las condiciones de conectividad, disponibilidad de datos 
+y necesidades de los dermatólogos cubanos.
+
+\section{Herramientas existentes}
+En esta secci\'on se realizar\'a un an\'alisis de las principales herramientas que se utilizan
+para brindar ayuda en los diagn\'osticos dermatol\'ogicos. Dicho an\'alisis se efectuar\'a
+atendiendo a sus funcionalidades principales, ventajas y desventajas para el contexto cubano de 
+cada aplicaci\'on m\'ovil o web. 
+
+Las herramientas escogidas son DermEngine, SkinVision y VisualDx, debido a su alto nivel de 
+innovaci\'on y a sus aportes en la uni\'on de la tecnolog\'ia con la medicina. Adem\'as 
+tienen en com\'un el uso de modelos ML como principal engranaje para asistir en los diagn\'osticos.
+Por otro lado cada una cuenta con su propia base de im\'agenes, permitiendo incluso un an\'alisis de este
+aspecto tan importante forma parte del objetivo principal de esta tesis.
+
+\subsection{DermEngine}
+\begin{figure}[h] 
+    \centering
+    \includegraphics[width=0.3\textwidth]{figures/dermengine_logo.png}
+    \caption{Logo de DermEngine} 
+    \label{logoDermEngine}
+\end{figure}
+
+\href{https://www.dermengine.com/es/}{DermEngine} es una plataforma de software 
+inteligente diseñada específicamente para dermatología, cuyo principal objetivo es 
+optimizar el flujo de trabajo clínico mediante la integración de inteligencia 
+artificial en el análisis de imágenes dermatoscópicas. Entre sus funcionalidades más 
+relevantes se encuentran:
+\begin{enumerate}
+    \item \textbf{Búsqueda visual inteligente (Visual Search)}: Utiliza un algoritmo de inteligencia artificial que compara una imagen de una lesión con una base de datos de miles de casos etiquetados. A partir de esta comparación, el sistema genera una lista de posibles diagnósticos y ofrece una estimación del riesgo de malignidad, actuando como una segunda opinión automatizada para el especialista.
+    \item \textbf{Gestión integral de pacientes y lesiones}: Permite registrar y organizar la información clínica de los pacientes, incluyendo imágenes de sus lesiones, historiales de seguimiento y notas clínicas. La plataforma facilita la comparación de imágenes a lo largo del tiempo para detectar cambios morfológicos sutiles.
+    \item \textbf{Integración con dispositivos de captura}: Se conecta con MoleScope, un dermatoscopio digital de bajo costo que se acopla a teléfonos inteligentes. Esto permite estandarizar la captura de imágenes y asociarlas automáticamente al paciente correspondiente.
+    \item \textbf{Imagenología de cuerpo completo}: Ofrece herramientas para mapear la superficie corporal del paciente y documentar la ubicación exacta de cada lesión, facilitando el seguimiento longitudinal y la detección temprana de nuevas lesiones.
+    \item \textbf{Colaboración y teledermatología}: Permite compartir casos entre especialistas de manera segura, obtener segundas opiniones y realizar sesiones de teleconsulta, todo dentro del mismo ecosistema.
+\end{enumerate}
+
+\subsubsection{Ventajas}
+\begin{enumerate}
+    \item \textbf{Optimización del diagnóstico}: La IA proporciona una referencia rápida que puede aumentar la confianza del especialista, especialmente en casos dudosos o de baja incidencia.
+    \item \textbf{Herramienta educativa}: La base de datos de imágenes etiquetadas puede utilizarse para la formación de residentes y estudiantes de dermatología, mejorando su capacidad de reconocimiento de patrones.
+    \item \textbf{Seguimiento longitudinal}: La capacidad de comparar imágenes de una misma lesión en diferentes momentos es crucial para la detección precoz de melanomas, una de las principales causas de muerte por cáncer de piel.
+    \item \textbf{Posible integración con dispositivos móviles}: La compatibilidad con MoleScope y teléfonos inteligentes podría facilitar la captura de imágenes de calidad sin requerir equipos de dermatoscopia profesional costosos.
+\end{enumerate}
+
+\subsubsection{Desventajas}
+\begin{enumerate}
+    \item \textbf{Dependencia de conectividad a internet}: DermEngine es una plataforma basada en la nube. Para su uso continuo se requiere una conexión estable y de alta velocidad, algo que no está garantizado en muchas áreas del sistema de salud cubano.
+    \item \textbf{Costo de acceso}: La plataforma opera bajo un modelo de suscripción, con precios que parten desde los 99 USD mensuales para profesionales. Este costo es inaccesible para la mayoría de los dermatólogos cubanos, y además requiere de una pasarela de pago internacional.
+    \item \textbf{Barreras idiomáticas}: La interfaz y la documentación están principalmente en inglés, lo que puede limitar su adopción por parte de especialistas que no dominen el idioma.
+    \item \textbf{Falta de adaptación a la población cubana}: Los modelos de IA de DermEngine fueron entrenados mayoritariamente con imágenes de pieles claras, típicas de poblaciones europeas y norteamericanas. Su precisión diagnóstica en fototipos oscuros (como los predominantes en Cuba) no ha sido validada, lo que introduce un riesgo de sesgo y posibles falsos negativos.
+\end{enumerate}
+
+\subsection{SkinVision}
+\begin{figure}[h] 
+    \centering
+    \includegraphics[width=0.3\textwidth]{figures/skinvision_logo.png}
+    \caption{Logo de SkinVision} 
+    \label{logoSkinVision}
+\end{figure}
+
+\href{https://www.skinvision.com/}{SkinVision} es una aplicación móvil de servicio médico 
+de pago, clínicamente validada, que tiene como principal objetivo la detección temprana 
+del cáncer de piel. Su enfoque está dirigido principalmente al autocuidado y la prevención 
+por parte de los propios usuarios. La aplicación utiliza un algoritmo de inteligencia 
+artificial basado en una red neuronal convolucional (CNN) ResNet-50 para analizar las 
+imágenes de lunares o manchas cutáneas capturadas con la cámara del teléfono. 
+Este análisis genera una evaluación inmediata del riesgo, clasificando las lesiones en 
+tres categorías: riesgo alto, bajo o en revisión.
+
+\begin{figure}[h] 
+    \centering
+    \includegraphics[width=0.8\textwidth]{figures/estudio_skinvision.png}
+    \caption{Estudio clínico de SkinVision} 
+    \label{estudioSkinVision}
+\end{figure}
+
+El proceso de evaluación con la aplicación se compone de varias etapas que, más allá de la tecnología, buscan ofrecer tranquilidad y un camino de acción claro al usuario:
+
+\begin{figure}[h] 
+    \centering
+    \includegraphics[width=0.8\textwidth]{figures/modelo_skinvision.png}
+    \caption{Diagrama del algoritmo de SkinVision} 
+    \label{modeloSkinVision}
+\end{figure}
+
+\begin{enumerate}
+    \item \textbf{Captura de la imagen}: La aplicación guía al usuario a través de una interfaz de cámara inteligente para estandarizar la toma y asegurar una calidad adecuada de la imagen.
+    \item \textbf{Análisis por IA}: El algoritmo de inteligencia artificial procesa la imagen para identificar posibles signos de riesgo, como la presencia de melanoma ($92.1\%$ de sensibilidad), carcinoma de células escamosas ($98.6\%$) o queratosis actínica.
+    \item \textbf{Revisión secundaria}: Como parte de su control de calidad, todos los casos categorizados como de "riesgo alto" o "en revisión" son sometidos a una segunda evaluación por un panel de expertos en dermatología antes de entregar el resultado final al usuario.
+    \item \textbf{Entrega de resultados}: El usuario recibe una indicación clara sobre su nivel de riesgo, junto con los pasos a seguir.
+\end{enumerate}
+
+La aplicación también ofrece funcionalidades gratuitas para fomentar el cuidado continuo, 
+como la creación de un perfil de riesgo personal del usuario, cuestionarios sobre el tipo 
+de piel, almacenamiento de imágenes para hacer un seguimiento visual de los lunares en el 
+tiempo, y acceso a información sobre el índice de rayos UV en su zona.
+
+\subsubsection{Ventajas}
+\begin{enumerate}
+    \item \textbf{Alta sensibilidad diagnóstica}: La app reporta una sensibilidad de hasta el $95\%$ para detectar lesiones malignas en sus estudios clínicos, lo cual es un indicador de su capacidad para no pasar por alto lesiones cancerígenas. Esta es un área donde la tecnología puede complementar el ojo humano.
+    \item \textbf{Validación clínica y regulatoria}: Posee certificación CE como dispositivo médico Clase IIa en la Unión Europea (EU MDR) y cumple con estándares ISO. Para los profesionales, esto ofrece un respaldo de que su tecnología ha sido evaluada formalmente y puede ser un complemento confiable para la educación del paciente.
+    \item \textbf{Alta especificidad}: Cuenta con una especificidad del $89\%$ en sus métricas más recientes, lo que significa que es eficaz identificando correctamente las lesiones benignas y reduce la probabilidad de generar alarmas innecesarias por lunares inofensivos.
+    \item \textbf{Monitorización y educación del paciente}: Los dermatólogos podrían recomendar la app a pacientes de alto riesgo para que se realicen autoexploraciones entre consultas y lleven un registro de sus lesiones. Esto podría servir como una herramienta complementaria de educación y seguimiento.
+    \item \textbf{Revisión por expertos}: El proceso de calidad que incluye una evaluación secundaria por un panel de dermatólogos para todos los casos de alto riesgo es un mecanismo de seguridad robusto y un estándar que otras aplicaciones no cumplen.
+\end{enumerate}
+
+\subsubsection{Desventajas}
+\begin{enumerate}
+    \item \textbf{Enfoque en el paciente, no en el especialista}: La aplicación está explícitamente diseñada para el usuario no especializado que se toma fotos en casa. No provee herramientas para que un dermatólogo gestione a sus pacientes o integre los resultados en su flujo de trabajo diario.
+    \item \textbf{Costo de acceso}: Aunque poderosa, es un servicio de pago que opera bajo un modelo de pago y suscripción, lo que representa una barrera económica. Los precios típicos para un plan anual son de aproximadamente €49.99, un costo que los profesionales de la salud cubanos, y más aún sus pacientes, no podrían asumir.
+    \item \textbf{Dependencia de conectividad a internet}: La aplicación requiere conexión para procesar las imágenes en sus servidores, lo que limita su uso en zonas con conectividad irregular.
+    \item \textbf{Falta de adaptación a la población cubana}: La misma limitación clave identificada en DermEngine aplica aquí. Los modelos de IA de SkinVision han sido entrenados mayoritariamente con imágenes de pieles claras y sus conjuntos de datos provienen de poblaciones europeas y norteamericanas. Su precisión diagnóstica en los fototipos de piel oscura (IV al VI) predominantes en Cuba no ha sido suficientemente validada, lo que introduce un riesgo de sesgo.
+    \item \textbf{Potencial de falsa seguridad}: Un resultado de "bajo riesgo" podría llevar a un paciente a ignorar una lesión que, por sus características o evolución, sí es preocupante. La app no sustituye la evaluación clínica en persona por un especialista y su uso inadecuado podría retrasar un diagnóstico crítico.
+\end{enumerate}
+
+\subsection{VisualDx}
+\begin{figure}[h] 
+    \centering
+    \includegraphics[width=0.3\textwidth]{figures/visualdx_logo.png}
+    \caption{Logo de VisualDx} 
+    \label{logoVisualDx}
+\end{figure}
+
+\href{https://www.visualdx.com/}{VisualDx} es un sistema de apoyo a la decisión clínica que combina 
+inteligencia artificial con una de las bibliotecas de imágenes médicas más extensas 
+del mundo. Su principal objetivo es asistir a médicos no especialistas (como médicos 
+de atención primaria o de urgencias) en el diagnóstico de enfermedades de la piel y 
+otras afecciones visuales, directamente en el punto de atención al paciente. 
+La herramienta ha demostrado su capacidad para reducir las derivaciones a dermatología 
+entre un $25\%$ y un $45\%$. Entre sus principales funcionalidades se encuentran:
+
+\begin{enumerate}
+    \item \textbf{Generador de diagnósticos diferenciales visuales}: El médico introduce los síntomas del paciente (localización, morfología de la lesión, datos demográficos) y el sistema genera una lista de posibles diagnósticos mostrando imágenes comparativas lado a lado. Esta funcionalidad está disponible no solo para dermatología, sino también para medicina interna, pediatría, enfermedades infecciosas y otras especialidades.
+    \item \textbf{DermExpert (IA para análisis de imágenes)}: Un componente clave que permite capturar y analizar imágenes de afecciones de la piel utilizando inteligencia artificial y aprendizaje automático. La herramienta guía al clínico con preguntas estructuradas para ayudar a los no especialistas a identificar rápidamente afecciones cutáneas.
+    \item \textbf{Biblioteca de imágenes diversa e inclusiva}: VisualDx ha estado construyendo durante más de 20 años un atlas de imágenes que incluye representaciones de enfermedades en todos los fototipos de piel, con un enfoque particular en pieles oscuras. Esto permite a los médicos consultar cómo se manifiesta una misma enfermedad en diferentes tonos de piel, reduciendo el sesgo diagnóstico implícito.
+    \item \textbf{Herramientas de educación y formación}: La plataforma ofrece oportunidades de formación continua, incluyendo lecciones autoguiadas de dermatología, seminarios web mensuales sobre enfermedades específicas, desafíos diagnósticos semanales y créditos de educación médica continua (CME) por cada consulta realizada.
+    \item \textbf{Materiales educativos para pacientes}: VisualDx proporciona folletos informativos para casi 400 de sus diagnósticos principales, disponibles en inglés y español, que los médicos pueden entregar o enviar por correo electrónico a sus pacientes.
+    \item \textbf{Acceso móvil multiplataforma}: La aplicación está disponible para dispositivos iOS y Android, permitiendo su uso en cualquier lugar.
+\end{enumerate}
+
+\subsubsection{Ventajas}
+\begin{enumerate}
+    \item \textbf{Enfoque en atención primaria}: Herramienta diseñada para asistir a médicos generales y de urgencias, lo que podría ser útil en el contexto cubano donde el acceso al especialista es limitado, ayudando a realizar una primera evaluación más certera antes de derivar.
+    \item \textbf{Biblioteca inclusiva de pieles oscuras}: A diferencia de muchas herramientas de IA en dermatología, VisualDx ha puesto especial énfasis en incluir imágenes de enfermedades en pieles oscuras durante más de dos décadas, trabajando activamente para reducir el sesgo diagnóstico en poblaciones no caucásicas. Esto es relevante para Cuba, donde predominan los fototipos oscuros (IV al VI).
+    \item \textbf{Apoyo al diagnóstico diferencial}: La capacidad de construir diagnósticos diferenciales a partir de síntomas y demografía del paciente es especialmente útil en contextos con recursos limitados, donde el médico de familia puede ser el primer y único punto de contacto.
+    \item \textbf{Integración de IA y evidencia médica}: La combinación de inteligencia artificial con contenido revisado por pares y actualizado ofrece un nivel de apoyo diagnóstico que, en teoría, podría complementar la labor del especialista en casos complejos.
+\end{enumerate}
+
+\subsubsection{Desventajas}
+\begin{enumerate}
+    \item \textbf{Costo prohibitivo}: La plataforma opera bajo un modelo de suscripción con precios que, dependiendo del plan, oscilan entre $44,99$ euros y $66,99$ euros mensuales o entre $299,99$ euros y $649,99$ euros anuales. Incluso los estudiantes pagan aproximadamente 150 USD al año. Estos precios son inaccesibles para los dermatólogos cubanos y su sistema de salud.
+    \item \textbf{Dependencia de conectividad a internet}: Aunque existe aplicación móvil, la plataforma requiere conexión constante para acceder a la biblioteca de imágenes y a las funcionalidades de IA, lo que limita su uso en zonas con conectividad irregular.
+    \item \textbf{Sesgo persistente en pieles oscuras}: A pesar de los esfuerzos por incluir diversidad en su base de datos, estudios recientes (2024) han demostrado que VisualDx sigue presentando una baja significativa en precisión diagnóstica para pieles de color en comparación con pieles claras. Para la mayoría de las afecciones analizadas, se observó un sesgo diagnóstico favoreciendo imágenes del subgrupo Fitzpatrick I-III (piel clara). Afecciones como el eccema constitucional, la hiperpigmentación postinflamatoria y el carcinoma basocelular mostraron las precisiones más bajas. Esto representa una limitación crítica para su uso en la población cubana.
+    \item \textbf{No está diseñada para especialistas en dermatología}: A diferencia de DermEngine, que ofrece herramientas específicas para el seguimiento y gestión de pacientes dermatológicos, VisualDx está orientada principalmente a médicos generales y de urgencias para ayudarles a identificar afecciones cutáneas cuando no están seguros del diagnóstico. Esto limita su utilidad como herramienta integral para el trabajo diario de un dermatólogo.
+\end{enumerate}
+
+\subsection{Conclusiones del an\'alisis de herramientas}
+En esta secci\'on se analizaron herramientas con fines similares a DermaUH 3.0, con el objetivo de hacer
+certera la necesidad del desarrollo de la misma. Dado el an\'alisis anterior se pueden llegar a los siguientes
+hechos concretos:
+\begin{enumerate}
+    \item \textbf{Conjunto de im\'agenes}: Si bien es cierto que VisualDX posee un conjunto de im\'agenes de pieles oscuras, que es la predominante en el pueblo cubano, presenta baja precisi\'on en diagn\'osticos para im\'agenes de ese tipo. En el caso de DermEngine y SkinVision se evidencia que su conjunto de im\'agenes es en su mayor\'ia de pieles europeas, creando un sesgo y un alto grado de diagn\'ostico fallido en pieles cubanas.
+    \item \textbf{Costo de suscripci\'on}: Los per\'iodos de prueba gratuitos tienen una duraci\'on breve, en un intervalo de entre siete y treinta d\'ias. Este es un factor com\'un en las herramientas analizadas. Muchos de los dermat\'ologos cubanos no tienen la capacidad ni las condiciones para pagar una suscripci\'on en uno de estos sistemas, lo cual refleja la necesidad de desarrollar una herramienta libre de costo para ellos.
+    \item \textbf{Modelo Explicativo}: Ninguna de las herramientas analizadas tiene vinculado un modelo explicativo XAI que justifique y fundamente el diagn\'ostico brindado por el modelo de procesamiento de im\'agenes, sienda este uno de los objetivos espec\'ificos de la versi\'on 3.0 de DermaUH.
+    \item \textbf{Rendimiento}: Estas herramientas no reportan tiempos de carga en su interfaz web, sin embargo tienen particularidades que vale la pena analizar. En SkinVision todos sus paneles y componentes son animados, probablemente se trate de v\'ideos utilizados en el c\'odigo fuente, provocando que la mayor\'ia de las veces el consumo de internet sea excesivo y el rendimiento decaiga. La HomePage de DermEngine tiene un v\'ideo de casi 3 minutos como portada, disminuyendo significativamente el rendimiento del sitio sin una conexi'on estable y r\'apida a Internet. 
+\end{enumerate}
+
+Estos dos hechos reflejan lo importante que es el desarrollo de una aplicaci\'on para el diagn\'ostico asistido por IA, libre de costo, con modelos entrenados con un conjunto de im\'agenes de pieles cubanas y que intengren un modelo explicativo para justificar el diagn\'ostico obtenido.
+
+\section{Conjuntos de Im\'agenes existentes}

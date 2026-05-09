@@ -29,7 +29,7 @@ primeras computadoras. Hoy en d\'ia existen dos tipos de metodolog\'ias, tradici
 Para el desarrollo de DermaUH 3.0 se ha decidido utilizar la metodología Scrum, debido a que es una metodología ágil que 
 se adapta bien a proyectos complejos y con requisitos cambiantes, como es el caso de DermaUH. Además, Scrum permite entregas rápidas y 
 frecuentes, lo que facilita la retroalimentación constante del cliente y la adaptación a sus necesidades.
-Para ello se dividi\'o el proceso de desarrollo en $X$ sprints, con una duraci\'on promedio de entre dos y tres semanas cada uno.
+Para ello se dividi\'o el proceso de desarrollo en seis sprints, con una duraci\'on promedio de entre dos y tres semanas cada uno.
 Al final de cada sprint se realiz\'o una evaluaci\'on y validaci\'on de los resultados obtenidos. Los sprints en los que fue dividido el proceso
 son los siguientes:
 
@@ -67,7 +67,7 @@ gran parte del código del sistema. Siguiendo este concepto, los requerimientos 
 \begin{enumerate}
     \item[RF1] El usuario autenticado puede hacer \textbf{CRUD} sobre las entidades Paciente, Lesi\'on y diagn\'ostico.
     \item[RF2] Los usuarios podr\'an obtener informaci\'on de lesiones registradas, solo de sus propios pacientes, podr\'an acceder a otras lesiones si estas se hacen p\'ublicas o se comparten con el mismo.
-    \item[RF3] El usuario puede enviar una imagen al sistema y recibir un diagn\'ostico de la misma.
+    \item[RF3] El usuario puede enviar una imagen dermatosc\'opica o cl'inica al sistema y recibir una sugerencia de clasificaci\'on automatizada con nivel de confianza, la cual debe ser validada por un especialista m\'edico antes de cualquier decisi\'on cl\'inica.
     \item[RF4] Solamante el administrador tiene permiso para eliminar cuentas y activar usuarios en el sistema y consultar detalles de cualquier cuenta.
     \item[RF5] Cualquier persona puede enviar una solicitud de registro a la aplicaci\'on, la cual despu\'es ser\'a aprobada por el Administrador.
 \end{enumerate}
@@ -138,7 +138,7 @@ En la pestaña \textit{Solicitudes}:
 
 Evidentemente el usuario con permisos de Administrador es el único que tiene poder y potestad
 para manejar todo lo relacionados con las cuentas de los usuarios y las solicitudes de registro.
-A continuación se mostrará que ocurre en caso del usuario tener permisos de doctor
+A continuación se mostrará que ocurre en caso del usuario tener permisos de doctor.
 
 \begin{figure}[h] 
     \centering
