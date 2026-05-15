@@ -1,11 +1,23 @@
-\chapter{Soluci\'on Propuesta}
-Como se explic\'o en el cap\'itulo anterior, existen numerosas aplicaciones y sitios webs
-con un enfoque similar a DermaUH, todos por supuesto con sus ventajas y desventajas para el 
-cliente objetivo, los dermat\'ologos cubanos. La competencia, la exigencia, el tiempo del
-que se dispone para desarrollo, provoca una planificaci\'on milim\'etrica si se desean cumplir
-con todas los requerimientos y objetivos planteados al inicio del documento. El presente cap\'itulo
-explicar\'a desde el punto de vista metodol\'ogico y anal\'itico la soluci\'on propuesta de DermaUH 3.0, haciendo
-enf\'asis en la Metodolog\'ia, los Requerimientos y el Dise\~no.
+\chapter{Metodología y Análisis del Sistema Propuesto}
+
+El análisis del estado del arte presentado en el capítulo anterior evidenció las 
+limitaciones de las herramientas comerciales y académicas existentes para el diagnóstico 
+dermatológico asistido por inteligencia artificial, particularmente en lo referente a la 
+falta de adaptación a los fototipos de piel oscura, los altos costos de suscripción, 
+la dependencia de conectividad a internet y la ausencia de modelos explicativos (XAI). 
+A partir de estas brechas identificadas, el presente capítulo describe la solución 
+propuesta para DermaUH versión 3.0. En primer lugar, se define la metodología de desarrollo
+de software que guiará el proyecto, justificando la elección de un enfoque ágil adaptado 
+a los requisitos del sistema. A continuación, se presenta 
+la especificación de requisitos funcionales y no funcionales, estableciendo las 
+capacidades que debe ofrecer la plataforma y las condiciones de calidad que debe cumplir. 
+Finalmente, se aborda el análisis y diseño del sistema, incluyendo el modelado del negocio 
+mediante diagramas de casos de uso UML, el diseño arquitectónico (capas, cliente-servidor, 
+MVC) acompañado de su diagrama de componentes, y el diseño detallado con diagramas de 
+secuencia, diagrama de clases UML, y el modelo de base de datos (diagrama entidad-relación 
+y modelo relacional normalizado). De esta forma, se sientan las bases técnicas para la 
+implementación de una solución que responda a las necesidades específicas de los 
+dermatólogos cubanos.
 
 \section{Metodolog\'ia}
 Una metodología de desarrollo de software es un marco de trabajo que se
@@ -36,7 +48,7 @@ son los siguientes:
 \begin{enumerate}
     \item Desarrollo de toda la secci\'on de Registro e Inicio de Sesi\'on de los usuarios. Definir roles y permisos de cada uno.
     \item Implementar un servicio de correo, el cual notifica al usuario administrador de nuevas solicitudes y a los usuarios les notifica la respuesta de su solicitud.
-    \item Desarrollar las funcionalidades b\'asicas de la Aplicaci\'on, gesti\'on pacientes, lesiones y diagn\'osticos.
+    \item Desarrollar las funcionalidades b\'asicas de la Aplicaci\'on, gesti\'on de pacientes, lesiones y diagn\'osticos.
     \item Entrenar los nuevos modelos a integrar con el nuevo conjunto im\'agenes entregado por las organizaciones de la salud.
     \item Desarrollar el servicio de consulta de Imagen y vincular el modelo a la aplicaci\'on DermaUH 3.0
     \item Realizar pruebas de rendimiento y ejecuci\'on con doctores para posteriormente lanzar la aplicaci\'on.
@@ -67,9 +79,9 @@ gran parte del código del sistema. Siguiendo este concepto, los requerimientos 
 \begin{enumerate}
     \item[RF1] El usuario autenticado puede hacer \textbf{CRUD} sobre las entidades Paciente, Lesi\'on y diagn\'ostico.
     \item[RF2] Los usuarios podr\'an obtener informaci\'on de lesiones registradas, solo de sus propios pacientes, podr\'an acceder a otras lesiones si estas se hacen p\'ublicas o se comparten con el mismo.
-    \item[RF3] El usuario puede enviar una imagen dermatosc\'opica o cl'inica al sistema y recibir una sugerencia de clasificaci\'on automatizada con nivel de confianza, la cual debe ser validada por un especialista m\'edico antes de cualquier decisi\'on cl\'inica.
+    \item[RF3] El usuario puede enviar una imagen dermatosc\'opica o cl\'inica al sistema y recibir una sugerencia de clasificaci\'on automatizada con nivel de confianza, la cual debe ser validada por un especialista m\'edico antes de cualquier decisi\'on cl\'inica.
     \item[RF4] Solamante el administrador tiene permiso para eliminar cuentas y activar usuarios en el sistema y consultar detalles de cualquier cuenta.
-    \item[RF5] Cualquier persona puede enviar una solicitud de registro a la aplicaci\'on, la cual despu\'es ser\'a aprobada por el Administrador.
+    \item[RF5] Cualquier persona puede enviar una solicitud de registro a la aplicaci\'on, la cual deber\'a aportar datos profesionales como el hospital y el carnet de identidad para despu\'es ser\'a aprobada por el Administrador.
 \end{enumerate}
 
 \subsection{Requerimientos No Funcionales}
@@ -90,7 +102,7 @@ de DermaUH son:
 
 Una vez definidos los requisitos funcionales y no funcionales que debe cumplir el sistema, 
 el siguiente paso consiste en modelar su estructura y comportamiento desde una perspectiva técnica. 
-Este capítulo presenta los artefactos de diseño que guiarán la implementación de la versión 3.0 de 
+Este apartado presenta los artefactos de diseño que guiarán la implementación de la versión 3.0 de 
 DermaUH. Se abordar\'an temas como: casos de uso que aparecen en la aplicac\'on, arquitectura 
 de software seleccionada así como estructura, dise\~no y modelaci\'on de las entidades de 
 la base de datos. 
@@ -107,14 +119,17 @@ en el ep\'igrafe anterior.
     \item \textbf{Actores:} Los actores interpretan papeles que pueden ser representados por los usuarios del sistema. Dichos usuarios pueden ser humanos, otros ordenadores o incluso otros sistemas de software 
 \end{itemize}
 
-A continuaci\'on se mostrar\'an los diagramas de casos de uso, realizados con la herramienta \href{https://app.diagrams.net/?src=about#}{diagrams.net}
-debido a que ofrece una gran variedad de opciones de forma gratuita. Normalmente en un diagrama de casos de uso
+A continuaci\'on se mostrar\'an los diagramas de casos de uso, realizados con la herramienta \href{https://www.plantuml.com/plantuml/uml/}{PlantUML}
+debido a que permite mediante su propio lenguaje \textit{plantuml} crear im\'agenes de diagramas
+de casos de uso. Normalmente en un diagrama de casos de uso
 se visualizan todos los actores y los casos de uso, por simplicidad y para que sea m\'as entendible 
 para el lector, se separaron los diagramas por actores.
 
-\begin{figure}[h] 
+\newpage
+
+\begin{figure}[ht] 
     \centering
-    \includegraphics[width=0.8\textwidth]{figures/DiagramaAdmin.png}
+    \includegraphics[width=1.0\textwidth]{figures/diagrama_casos_uso_admin.png}
     \caption{Diagrama UML del actor Admin} 
     \label{adminUML}
 \end{figure}
@@ -124,6 +139,7 @@ con permisos de administrador. A continuaci\'on una breve explicaci\'on de cada 
 
 En la pestaña \textit{Usuarios}:
 \begin{itemize}
+    \item \textbf{Listar Cuentas de Usuarios:} Para acceder a eliminar o ver detalles, el administrador primero debe consultar la lista de usuarios
     \item \textbf{Eliminar Cuenta del Usuario:} Esta opci\'on permite eliminar la cuenta de un usuario de la aplicaci\'on, sin importar los permisos del usuario ni el tiempo que lleve activo en el sistema.
     \item \textbf{Ver Detalles del Usuario:} Esta opci\'on le muestra al administrador todos los datos personales que el usuario ingres\'o en el formulario de registro, como su nombre completo, hospital al que pertenece, correo entre otros. En caso del usuario ingresar como residente, muestra tambi\'en el correo del doctor encargado de tutorearlo.
 \end{itemize}
@@ -133,16 +149,16 @@ En la pestaña \textit{Solicitudes}:
     \item \textbf{Rechazar Solicitud de Usuario:} Con esta opci\'on el administrador rechaza, lo cual es sin\'onimo de eliminar, al menos en este contexto, la solicitud de registro enviada por un usuario.
     \item \textbf{Aceptar Solicitud de Usuario:} Permite al administrador aceptar la solicitud de registro de un usuario y este ya podrá utilizar la aplicación en dependencia de los permisos asignados por el administrador.
     \item \textbf{Asignar Roles al Usuario:} Una vez aceptada la solicitud de registro, el adminsitrador debe asignarle permisos a dicho usuario. Los permisos permitidos son administrador y/o doctor.
-    \item \textbf{Enviar correo:} Esta acci\'on se dispara autom\'aticamente cuando se acepta o rechaza una solicitud de registro de un usuario. En caso de rechazo se le explicar\'a las posibles causas del mismo, as\'i como todos los datos ingresados por el usuario durante su registro, sin incluir la contraseña.
+    \item \textbf{Enviar correo:} La acción de aceptar o rechazar una solicitud incluye automáticamente el envío de un correo al solicitante, por lo que se modeló como una relación de inclusión (<<include>>)
 \end{itemize}
 
-Evidentemente el usuario con permisos de Administrador es el único que tiene poder y potestad
+El usuario con permisos de Administrador es el único que tiene poder y potestad
 para manejar todo lo relacionados con las cuentas de los usuarios y las solicitudes de registro.
 A continuación se mostrará que ocurre en caso del usuario tener permisos de doctor.
 
-\begin{figure}[h] 
+\begin{figure}[ht] 
     \centering
-    \includegraphics[width=0.8\textwidth]{figures/DiagramaDoctor.png}
+    \includegraphics[width=0.8\textwidth]{figures/diagrama_casos_uso_doctor.png}
     \caption{Diagrama UML del actor Doctor} 
     \label{doctorUML}
 \end{figure}
@@ -158,62 +174,142 @@ A continuación se mostrará que ocurre en caso del usuario tener permisos de do
     \item \textbf{Solicitar diagn\'ostico a trav\'es de la imagen:} Esta opci\'on permite al doctor tomar una fotograf\'ia, ya sea con el m\'ovil o con el dermatoscopio y solicitar un diagn\'ostico aproximado de confianza proporcionado por un modelo de ML especializado en procesamiento de im\'agenes.
 \end{itemize}
 
-\subsection{Propuesta Arquitectura}
-Como se mencion\'o al inicio del documento uno de los objetivos de esta tesis era el desarrollo desde cero
-tanto del frontend como el backend de la aplicaci\'on. Debido al stack tecnol\'ogico seleccionado (el cual 
-se explicar\'a en el pr\'oximo cap\'itulo) se opt\'o por una arquitectura por capas. En este ep\'igrafe se 
-explicar\'a con m\'as detalle esta arquitectura y se visualizar\'a un diagrama de la misma.
+\subsection{An\'alisis y propuesta arquitect\'onica}
+Una vez modelados los casos de uso que describen el comportamiento funcional del 
+sistema desde la perspectiva de los actores, el siguiente paso consiste en definir 
+la estructura organizativa que soportará dichas funcionalidades. La arquitectura de 
+software se refiere a la disposición conceptual y estructural que subyace en el diseño y 
+desarrollo de sistemas, estableciendo los componentes, sus relaciones y los principios 
+que guían su evolución. Su importancia radica en proporcionar un marco de trabajo para 
+cumplir con los requisitos funcionales y no funcionales (rendimiento, seguridad, 
+escalabilidad), así como para tomar decisiones tecnológicas fundamentadas\cite{architecture}. En este 
+apartado se realizar\'a un an\'alisis de las arquitecturas de software m\'as conocidas
+atendiendo a su capacidad de escalabilidad, implementaci\'on para solucionar el problema en cuesti\'on
+y los conocimientos adquiridos en la carrera de Licenciatura en Ciencias de la Computaci\'on.
 
-La arquitectura en capas consta en dividir la aplicación en capas, con la intención de que 
-cada capa tenga un rol muy definido, como podría ser, una capa de presentación (UI), una capa 
-de reglas de negocio (servicios) y una capa de acceso a datos (DAO). En la práctica, la mayoría 
-de las veces este estilo arquitectónico es implementado en 4 capas, presentación, negocio, 
-persistencia y base de datos, sin embargo, es habitual ver que la capa de negocio y persistencia 
-se combinan en una solo capa, sobre todo cuando la lógica de persistencia está incrustada dentro 
-de la capa de negocio, como es el caso de DermaUH. En una arquitectura en capas, todas 
-las capas se colocan de forma horizontal, de tal forma que cada capa solo puede comunicarse 
-con la capa que está inmediatamente por debajo, por lo que, si una capa quiere comunicarse 
-con otras que están mucho más abajo, tendrán que hacerlo mediante la capa que está inmediatamente 
-por debajo\cite{capas}.
+\subsubsection{Arquitectura Hexagonal (Puertos y Adaptadores)}
+La arquitectura hexagonal, también conocida como arquitectura de puertos y adaptadores, 
+fue propuesta por Alistair Cockburn\cite{hexagonal1}. Su principio fundamental es aislar el dominio 
+(lógica de negocio) de los detalles técnicos externos como interfaces de usuario, bases 
+de datos o servicios de mensajería. El dominio se ubica en el centro de un hexágono 
+imaginario; alrededor de él se definen \textbf{puertos} (interfaces que expresan las 
+capacidades del dominio) y \textbf{adaptadores} (implementaciones concretas que conectan 
+cada puerto con una tecnología externa). 
 
-La separación de la aplicación en capas busca cumplir con el principio de separación de 
-preocupaciones, de tal forma que cada capa se encargue una tarea muy definida, por ejemplo, 
-la capa de presentación solo se preocupa por presentar la información de forma agradable al 
-usuario, pero no le interesa de donde viene la información ni la lógica de negocio que hay detrás, 
-en su lugar, solo sabe que existe una capa de negocio que le proporcionará la información. 
-Por otra parte, la capa de negocio solo se encarga de aplicar todas las reglas de negocio y 
-validaciones, pero no le interesa como recuperar los datos, guardarlos o borrarlos, ya que para 
-eso tiene una capa de persistencia que se encarga de eso. Por otro lado, la capa de persistencia 
-es la encargada de comunicarse a la base de datos, crear las instrucciones SQL para consultar, 
-insertar, actualizar o borrar registros y retornarlos en un formato independiente a la base de 
-datos. De esta forma, cada capa se preocupa por una cosa y no le interesa como le haga la capa de 
-abajo para servirle los datos que requiere. A continuaci\'on se muestra un resumen de las ventajas
-de optar por una arquitectura por capas.
+Por ejemplo, un puerto podría ser \texttt{RepositorioPaciente} (interfaz para guardar y 
+recuperar pacientes). Un adaptador concreto sería \texttt{RepositorioPacientePostgreSQL}, 
+que implementa esa interfaz usando SQL. Gracias a esta separación, el dominio nunca depende
+de la base de datos ni del framework web, sino que las dependencias apuntan hacia adentro.
+Esto facilita probar el dominio de forma aislada (con adaptadores de prueba), 
+cambiar de base de datos sin tocar la lógica de negocio, y retrasar decisiones 
+tecnológicas.
 
-\begin{itemize}
-    \item \textbf{Separación de responsabilidades:} Permite la separación de preocupaciones (SoC), ya que cada capa tiene una sola responsabilidad.
-    \item \textbf{Fácil de desarrollar:} Este estilo arquitectónico es especialmente fácil de implementar, además de que es muy conocido y una gran mayoría de las aplicaciones la utilizan.
-    \item \textbf{Fácil de probar:} Debido a que la aplicación construida por capas, es posible ir probando de forma individual cada capa, lo que permite probar por separada cada capa.
-    \item \textbf{Fácil de mantener:} Debido a que cada capa hace una tarea muy específica, es fácil detectar el origen de un error para corregirlo, o simplemente se puede identificar donde se debe aplicar un cambio.
-    \item \textbf{Seguridad:} La separación de capas permite el aislamiento de los servidores en subredes diferentes, lo que hace más difícil realizar ataques.
-\end{itemize}
+La arquitectura hexagonal es especialmente útil en sistemas con lógica de negocio compleja
+y larga vida útil, donde se esperan cambios en los detalles tecnológicos. No obstante, 
+puede resultar excesiva para prototipos o aplicaciones muy simples.
 
-\begin{figure}[h] 
+\begin{figure}[ht] 
     \centering
-    \includegraphics[width=0.8\textwidth]{figures/capas.png}
-    \caption{Arquitectura basada en capas} 
-    \label{capas}
+    \includegraphics[width=0.5\textwidth]{figures/hex-ports-adapters-en.png}
+    \caption{Esquema Arquitectura Hexagonal} 
+    \label{hexagonalschema}
 \end{figure}
 
-Una vez analizadas las ventajas de esta arquitectura, el stack tecnol\'ogico utilizado y la experiencia
-en el desarrollo de aplicaciones con esta arquitectura, se lleg\'o a la conclusi\'on de que es la mejor
-propuesta para llevar a cabo el desarrollo de la versi\'on 3.0 de la aplicaci\'on DermaUH. Para ello 
-se decidi\'o utilizar tres capas: la primera ser\'a la de presentaci\'on (UI), en esta estar\'a todo el
-desarrollo del frontend y ser\'a la encargada de hablar con el usuario; la segunda capa es la l\'ogica 
-de negocio y persistencia, en esta estar\'a todo lo relacionado con el backend de la aplicaci\'on y la 
-comunicaci\'on con la Base de Datos (BD), ser\'a el puente entre la UI y la BD; finalmente, la tercera capa,
-que es la BD, en ella se almacenar\'an todos los datos de doctores, pacientes, lesiones y ser\'a el n\'ucleo
-de la generaci\'on de respuestas a peticiones del usuario.
+\subsubsection*{Onion Architecture}
+La Onion Architecture (o en capas de cebolla) fue implementada y presentada por Jeffrey
+Palermo en 2008. Como todo patr\'on de arquitectura, este hace hincapi\'e en la divisi\'on
+de funciones y el desarrollo de componentes interconectados. Desde que vio la luz en el a\~no
+2008 ha ganado popularidad entre los ingenieros de software que buscan crear aplicaciones
+escalables, mantenibles y probadas. 
+
+Seg\'un el art\'iculo Onion Architecture Used in Software Development\cite{onion} publicado
+en \href{https://www.researchgate.net}{ResearchGate}, plataforma dedicada a la publicaci\'on 
+de art\'iculos de ind\'ole cient\'ifico: En la Onion Architecture, Los componentes del 
+software se organizan en capas concéntricas mediante la arquitectura de cebolla, 
+un patrón de arquitectura en capas en el que cada capa depende exclusivamente de la capa 
+inmediatamente posterior. La lógica central de la aplicación se ubica en el centro de la 
+arquitectura, rodeada por varias capas que la encierran y la protegen del exterior, razón 
+por la cual este patrón se denomina ``cebolla''. La principal idea es que las aplicaciones
+sean divididas en cuatro capas:
+
+\begin{enumerate}
+    \item \textbf{Dominio:} Esta capa actúa como el cerebro de la aplicación y representa los conceptos, entidades y reglas de negocio. No puede depender de otras capas, ya que es el centro de la arquitectura y tecnol\'ogicamente independiente.
+    \item \textbf{Infraestructura:} En esta capa se implementan las interfaces definidas por la capa de dominio. Adem\'as proporciona los elementos de infracestructura como mensajer\'ia, registro de eventos y acceso a datos.
+    \item \textbf{Aplicaci\'on:} La lógica de negocio relevante para la aplicación se encuentra en la capa de aplicación, que también actúa como enlace entre las capas de dominio y presentación. Convierte los casos de uso y las reglas de negocio de la capa de dominio en acciones que la capa de presentación puede comprender.
+    \item \textbf{Presentaci\'on:} Esta capa ofrece la interfaz para que el usuario interactúe con la aplicación. Una aplicación web, una aplicación de escritorio o una aplicación móvil pueden conformar esta capa.
+\end{enumerate}
+
+\begin{figure}[ht] 
+    \centering
+    \includegraphics[width=0.5\textwidth]{figures/onion.png}
+    \caption{Esquema Onion Architecture} 
+    \label{onionArchitecture}
+\end{figure}
+\newpage
+
+La figura~\ref{onionArchitecture} muestra un esquema de estructura de Onion Architecture, para 
+comprender su dise\~no y el concepto de capas externas que ``protegen'' a la capa interna mencionado
+anteriormente. Esta arquitectura posee un gran n\'umero de ventajas y desventajas para el desarrollo
+de software, sin embargo para evitar la extensi\'on del ep\'igrafe se enunciar\'an unas pocas 
+y de manera resumida.
+
+\paragraph{Ventajas:}
+\begin{enumerate}
+    \item Separaci\'on de responsabilidades: La arquitectura de capas fomenta una clara división de responsabilidades entre las múltiples capas de la aplicación. Esto aumenta la modularidad de la aplicación y facilita su comprensión y mantenimiento.
+    \item Testibilidad: Debido a que las capas de la arquitectura de cebolla están conectadas de forma flexible y pueden probarse por separado, escribir pruebas automatizadas para la aplicación resulta más sencillo.
+    \item Escalabilidad:Gracias a que las capas de la arquitectura cebolla pueden escalarse independientemente unas de otras, las aplicaciones pueden escalarse horizontalmente. A medida que la aplicación se expande, esto ofrece mayor rendimiento y fiabilidad.
+    \item Mantenibilidad: Los cambios en una capa no deberían afectar a las demás, ya que cada capa se encarga de una tarea específica. Esto simplifica la actualización y el mantenimiento de la aplicación a lo largo del tiempo.
+\end{enumerate}
+
+\paragraph{Desventajas:}
+\begin{enumerate}
+    \item Mayor complejidad: Incluso en proyectos pequeños, la arquitectura cebolla puede dificultar el desarrollo de una aplicación. La aplicación puede volverse más difícil de comprender y modificar debido a los niveles e interfaces adicionales.
+    \item Curva de aprendizaje: La comprensión y aplicación adecuadas de la arquitectura pueden requerir más esfuerzo y formación para quienes no estén familiarizados con la Arquitectura Cebolla.
+    \item Sobrediseño: En proyectos pequeños, la arquitectura de cebolla puede, en ocasiones, estar sobrediseñada, lo que añade complejidad y sobrecarga.
+    \item Sobrecarga de rendimiento: La sobrecarga de rendimiento puede deberse a las capas e interfaces adicionales de la arquitectura de cebolla, especialmente en aplicaciones que requieren alto rendimiento o procesamiento en tiempo real.
+\end{enumerate}
+
+\subsubsection*{Clean Architecture}
+La Arquitectura Limpia (Clean Architecture) es un enfoque de dise\~no de software propuesto
+por Robert C. Martin que busca la independencia de los sistemas con respecto a frameworks,
+bases de datos y detalles de implementaci\'on\cite{cleanArchitecture}. A través de la separación 
+de responsabilidades, Clean Architecture permite que los sistemas sean adaptables a 
+cambios tecnológicos sin alterar la lógica de negocio principal. 
+
+Clean Architecture se basa en conceptos previos como la Arquitectura en Capas, 
+la Arquitectura Hexagonal (Ports and Adapters) de Alistair Cockburn y la Arquitectura en 
+Cebolla (Onion Architecture) de Jeffrey Palermo, pero con un enfoque más claro en la 
+independencia de los componentes y la testabilidad del código. Clean Architecture
+se gu\'ia por cuatro principios fundamentales\cite{cleanArchitecturePrincipios} los cuales
+ser\'an explicados a continuaci\'on:
+
+\begin{enumerate}
+    \item \textbf{Independencia de cualquier framework:} La arquitectura limpia debe poder aplicarse a cualquier sistema, independientemente del lenguaje de programación o las bibliotecas/frameworks que utilice. Las capas deben estar tan bien separadas que puedan sobrevivir individualmente, sin necesidad de elementos externos.
+    \item \textbf{Testeable:} Cada módulo, tanto UI, base de datos, conexión API Rest, etc., debe poder probarse individualmente.
+    \item \textbf{Interfaz de usuario (UI) independiente:} La interfaz de usuario debe poder cambiar sin interrumpir todo el sistema. Esta capa debería vivir de forma tan independiente como para ser desmontada y sustituida por otra.
+    \item \textbf{Base de datos independiente:} Al igual que en el punto anterior, esta capa debe ser tan modular como para agregar múltiples fuentes de datos e incluso múltiples fuentes del mismo tipo de datos.
+\end{enumerate}
+
+Como se mencion\'o anteriormente, Clean Architecture toma fundamentos de la arquitectura
+Hexagonal y la Onion, ambas explicadas en este ep\'igrafe. Por tanto tiene una divisi\'on
+por capas. Existen bibliograf\'ias en las que el esquema para presentar a esta arquitectura
+es similar al esquema Onion, (figura~\ref{onionArchitecture}) y en otras se representa mediante
+un cono, como se muestra en la figura~\ref{cleanArchitecture}
+
+\begin{figure}[ht] 
+    \centering
+    \includegraphics[width=0.5\textwidth]{figures/clean.png}
+    \caption{Esquema Clean Architecture en forma de Cono} 
+    \label{cleanArchitecture}
+\end{figure}
+\newpage
+
+\begin{enumerate}
+    \item \textbf{Entidades:} Las entidades encapsulan las reglas comerciales de toda la empresa. Una entidad puede ser un objeto con métodos o puede ser un conjunto de funciones y estructuras de datos. No importa, siempre y cuando las entidades puedan ser utilizadas por muchas aplicaciones diferentes en la empresa.
+    \item \textbf{Casos de Uso:} El software de esta capa contiene reglas comerciales específicas de la aplicación. Encapsula e implementa todos los casos de uso del sistema. Estos casos de uso organizan el flujo de datos hacia y desde las entidades, y dirigen a esas entidades para que utilicen sus reglas de negocios en toda la empresa para lograr los objetivos del caso de uso.
+    \item \textbf{Adaptadores:} El software en esta capa es un conjunto de adaptadores que convierten datos del formato más conveniente para los casos de uso y entidades, al formato más conveniente para alguna agencia externa como la Base de Datos o la Web. De manera similar, los datos se convierten, en esta capa, de la forma más conveniente para las entidades y los casos de uso, a la forma más conveniente para cualquier marco de persistencia que se esté utilizando. Es decir, la base de datos. Ningún código dentro de este círculo debería saber nada sobre la base de datos. También en esta capa hay cualquier otro adaptador necesario para convertir datos de algún formato externo, como un servicio externo, al formato interno utilizado por los casos de uso y las entidades.
+    \item \textbf{Frameworks y controladores} La capa más externa generalmente se compone de frameworks y herramientas como la base de datos, el framework web, etc. Generalmente, no escribe mucho código en esta capa, aparte del código que se comunica con el siguiente círculo hacia adentro.
+\end{enumerate}
 
 \subsection{Modelado de la Base de Datos}
 
@@ -230,11 +326,12 @@ Seg\'un un art\'iculo obtenido del sitio web UNIR, herramienta elaborada, desarr
 y dise\~nada con el prop\'osito de ayudar a los estudiantes de universidades europeas,
 El modelo entidad relación (ERD o modelos ER) es una herramienta que permite representar 
 de manera simplificada cómo personas, objetos o conceptos se relacionan entre sí. 
-Se utiliza para exponer cómo se organiza la información en una base de datos\cite{DER}. 
+Se utiliza para exponer cómo se organiza la información en una base de datos. 
 La creación del modelo entidad relación para su aplicación en el diseño de bases de 
 datos se le atribuye a Peter Chen, profesor del MIT, quien publicó en 1976 el documento  
 “Modelo entidad-relación: hacia una visión unificada de los datos”. A continuaci\'on se
 expone el DER utilizado para la modelaci\'on de la base de datos.
+
 
 TODO: HACER EL DIAGRAMA CUANDO LA HERRAMIENTA LE DE LA GANA
 
