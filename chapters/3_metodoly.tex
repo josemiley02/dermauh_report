@@ -187,35 +187,139 @@ apartado se realizar\'a un an\'alisis de las arquitecturas de software m\'as con
 atendiendo a su capacidad de escalabilidad, implementaci\'on para solucionar el problema en cuesti\'on
 y los conocimientos adquiridos en la carrera de Licenciatura en Ciencias de la Computaci\'on.
 
+\subsubsection{Arquitectura en Capas (Layers Architecture)}
+Según un art\'iculo publicado en el blog del sitio \href{https://reactiveprogramming.io/blog/es/estilos-arquitectonicos/capas}{ReactiveProgramming},
+dedicado a la publicaciones relacionadas con el mundo de la programaci\'on y espec\'ificamente la Ingenier\'ia de Software
+la arquitectura en capas consta en dividir la aplicaci\'on en niveles (capas), haciendo que cada uno
+tenga un rol muy definidio\cite{capas}. Un ejemplo de esta divisi\'on podr\'ia ser una capa de presentaci\'on (UI),
+una capa de reglas de negocio (servicios) y una capa de acceso a datos (DB). Cabe recalcar que este estilo arquitect\'onico
+no delimita el n\'umero de capas que el programador puede utilizar y/o implementar, su idea fundamental la basa
+en la aplicaci\'on del Principio de Separaci\'on de Responsabilidades\cite{separation}. En la práctica, la mayoría de las veces 
+este estilo arquitectónico es implementado en 4 capas, presentación, negocio, persistencia 
+y base de datos, sin embargo, es habitual ver que la capa de negocio y persistencia se 
+combinan en una solo capa, sobre todo cuando la lógica de persistencia está incrustada 
+dentro de la capa de negocio.
+
+La estructura de una arquitectura por capas determina que cada nivel debe ``colocarse'' de forma
+horizontal uno sobre el otro, provocando que un nivel determinado solo puede comunicarse con la que 
+est\'a justo ``debajo''. En pocas palabras si la capa de presentaci\'on, desea acceder a la capa de acceso a datos
+lo debe hacer \'unica y exclusivamente a trav\'es de la capa de servicios, la cual realizar\'a
+la petici\'on correspondiente a la capa de acceso a datos, luego la respuesta hace el recorrido
+inverso hasta llegar a la capa de presentaci\'on. 
+
+Como caracteristica de esta arquitectura: las capas o niveles deben ser componentes apartes, 
+es decir estar lo suficientemente desacoplados para que si se desea cambiar la l\'ogica o el 
+funcionamiento de alguna, no sea necesario aplicar cambios en otras capas. En algunas ocasiones
+estas capas se alojan en servidores distintos pero que se comunican entre s\'i. 
+
+La separación de la aplicación en capas busca cumplir con el principio de separación de 
+preocupaciones\cite{separation}, de tal forma que cada capa se encargue una tarea muy definida, por ejemplo,
+la capa de presentación solo se preocupa por presentar la información de forma agradable 
+al usuario, pero no le interesa de donde viene la información ni la lógica de negocio que 
+hay detrás, en su lugar, solo sabe que existe una capa de negocio que le proporcionará la 
+información. Por otra parte, la capa de negocio solo se encarga de aplicar todas las 
+reglas de negocio y validaciones, pero no le interesa como recuperar los datos, guardarlos
+o borrarlos, ya que para eso tiene una capa de persistencia que se encarga de eso. 
+Por otro lado, la capa de persistencia es la encargada de comunicarse a la base de datos,
+crear las instrucciones SQL para consultar, insertar, actualizar o borrar registros 
+y retornarlos en un formato independiente a la base de datos. De esta forma, cada capa 
+se preocupa por una cosa y no le interesa como le haga la capa de abajo para servirle 
+los datos que requiere. A continuaci\'on veremos algunas ventajas y desventajas del uso 
+de esta arquitectura.
+
+\paragraph{Ventajas}
+\begin{enumerate}
+    \item \textbf{Separación de responsabilidades:} Permite la separación de preocupaciones (SoC), ya que cada capa tiene una sola responsabilidad.
+    \item \textbf{Fácil de desarrollar:} Este estilo arquitectónico es especialmente fácil de implementar, además de que es muy conocido y una gran mayoría de las aplicaciones la utilizan.
+    \item \textbf{Fácil de probar:} Debido a que la aplicación construida por capas, es posible ir probando de forma individual cada capa, lo que permite probar por separada cada capa.
+    \item \textbf{Fácil de mantener:} Debido a que cada capa hace una tarea muy específica, es fácil detectar el origen de un bug para corregirlo, o simplemente se puede identificar donde se debe aplicar un cambio.
+    \item \textbf{Seguridad:} La separación de capas permite el aislamiento de los servidores en subredes diferentes, lo que hace más difícil realizar ataques.
+\end{enumerate}
+
+\paragraph{Desventajas}
+\begin{enumerate}
+    \item \textbf{Performance:} La comunicación por la red o internet es una de las tareas más tardadas de un sistema, incluso, en muchas ocasiones más tardado que el mismo procesamiento de los datos, por lo que el hecho de tener que comunicarnos de capa en capa genera un degrado significativo en el performance.
+    \item \textbf{Escalabilidad:} Las aplicaciones que implementan este patrón por lo general tienda a ser monolíticas, lo que hace que son difíciles de escalar, aunque es posible replicar la aplicación completa en varios nodos, lo que provoca un escalado monolítico.
+    \item \textbf{Tolerancia a los fallos:} Si una capa falla, todas las capas superiores comienzan a fallar en cascada.
+\end{enumerate}
+
 \subsubsection{Arquitectura Hexagonal (Puertos y Adaptadores)}
+
 La arquitectura hexagonal, también conocida como arquitectura de puertos y adaptadores, 
-fue propuesta por Alistair Cockburn\cite{hexagonal1}. Su principio fundamental es aislar el dominio 
-(lógica de negocio) de los detalles técnicos externos como interfaces de usuario, bases 
-de datos o servicios de mensajería. El dominio se ubica en el centro de un hexágono 
-imaginario; alrededor de él se definen \textbf{puertos} (interfaces que expresan las 
-capacidades del dominio) y \textbf{adaptadores} (implementaciones concretas que conectan 
-cada puerto con una tecnología externa). 
+fue propuesta por Alistair Cockburn en 2005 como una evolución de los patrones de arquitectura 
+limpia\cite{hexagonalCockburn}. Su principio fundamental es aislar el dominio (lógica de negocio) 
+de los detalles técnicos externos como interfaces de usuario, bases de datos o servicios 
+de mensajería. Para lograr este aislamiento, Cockburn introduce dos conceptos clave: los 
+\textbf{puertos} y los \textbf{adaptadores}.
 
-Por ejemplo, un puerto podría ser \texttt{RepositorioPaciente} (interfaz para guardar y 
-recuperar pacientes). Un adaptador concreto sería \texttt{RepositorioPacientePostgreSQL}, 
-que implementa esa interfaz usando SQL. Gracias a esta separación, el dominio nunca depende
-de la base de datos ni del framework web, sino que las dependencias apuntan hacia adentro.
-Esto facilita probar el dominio de forma aislada (con adaptadores de prueba), 
-cambiar de base de datos sin tocar la lógica de negocio, y retrasar decisiones 
-tecnológicas.
+\paragraph{Puertos y Adaptadores}
+Un \textbf{puerto} es una interfaz que define un conjunto de operaciones que el dominio 
+ofrece o requiere. No contiene implementación alguna, solo la especificación de cómo 
+comunicarse con el dominio. Por ejemplo, un puerto podría ser \texttt{RepositorioPaciente} 
+(interfaz para guardar y recuperar pacientes), o \texttt{ServicioNotificaciones} 
+(interfaz para enviar correos electrónicos). Por otro lado, un \textbf{adaptador} 
+es una implementación concreta de un puerto que conecta el dominio con una tecnología 
+específica. Un adaptador concreto sería \texttt{RepositorioPacientePostgreSQL}, 
+que implementa \texttt{RepositorioPaciente} usando SQL, o 
+\texttt{RepositorioPacienteEnMemoria}, útil para pruebas.
 
-La arquitectura hexagonal es especialmente útil en sistemas con lógica de negocio compleja
-y larga vida útil, donde se esperan cambios en los detalles tecnológicos. No obstante, 
-puede resultar excesiva para prototipos o aplicaciones muy simples.
+La arquitectura recibe su nombre del hexágono imaginario que representa el dominio central.
+Cada lado del hexágono corresponde a un puerto, y los adaptadores se conectan a esos lados. 
+No es necesario que haya exactamente seis puertos; el hexágono es una metáfora visual que 
+sugiere que puede haber múltiples puntos de conexión sin que el dominio conozca los detalles 
+de quién o qué se conecta a ellos\cite{hexagonalExplained}.
+
+\paragraph{Regla de Dependencia}
+La regla cardinal de la arquitectura hexagonal es que las dependencias apuntan siempre hacia 
+adentro. Es decir, el dominio central nunca depende de los adaptadores externos ni de los 
+frameworks. En lugar de ello, los adaptadores dependen del dominio (a través de los puertos). 
+Esto invierte la dependencia tradicional de las arquitecturas en capas, donde la capa superior 
+depende de la inferior. El siguiente fragmento de código ilustra este principio:
+
+\begin{verbatim}
+// Puerto (interfaz) en el dominio
+interface PatientRepository {
+    Patient findById(PatientId id);
+    void save(Patient patient);
+}
+
+// Adaptador (implementación) en la infraestructura
+class PostgresPatientRepository implements PatientRepository {
+    // Implementación con SQL
+}
+\end{verbatim}
+
+Gracias a esta separación, el dominio nunca depende de la base de datos ni del 
+framework web. Esto facilita probar el dominio de forma aislada (con adaptadores de prueba 
+como \texttt{InMemoryPatientRepository}), cambiar de base de datos sin tocar la 
+lógica de negocio (solo se escribe un nuevo adaptador), y retrasar decisiones tecnológicas
+ (se puede comenzar con un adaptador en memoria y luego reemplazarlo por uno real).
+
+\paragraph{Ventajas específicas}
+Además de la independencia tecnológica, la arquitectura hexagonal ofrece:
+\begin{itemize}
+    \item \textbf{Testabilidad extrema}: Los casos de uso se pueden probar sin necesidad de levantar una base de datos real o un servidor web. Basta con inyectar adaptadores falsos (mocks) que simulen el comportamiento esperado. Esto acelera las pruebas unitarias y de integración.
+    \item \textbf{Evolución incremental}: Permite añadir nuevos puertos y adaptadores a medida que el sistema crece, sin modificar el núcleo existente. Por ejemplo, si inicialmente solo se necesita una interfaz web, luego se puede agregar una API REST sin afectar el dominio.
+    \item \textbf{Adaptabilidad a cambios tecnológicos}: Si un framework web queda obsoleto o se decide migrar de base de datos relacional a NoSQL, solo se deben reescribir los adaptadores correspondientes; el dominio permanece intacto.
+\end{itemize}
+
+\paragraph{Desventajas y críticas}
+A pesar de sus beneficios, la arquitectura hexagonal no está exenta de inconvenientes:
+\begin{itemize}
+    \item \textbf{Complejidad inicial}: Requiere una inversión significativa en el diseño de puertos e interfaces, lo que puede resultar excesivo para aplicaciones pequeñas o prototipos. Como señala Martín\cite{hexagonalMartín}, \emph{``la arquitectura hexagonal es una gran solución para sistemas complejos, pero no para scripts de una sola página''}.
+    \item \textbf{Codificación indirecta}: A menudo se necesitan varias clases para implementar una funcionalidad simple (interfaz, adaptador, fábrica). Esto puede percibirse como \emph{overengineering} si el dominio es trivial.
+    \item \textbf{Curva de aprendizaje}: Los desarrolladores no familiarizados con los conceptos de puertos y adaptadores pueden tener dificultades para entender el flujo de la aplicación.
+\end{itemize}
 
 \begin{figure}[ht] 
     \centering
     \includegraphics[width=0.5\textwidth]{figures/hex-ports-adapters-en.png}
-    \caption{Esquema Arquitectura Hexagonal} 
+    \caption{Esquema de la Arquitectura Hexagonal (Puertos y Adaptadores). Se observa el dominio en el centro, los puertos en los lados del hexágono y los adaptadores conectados a ellos. Imagen adaptada de Cockburn\cite{hexagonalCockburn}.}
     \label{hexagonalschema}
 \end{figure}
+\newpage
 
-\subsubsection*{Onion Architecture}
+\subsubsection{Onion Architecture}
 La Onion Architecture (o en capas de cebolla) fue implementada y presentada por Jeffrey
 Palermo en 2008. Como todo patr\'on de arquitectura, este hace hincapi\'e en la divisi\'on
 de funciones y el desarrollo de componentes interconectados. Desde que vio la luz en el a\~no
@@ -269,7 +373,7 @@ y de manera resumida.
     \item Sobrecarga de rendimiento: La sobrecarga de rendimiento puede deberse a las capas e interfaces adicionales de la arquitectura de cebolla, especialmente en aplicaciones que requieren alto rendimiento o procesamiento en tiempo real.
 \end{enumerate}
 
-\subsubsection*{Clean Architecture}
+\subsubsection{Clean Architecture}
 La Arquitectura Limpia (Clean Architecture) es un enfoque de dise\~no de software propuesto
 por Robert C. Martin que busca la independencia de los sistemas con respecto a frameworks,
 bases de datos y detalles de implementaci\'on\cite{cleanArchitecture}. A través de la separación 
@@ -311,6 +415,29 @@ un cono, como se muestra en la figura~\ref{cleanArchitecture}
     \item \textbf{Frameworks y controladores} La capa más externa generalmente se compone de frameworks y herramientas como la base de datos, el framework web, etc. Generalmente, no escribe mucho código en esta capa, aparte del código que se comunica con el siguiente círculo hacia adentro.
 \end{enumerate}
 
+\subsubsection{Arquitectura seleccionada para DermaUH 3.0}
+
+Una vez analizadas las alternativas arquitectónicas (Capas, Hexagonal, Onion y Clean), 
+se optó por la arquitectura en capas como patrón de diseño para la aplicación web DermaUH 3.0. 
+Esta decisión se fundamenta en cuatro criterios principales:
+
+\begin{enumerate}
+    \item \textbf{Simplicidad y curva de aprendizaje:} La arquitectura en capas es ampliamente conocida y utilizada en la industria del software, lo que reduce la complejidad inicial del desarrollo y facilita la incorporación de nuevos desarrolladores al proyecto en el futuro\cite{layeredCommon}.
+    \item \textbf{Experiencia previa del equipo:} El desarrollador principal posee experiencia práctica en la implementación de sistemas basados en capas, lo que acelera el desarrollo y minimiza riesgos técnicos.
+    \item \textbf{Rendimiento:} Patrones como Onion o Clean Architecture introducen una sobrecarga adicional debido a la inversión de dependencias y la inyección de dependencias, lo que puede afectar negativamente los tiempos de respuesta. Como se estableció en el requisito no funcional RNF3 (tiempo de respuesta inferior a dos segundos), la arquitectura por capas, al ser más directa en la comunicación entre capas, contribuye a cumplir con esta métrica\cite{layeredPerformance}.
+    \item \textbf{Flexibilidad para evoluciones futuras:} Aunque la arquitectura por capas puede tender al monolito, su organización permite extraer componentes específicos hacia microservicios con modificaciones mínimas. Por ejemplo, si en el futuro se decide externalizar el servicio de inteligencia artificial (modelo de clasificación de imágenes) como un microservicio independiente, la capa de negocio actual ya encapsula dicha lógica en componentes específicos (servicios de inferencia). De esta forma, solo sería necesario sustituir la llamada interna por una comunicación vía API REST, sin reescribir el resto del sistema\cite{layeredEvolution}.
+\end{enumerate}
+
+Además, la arquitectura en capas es permisiva en cuanto a los patrones internos de cada 
+capa. La capa de presentación puede implementarse con React y hooks, la capa de negocio 
+con Django y servicios REST, y la capa de datos con PostgreSQL, sin que las decisiones de 
+una capa condicionen rígidamente a las demás. Esto permite adoptar incluso enfoques h\'ibridos
+como por ejemplo, implementar el modelo ML en un servicio independiente (microservicio)
+y solamente modificar un poco la capa de negocio.
+
+Como señalan Bass et al.\cite{bassArchitecture}, 
+\emph{``la arquitectura de software es el resultado de decisiones que equilibran restricciones técnicas, humanas y de negocio; no existe una solución única válida para todos los casos''}.
+
 \subsection{Modelado de la Base de Datos}
 
 Definida la arquitectura del sistema, el siguiente paso consiste en estructurar los datos que 
@@ -318,9 +445,9 @@ persistirán y las relaciones entre ellos. El presente apartado describe el mode
 DermaUH 3.0, incluyendo las entidades principales (usuario, paciente, lesión, imagen, 
 diagnóstico automático, entre otras), sus atributos, las claves primarias y foráneas, y 
 las asociaciones que garantizan la integridad y coherencia de la información. Se presenta 
-el Modelo Entidad-Relación, tambi\'en conocido como Diagrama de Entidad Relaci\'on (DER).
+el Modelo Entidad-Relación, tambi\'en conocido como Diagrama de Entidad Relaci\'on (MER).
 
-\subsubsection{Modelo de Entidad Relación (DER)}
+\subsubsection{Modelo de Entidad Relación (MER)}
 
 Seg\'un un art\'iculo obtenido del sitio web UNIR, herramienta elaborada, desarrollada
 y dise\~nada con el prop\'osito de ayudar a los estudiantes de universidades europeas,
@@ -330,10 +457,16 @@ Se utiliza para exponer cómo se organiza la información en una base de datos.
 La creación del modelo entidad relación para su aplicación en el diseño de bases de 
 datos se le atribuye a Peter Chen, profesor del MIT, quien publicó en 1976 el documento  
 “Modelo entidad-relación: hacia una visión unificada de los datos”. A continuaci\'on se
-expone el DER utilizado para la modelaci\'on de la base de datos.
+expone el MER utilizado para la modelaci\'on de la base de datos. El diagrama fue realizado
+con la herramienta en línea \href{https://app.diagrams.net/#}{Diagrams.net}, plataforma
+gratuita con alta variedad de opciones para la realizaci\'on de diagramas.
 
-
-TODO: HACER EL DIAGRAMA CUANDO LA HERRAMIENTA LE DE LA GANA
+\begin{figure}[ht] 
+    \centering
+    \includegraphics[width=0.8\textwidth]{figures/MERX.png}
+    \caption{Modelo de Entidad Relacional MER} 
+    \label{MER}
+\end{figure}
 
 \subsubsection{Paciente}
 El modelo de datos, \textbf{Paciente}, es la entidad m\'as importante, ya que es el n\'ucleo
@@ -364,15 +497,41 @@ sistema. En pocas palabras, un dermat\'ologo es un usuario de DermaUH 3.0.
 \end{itemize}
 
 \subsubsection{Lesi\'on}
-Entidad d\'ebil, modela el comportamiento de las lesiones que puede presentar un paciente. Un
-paciente puede presentar muchas una o muchas lesiones, por tanto el modelo \textbf{Lesi\'on}
-depende de que exista un paciente. Se configur\'o con eliminaci\'on \textbf{Cascada}, por 
+Modela el comportamiento de las lesiones que puede presentar un paciente. Un
+paciente puede presentar una o muchas lesiones, por tanto el modelo \textbf{Lesi\'on}
+depende de que exista un paciente. Se configur\'o con eliminaci\'on \textbf{Cascada}\cite{cascada}, por 
 ende si un paciente es eliminado del sistema, se eliminar\'an todas sus lesiones asociadas.
 \begin{itemize}
+    \item idLesion: Llave primaria (PK), identificador \'unico de tipo entero. Es generado auto\'aticamente por el sistema de manera incremental.
     \item date: Fecha en la que se registra la lesi\'on. Es un campo de tipo date, no editable.
     \item phototype: Campo de tipo entero, solo puede tomar valores en el intervalo $[1;6]$ que se usa para almacenar el fototipo de la piel donde se encuentra ubicada la lesi\'on. El fototipo no es m\'as que la reacci\'on de la piel ante la exposici\'on a la luz solar.
     \item localizarion: Campo de tipo entero, toma valores en el intervalo $[1;10]$ y almacena la parte del cuerpo donde se encuentra la lesi\'on. 
     \item histopathologicalDiagnosis: Campo de tipo bool. Indica si la lesi\'on fue diagnosticada histopat\'ologicamente, en otras palabras, afirma que se utilizaron equipos m\'edicos para obtener el diagn\'ostico.
     \item injuryType: Llave for\'anea (FK) que referencia a la entidad \textbf{Tipo de Lesi\'on}. Es un campo de tipo entero.
     \item patientId: Llave for\'anea (FK) que referencia a la entidad \textbf{Paciente}. Es un campo de tipo entero.
+\end{itemize}
+
+\subsubsection{Imagen}
+Modelo utilizado para guardar los metadatos\cite{metadato} de las im\'agenes de las lesiones.
+Cada lesi\'on puede tener muchas im\'agenes o no tener ninguna, al igual que la relaci\'on Paciente~Lesi\'on,
+esta tambi\'en se configur\'o con eliminaci\'on \textbf{Cascada}, es decir si una lesi\'on
+es eliminada del sistema por alg\'un motivo, todas las im\'agenes asociadas ser\'an eliminadas tambi\'en.
+\begin{itemize}
+    \item idImagen: Llave primaria (PK), identificador \'unico de tipo entero. Es generado auto\'aticamente por el sistema de manera incremental.
+    \item Imagen: Campo donde se almacenan los metadatos de la imagen en cuesti\'on.
+    \item ImageType: Campo de tipo bool que indica True si una Imagen es dermatoc\'opica
+    \item commentary: Campo de tipo texto, donde el usuario podr\'a exponer, si desea, una breve descripci\'on de la imagen. 
+    \item injuryId: Llave for\'anea (FK) que referencia a la entidad \textbf{Lesi\'on}
+\end{itemize}
+
+\subsubsection{Diagnóstico}
+Este modelo se implement\'o para modelar los diagn\'osticos realizados por los doctores 
+a lesiones registradas de pacientes. Una lesi\'on puede tener varios diagn\'osticos, 
+es v\'alido tener diferentes criterios, por tanto la configuraci\'on de eliminaci\'on
+tambi\'en es \textbf{Cascada}. A continuaci\'on los atributos de la entidad de Diagn\'ostico
+\begin{itemize}
+    \item idDiagnosis: Llave primaria (PK), identificador \'unico de tipo entero. Es generado auto\'aticamente por el sistema de manera incremental.
+    \item date: Fecha en la que se realiza el diagn\'ostico. Es un campo de tipo date, no editable.
+    \item commentary: Campo de tipo de texto, no obligatorio, representa comentarios dejados por el dermat\'ologo respecto a su diagn\'ostico.
+    \item injuryId: Llave for\'anea (FK) que referencia a la entidad \textbf{Lesi\'on}
 \end{itemize}
