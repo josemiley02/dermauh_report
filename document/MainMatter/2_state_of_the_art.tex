@@ -26,7 +26,8 @@ cada aplicación móvil o web.
 
 \subsection*{Criterios de selección}
 Para la selección de las herramientas analizadas en profundidad, se establecieron los siguientes 
-criterios de inclusión: (1) disponibilidad comercial o acceso público desde al menos 2020; 
+criterios de inclusión: (1) disponibilidad comercial o acceso público desde al menos 2020,
+año a partir del cual se generalizó el uso de redes neuronales convolucionales en dermatología; 
 (2) uso explícito de inteligencia artificial (preferentemente redes neuronales convolucionales) 
 para la clasificación o análisis de lesiones cutáneas; (3) presencia de estudios clínicos 
 publicados o certificaciones regulatorias (como marcado CE o aprobación de la FDA); 
@@ -47,7 +48,7 @@ el cual forma parte del objetivo principal de esta tesis.
 \subsection{DermEngine}
 \begin{figure}[ht] 
     \centering
-    \includegraphics[width=0.3\textwidth]{figures/dermengine_logo.png}
+    \includegraphics[width=0.3\textwidth]{Graphics/dermengine_logo.png}
     \caption{Logo de DermEngine} 
     \label{logoDermEngine}
 \end{figure}
@@ -84,7 +85,7 @@ relevantes se encuentran:
 \subsection{SkinVision}
 \begin{figure}[ht] 
     \centering
-    \includegraphics[width=0.3\textwidth]{figures/skinvision_logo.png}
+    \includegraphics[width=0.3\textwidth]{Graphics/skinvision_logo.png}
     \caption{Logo de SkinVision} 
     \label{logoSkinVision}
 \end{figure}
@@ -97,7 +98,7 @@ bajo o en revisión.
 
 \begin{figure}[ht] 
     \centering
-    \includegraphics[width=0.8\textwidth]{figures/estudio_skinvision.png}
+    \includegraphics[width=0.8\textwidth]{Graphics/estudio_skinvision.png}
     \caption{Estudio clínico de SkinVision} 
     \label{estudioSkinVision}
 \end{figure}
@@ -108,7 +109,7 @@ secundaria por expertos en casos de riesgo alto o en revisión, y entrega de res
 
 \begin{figure}[ht] 
     \centering
-    \includegraphics[width=0.8\textwidth]{figures/modelo_skinvision.png}
+    \includegraphics[width=0.8\textwidth]{Graphics/modelo_skinvision.png}
     \caption{Diagrama del algoritmo de SkinVision} 
     \label{modeloSkinVision}
 \end{figure}
@@ -133,7 +134,7 @@ secundaria por expertos en casos de riesgo alto o en revisión, y entrega de res
 \subsection{VisualDx}
 \begin{figure}[ht] 
     \centering
-    \includegraphics[width=0.3\textwidth]{figures/visualdx_logo.png}
+    \includegraphics[width=0.3\textwidth]{Graphics/visualdx_logo.png}
     \caption{Logo de VisualDx} 
     \label{logoVisualDx}
 \end{figure}
@@ -199,7 +200,6 @@ Del análisis anterior, DermaUH 3.0 debe adoptar las siguientes decisiones de di
     \item \textbf{Explicabilidad diagnóstica}: Incorporar un modelo XAI que justifique cada predicción, aumentando la confianza del especialista.
     \item \textbf{Gratuidad total}: La plataforma será completamente gratuita para los dermatólogos cubanos, eliminando la barrera económica.
     \item \textbf{Optimización de rendimiento}: Priorizar un diseño ligero, con tiempos de carga optimizados y consumo eficiente de recursos, evitando videos o animaciones pesadas.
-    \item \textbf{Operatividad en condiciones de conectividad limitada}: Aunque es una aplicación web, se implementarán estrategias de caché local y Progressive Web App (PWA) para permitir cierto grado de funcionalidad offline.
 \end{itemize}
 
 Estas lecciones reflejan la importancia de desarrollar una aplicación para el diagnóstico 
@@ -208,9 +208,8 @@ que integre un modelo explicativo y que funcione adecuadamente en las condicione
 conectividad del sistema de salud cubano.
 
 \section{Archivos acad\'emicos de referencia}
-Una vez analizadas y comparadas las herramientas existentes que utilizan IA para apoyar a dermat\'ologos
-con sus diagn\'osticos, es momento de comenzar a estudiar los archivos acad\'emicos existentes. Para ello
-se tienen en cuenta aquellos que son de libre acces y son utilizados para ML e investigaci\'on. 
+Además de las herramientas comerciales, es necesario estudiar los repositorios 
+académicos que sirven como base para el entrenamiento de modelos de IA:
 
 \subsection{ISIC Archive: Repositorio académico de referencia}
 
@@ -289,7 +288,7 @@ proyectos de ML e investigaciones relacionadas con la IA. A continuaci\'on una m
 explicaci\'on de algunos de estos datasets.
 
 \subsection{DERM12345}
-Seg\'un un art\'iculo presentado por el diario Nature (una de las más prestigiosas revistas 
+Seg\'un un art\'iculo presentado por la revista Nature (una de las más prestigiosas revistas 
 científicas a nivel mundial, fundada por el astrónomo británico Joseph Norman Lockyer.),
 presenta un conjunto de datos diversos que comprende 12.345 imágenes dermatoscópicas 
 con 40 subclases de lesiones cutáneas, recogidas en Turkiye, que comprende diferentes 
@@ -303,7 +302,7 @@ clases, 15 clases principales, 40 subclases y 12.345 imágenes dermatoscópicas 
 resolución\cite{Derm12345}.
 
 \subsection{HAM10000}
-Otro art\'iculo presentado en el diario Natura, referido al dataset HAM10000 expresa que
+Otro art\'iculo presentado en la revista Natura, referido al dataset HAM10000 expresa que
 El conjunto de datos final consta de 10015 imágenes dermatoscópicas que se publican como 
 un conjunto de capacitación para fines académicos de aprendizaje automático y están 
 disponibles públicamente a través del archivo de la ISIC. Este conjunto de datos de 
@@ -312,18 +311,19 @@ expertos humanos. Los casos incluyen una colección representativa de todas las 
 de diagnóstico importantes en el ámbito de las lesiones pigmentadas. Más del $50\%$ 
 de las lesiones han sido confirmadas por patología, mientras que la verdad fundamental 
 para el resto de los casos fue el seguimiento, el consenso de expertos o la confirmación 
-por microscopía confocal in vivo.
+por microscopía confocal en vivo\cite{HAM1000}.
 
 \subsection{Conclusiones}
 Aunque estos dataset son altamente reconocidos y utilizados en dis\'imiles de aplicaciones
 a nivel mundial, no cumplen con los requisitos del conjunto de datos necesitados en la versi\'on 3.0
 de DermaUH. Por ejemplo el conjunto de datos DERM12345, recopil\'o informaci\'on mayormente
-en Turkye, espec\'ificamente la zona de transici\'on entre Europa y Asia; existen factores que 
-provocan que las lesiones cut\'aneas registradas se comporten de manera diferentes a las que 
-se podr\'ian registrar en pieles cubanas, debido a la intensidad del sol en esta parte del planeta,
-el clima y las temperaturas pueden afectar la reacciones de la piel ante alguna enfermedad. 
-Por otro lado el dataset HAM10000, est\'a conformado por un alto n\'umero de pieles claras,
-provocando que los modelos ML que se pueden entrenar tengan un alto sesgo de este tipo de piel.
+en Turkye, espec\'ificamente la zona de transici\'on entre Europa y Asia en las cuales 
+existen factores externos que pueden provocar en las lesiones cut\'aneas registradas un 
+comportamiento y evoluci\'on diferente al esperado en pieles cubanas, 
+dichos factores pueden ser intensidad del sol en esta parte del planeta, 
+el clima y las temperaturas\cite{pielClima}. Por otro lado el dataset HAM10000, est\'a 
+conformado por un alto n\'umero de pieles claras, provocando que los modelos ML 
+que se pueden entrenar tengan un alto sesgo de este tipo de piel.
 
 \section{Técnicas de inteligencia artificial explicable (XAI) en dermatología}
 \textit{TODO:} \textbf{AQUI PONDRE LO QUE VEA EN LA TESIS DE AMANDA}

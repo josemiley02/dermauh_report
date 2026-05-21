@@ -38,11 +38,11 @@ primeras computadoras. Hoy en d\'ia existen dos tipos de metodolog\'ias, tradici
     \subitem 2.3- \textbf{Extreme Programming (XP):} XP se enfoca en las prácticas de ingeniería de software para producir código de alta calidad y adaptarse a requisitos cambiantes. Es especialmente adecuado para proyectos con requisitos muy volátiles. Promueve prácticas como la programación en parejas (dos desarrolladores trabajan en el mismo código), el desarrollo guiado por pruebas (TDD), la integración continua y las refactorizaciones frecuentes para mejorar el diseño del código. 
 \end{enumerate}
 
-Para el desarrollo de DermaUH 3.0 se ha decidido utilizar la metodología Scrum, debido a que es una metodología ágil que 
+Para el desarrollo de DermaUH 3.0 se decidi\'o utilizar Scrum, debido a que es una metodología ágil que 
 se adapta bien a proyectos complejos y con requisitos cambiantes, como es el caso de DermaUH. Además, Scrum permite entregas rápidas y 
 frecuentes, lo que facilita la retroalimentación constante del cliente y la adaptación a sus necesidades.
 Para ello se dividi\'o el proceso de desarrollo en seis sprints, con una duraci\'on promedio de entre dos y tres semanas cada uno.
-Al final de cada sprint se realiz\'o una evaluaci\'on y validaci\'on de los resultados obtenidos. Los sprints en los que fue dividido el proceso
+Al final de cada sprint se realiz\'o una evaluaci\'on y validaci\'on de los resultados obtenidos. Los sprints en los que se dividi\'o el proceso
 son los siguientes:
 
 \begin{enumerate}
@@ -79,13 +79,13 @@ gran parte del código del sistema. Siguiendo este concepto, los requerimientos 
 \begin{enumerate}
     \item[RF1] El usuario autenticado puede hacer \textbf{CRUD} sobre las entidades Paciente, Lesi\'on y diagn\'ostico.
     \item[RF2] Los usuarios podr\'an obtener informaci\'on de lesiones registradas, solo de sus propios pacientes, podr\'an acceder a otras lesiones si estas se hacen p\'ublicas o se comparten con el mismo.
-    \item[RF3] El usuario puede enviar una imagen dermatosc\'opica o cl\'inica al sistema y recibir una sugerencia de clasificaci\'on automatizada con nivel de confianza, la cual debe ser validada por un especialista m\'edico antes de cualquier decisi\'on cl\'inica.
-    \item[RF4] Solamante el administrador tiene permiso para eliminar cuentas y activar usuarios en el sistema y consultar detalles de cualquier cuenta.
+    \item[RF3] El usuario puede enviar una imagen dermatosc\'opica o cl\'inica al sistema y recibir una sugerencia de clasificaci\'on automatizada con nivel de confianza, la cual debe ser validada por un especialista m\'edico antes de cualquier decisi\'on cl\'inica. En ningún caso el diagnóstico automático reemplaza al especialista; su función es únicamente de apoyo.
+    \item[RF4] Solamente el administrador tiene permiso para eliminar cuentas y activar usuarios en el sistema y consultar detalles de cualquier cuenta.
     \item[RF5] Cualquier persona puede enviar una solicitud de registro a la aplicaci\'on, la cual deber\'a aportar datos profesionales como el hospital y el carnet de identidad para despu\'es ser\'a aprobada por el Administrador.
 \end{enumerate}
 
 \subsection{Requerimientos No Funcionales}
-los requerimientos no funcionales tienen que ver con características que de una u otra
+Los requerimientos no funcionales tienen que ver con características que de una u otra
 forma puedan limitar el sistema, como por ejemplo, el rendimiento (en tiempo y espacio), interfaces de
 usuario, fiabilidad (robustez del sistema, disponibilidad de equipo), mantenimiento, seguridad,
 portabilidad, estándares, etc. Siguiendo esta l\'inea se concluye que los requerimientos no funcionales
@@ -93,8 +93,8 @@ de DermaUH son:
 \begin{enumerate}
     \item[RNF1] La autenticaci\'on debe ser mediante email y password generando un JSON Web Token (JWT) el cual definir\'a los permisos del usuario que hace inicio de sesi\'on. El JWT a su vez debe tener un tiempo de expiraci\'on y ser renovable 
     \item[RNF2] La comunicación entre cliente y servidor debe estar cifrada mediante HTTPS.
-    \item[RNF3] El tiempo de operaci\'on de una petici\'on y la generaci\'on de la respuesta debe ser inferior a dos segundos con internet estable.
-    \item[RNF4] La interfaz web debe ser responsive (adaptable para m\'oviles, tabletas y ordenadores).
+    \item[RNF3] El tiempo de operaci\'on de una petici\'on y la generaci\'on de la respuesta debe ser inferior a dos segundos con internet estable, bajo una carga de hasta 50 usuarios concurrentes.
+    \item[RNF4] La interfaz web debe ser responsive (adaptable a resoluciones de 320px a 1920px).
     \item[RNF5] Cualquier respuesta a una solicitud, sea positiva o de error debe mostrarse con mensajes claros a los usuarios.
 \end{enumerate}
 
@@ -129,7 +129,7 @@ para el lector, se separaron los diagramas por actores.
 
 \begin{figure}[ht] 
     \centering
-    \includegraphics[width=1.0\textwidth]{figures/diagrama_casos_uso_admin.png}
+    \includegraphics[width=1.0\textwidth]{Graphics/diagrama_casos_uso_admin.png}
     \caption{Diagrama UML del actor Admin} 
     \label{adminUML}
 \end{figure}
@@ -152,13 +152,12 @@ En la pestaña \textit{Solicitudes}:
     \item \textbf{Enviar correo:} La acción de aceptar o rechazar una solicitud incluye automáticamente el envío de un correo al solicitante, por lo que se modeló como una relación de inclusión (<<include>>)
 \end{itemize}
 
-El usuario con permisos de Administrador es el único que tiene poder y potestad
-para manejar todo lo relacionados con las cuentas de los usuarios y las solicitudes de registro.
-A continuación se mostrará que ocurre en caso del usuario tener permisos de doctor.
+El usuario con rol de administrador es el único facultado para gestionar las cuentas de 
+usuario y las solicitudes de registro.
 
 \begin{figure}[ht] 
     \centering
-    \includegraphics[width=0.8\textwidth]{figures/diagrama_casos_uso_doctor.png}
+    \includegraphics[width=0.8\textwidth]{Graphics/diagrama_casos_uso_doctor.png}
     \caption{Diagrama UML del actor Doctor} 
     \label{doctorUML}
 \end{figure}
@@ -167,7 +166,7 @@ A continuación se mostrará que ocurre en caso del usuario tener permisos de do
     \item \textbf{Registrar Nuevos Pacientes:} En el panel principal de la aplicaci\'on, arriba a la derecha, aparece un bot\'on para registrar pacientes nuevos en el sistema. Al presionarlo se muestra un formulario que debe ser rellenado con informaci\'on personal del paciente, nombre, edad, sexo, profesi\'on etc. Una vez rellenado el formulario, se presiona el bot\'on de finalizar registro y el paciente queda registrado en el sistema. 
     \item \textbf{Ver detalles de un Paciente:} Los pacientes son representados como tarjetas en el panel principal. A la derecha de cada tarjeta se muestra un bot\'on con la etiqueta \textit{Detalles} que permite al doctor visualizar los datos personales del paciente, separada en tres secciones, informaci\'on personal, informaci\'on \'etnica y direcci\'on.
     \item \textbf{Ver lesiones de un Paciente:} Similar a la opci\'on anterior, a la derecha del paciente se muestra el bot\'on \textit{Lesiones}. Este le permite al doctor observar el registro de lesiones del paciente en cuesti\'on.
-    \item \textbf{Registrar nuevas lesiones:} Se puede llegar a esta opcio\'on de dos formas diferentes, cuando se registra un nuevo paciente y se presiona el bot\'on finalizar registro, aparece un nuevo formulario para registrar la neuva lesi\'on y la otra es al acceder al listado de lesiones de un paciente se muestra un bot\'on para agregar una lesi\'on nueva. 
+    \item \textbf{Registrar nuevas lesiones:} Se puede llegar a esta opci\'on de dos formas diferentes, cuando se registra un nuevo paciente y se presiona el bot\'on finalizar registro, aparece un nuevo formulario para registrar la nueva lesi\'on y la otra es al acceder al listado de lesiones de un paciente se muestra un bot\'on para agregar una lesi\'on nueva. 
     \item \textbf{Eliminar un Paciente:} Similar a ver lesiones de un paciente y ver detalles se accede a esta opci\'on mediante un bot\'on ubicado a la derecha de la tarjeta del paciente.
     \item \textbf{Listar y buscar pacientes mediante filtros:} En la parte superior del panel principal aparece una barra de b\'usqueda, donde el doctor podr\'a introducir una consulta y la aplicaci\'on filtrar\'a a los pacientes por la consulta del doctor. Adem\'as aparece una opci\'on para ordenar los pacientes por alg\'un campo.
     \item \textbf{Compartir lesiones con otros doctores:} Con esta opci\'on, el doctor tiene la posibilidad de compartir una lesi\'on con otros colegas del personal de la salud. Los doctores escogidos para compartir tendr\'an la posibilidad de ver solamente el nombre y apellido del paciente y las im\'agenes de la lesi\'on.
@@ -202,7 +201,7 @@ dentro de la capa de negocio.
 
 La estructura de una arquitectura por capas determina que cada nivel debe ``colocarse'' de forma
 horizontal uno sobre el otro, provocando que un nivel determinado solo puede comunicarse con la que 
-est\'a justo ``debajo''. En pocas palabras si la capa de presentaci\'on, desea acceder a la capa de acceso a datos
+est\'a justo ``debajo''. En s\'intesis si la capa de presentaci\'on, desea acceder a la capa de acceso a datos
 lo debe hacer \'unica y exclusivamente a trav\'es de la capa de servicios, la cual realizar\'a
 la petici\'on correspondiente a la capa de acceso a datos, luego la respuesta hace el recorrido
 inverso hasta llegar a la capa de presentaci\'on. 
@@ -222,16 +221,16 @@ reglas de negocio y validaciones, pero no le interesa como recuperar los datos, 
 o borrarlos, ya que para eso tiene una capa de persistencia que se encarga de eso. 
 Por otro lado, la capa de persistencia es la encargada de comunicarse a la base de datos,
 crear las instrucciones SQL para consultar, insertar, actualizar o borrar registros 
-y retornarlos en un formato independiente a la base de datos. De esta forma, cada capa 
-se preocupa por una cosa y no le interesa como le haga la capa de abajo para servirle 
-los datos que requiere. A continuaci\'on veremos algunas ventajas y desventajas del uso 
-de esta arquitectura.
+y retornarlos en un formato independiente a la base de datos. De esta forma, se 
+concluye que cada capa tiene responsabilidad \'unica y no necesita conocer el estado
+de las capas inferiores para poder llevar a cabo su funci\'on principal. 
+A continuaci\'on veremos algunas ventajas y desventajas del uso de esta arquitectura.
 
 \paragraph{Ventajas}
 \begin{enumerate}
     \item \textbf{Separación de responsabilidades:} Permite la separación de preocupaciones (SoC), ya que cada capa tiene una sola responsabilidad.
     \item \textbf{Fácil de desarrollar:} Este estilo arquitectónico es especialmente fácil de implementar, además de que es muy conocido y una gran mayoría de las aplicaciones la utilizan.
-    \item \textbf{Fácil de probar:} Debido a que la aplicación construida por capas, es posible ir probando de forma individual cada capa, lo que permite probar por separada cada capa.
+    \item \textbf{Fácil de probar:} Permite probar cada capa de forma aislada mediante el uso de dobles de prueba (mocks)\cite{mock} para las dependencias.
     \item \textbf{Fácil de mantener:} Debido a que cada capa hace una tarea muy específica, es fácil detectar el origen de un bug para corregirlo, o simplemente se puede identificar donde se debe aplicar un cambio.
     \item \textbf{Seguridad:} La separación de capas permite el aislamiento de los servidores en subredes diferentes, lo que hace más difícil realizar ataques.
 \end{enumerate}
@@ -239,7 +238,7 @@ de esta arquitectura.
 \paragraph{Desventajas}
 \begin{enumerate}
     \item \textbf{Performance:} La comunicación por la red o internet es una de las tareas más tardadas de un sistema, incluso, en muchas ocasiones más tardado que el mismo procesamiento de los datos, por lo que el hecho de tener que comunicarnos de capa en capa genera un degrado significativo en el performance.
-    \item \textbf{Escalabilidad:} Las aplicaciones que implementan este patrón por lo general tienda a ser monolíticas, lo que hace que son difíciles de escalar, aunque es posible replicar la aplicación completa en varios nodos, lo que provoca un escalado monolítico.
+    \item \textbf{Escalabilidad:} Las aplicaciones que implementan este patrón por lo general tienden a ser monolíticas, provocando dificulatades para escalarlas, aunque es posible replicar la aplicación completa en varios nodos, lo que provoca un escalado monolítico.
     \item \textbf{Tolerancia a los fallos:} Si una capa falla, todas las capas superiores comienzan a fallar en cascada.
 \end{enumerate}
 
@@ -306,14 +305,14 @@ Además de la independencia tecnológica, la arquitectura hexagonal ofrece:
 \paragraph{Desventajas y críticas}
 A pesar de sus beneficios, la arquitectura hexagonal no está exenta de inconvenientes:
 \begin{itemize}
-    \item \textbf{Complejidad inicial}: Requiere una inversión significativa en el diseño de puertos e interfaces, lo que puede resultar excesivo para aplicaciones pequeñas o prototipos. Como señala Martín\cite{hexagonalMartín}, \emph{``la arquitectura hexagonal es una gran solución para sistemas complejos, pero no para scripts de una sola página''}.
+    \item \textbf{Complejidad inicial}: Requiere una inversión significativa en el diseño de puertos e interfaces, lo que puede resultar excesivo para aplicaciones pequeñas o prototipos. Como señala Martín\cite{hexagonalMartin}, \emph{``la arquitectura hexagonal es una gran solución para sistemas complejos, pero no para scripts de una sola página''}.
     \item \textbf{Codificación indirecta}: A menudo se necesitan varias clases para implementar una funcionalidad simple (interfaz, adaptador, fábrica). Esto puede percibirse como \emph{overengineering} si el dominio es trivial.
     \item \textbf{Curva de aprendizaje}: Los desarrolladores no familiarizados con los conceptos de puertos y adaptadores pueden tener dificultades para entender el flujo de la aplicación.
 \end{itemize}
 
 \begin{figure}[ht] 
     \centering
-    \includegraphics[width=0.5\textwidth]{figures/hex-ports-adapters-en.png}
+    \includegraphics[width=0.5\textwidth]{Graphics/hex-ports-adapters-en.png}
     \caption{Esquema de la Arquitectura Hexagonal (Puertos y Adaptadores). Se observa el dominio en el centro, los puertos en los lados del hexágono y los adaptadores conectados a ellos. Imagen adaptada de Cockburn\cite{hexagonalCockburn}.}
     \label{hexagonalschema}
 \end{figure}
@@ -345,8 +344,8 @@ sean divididas en cuatro capas:
 
 \begin{figure}[ht] 
     \centering
-    \includegraphics[width=0.5\textwidth]{figures/onion.png}
-    \caption{Esquema Onion Architecture} 
+    \includegraphics[width=0.5\textwidth]{Graphics/onion.png}
+    \caption{Esquema Onion Architecture, Tomado de Palermo (2008)} 
     \label{onionArchitecture}
 \end{figure}
 \newpage
@@ -402,8 +401,8 @@ un cono, como se muestra en la figura~\ref{cleanArchitecture}
 
 \begin{figure}[ht] 
     \centering
-    \includegraphics[width=0.5\textwidth]{figures/clean.png}
-    \caption{Esquema Clean Architecture en forma de Cono} 
+    \includegraphics[width=0.5\textwidth]{Graphics/clean.png}
+    \caption{Esquema Clean Architecture en forma de Cono Adaptado de Martin (2012)} 
     \label{cleanArchitecture}
 \end{figure}
 \newpage
@@ -423,7 +422,7 @@ Esta decisión se fundamenta en cuatro criterios principales:
 
 \begin{enumerate}
     \item \textbf{Simplicidad y curva de aprendizaje:} La arquitectura en capas es ampliamente conocida y utilizada en la industria del software, lo que reduce la complejidad inicial del desarrollo y facilita la incorporación de nuevos desarrolladores al proyecto en el futuro\cite{layeredCommon}.
-    \item \textbf{Experiencia previa del equipo:} El desarrollador principal posee experiencia práctica en la implementación de sistemas basados en capas, lo que acelera el desarrollo y minimiza riesgos técnicos.
+    \item \textbf{Experiencia previa del equipo:} El equipo de desarrollo cuenta con experiencia previa en la implementación de sistemas basados en capas, lo que acelera el desarrollo y minimiza riesgos técnicos.
     \item \textbf{Rendimiento:} Patrones como Onion o Clean Architecture introducen una sobrecarga adicional debido a la inversión de dependencias y la inyección de dependencias, lo que puede afectar negativamente los tiempos de respuesta. Como se estableció en el requisito no funcional RNF3 (tiempo de respuesta inferior a dos segundos), la arquitectura por capas, al ser más directa en la comunicación entre capas, contribuye a cumplir con esta métrica\cite{layeredPerformance}.
     \item \textbf{Flexibilidad para evoluciones futuras:} Aunque la arquitectura por capas puede tender al monolito, su organización permite extraer componentes específicos hacia microservicios con modificaciones mínimas. Por ejemplo, si en el futuro se decide externalizar el servicio de inteligencia artificial (modelo de clasificación de imágenes) como un microservicio independiente, la capa de negocio actual ya encapsula dicha lógica en componentes específicos (servicios de inferencia). De esta forma, solo sería necesario sustituir la llamada interna por una comunicación vía API REST, sin reescribir el resto del sistema\cite{layeredEvolution}.
 \end{enumerate}
@@ -449,21 +448,21 @@ el Modelo Entidad-Relación, tambi\'en conocido como Diagrama de Entidad Relaci\
 
 \subsubsection{Modelo de Entidad Relación (MER)}
 
-Seg\'un un art\'iculo obtenido del sitio web UNIR, herramienta elaborada, desarrollada
+Seg\'un un art\'iculo obtenido del sitio web UNIR\cite{MERX}, herramienta elaborada, desarrollada
 y dise\~nada con el prop\'osito de ayudar a los estudiantes de universidades europeas,
 El modelo entidad relación (ERD o modelos ER) es una herramienta que permite representar 
 de manera simplificada cómo personas, objetos o conceptos se relacionan entre sí. 
 Se utiliza para exponer cómo se organiza la información en una base de datos. 
 La creación del modelo entidad relación para su aplicación en el diseño de bases de 
 datos se le atribuye a Peter Chen, profesor del MIT, quien publicó en 1976 el documento  
-“Modelo entidad-relación: hacia una visión unificada de los datos”. A continuaci\'on se
+``Modelo entidad-relación: hacia una visión unificada de los datos''\cite{PeterChen}. A continuaci\'on se
 expone el MER utilizado para la modelaci\'on de la base de datos. El diagrama fue realizado
 con la herramienta en línea \href{https://app.diagrams.net/#}{Diagrams.net}, plataforma
 gratuita con alta variedad de opciones para la realizaci\'on de diagramas.
 
 \begin{figure}[ht] 
     \centering
-    \includegraphics[width=0.8\textwidth]{figures/MERX.png}
+    \includegraphics[width=0.8\textwidth]{Graphics/MERX.png}
     \caption{Modelo de Entidad Relacional MER} 
     \label{MER}
 \end{figure}
@@ -475,7 +474,7 @@ de los atributos de dicha entidad.
 \begin{itemize}
     \item idPaciente: Llave primaria (PK), identificador \'unico de tipo entero. Es generado auto\'aticamente por el sistema de manera incremental.
     \item name, lastName1, lastName2: Campos para obtener el nombre completo del paciente. Todos son de tipo varchar, con una longitud m\'axima de cien caracteres por cada campo.
-    \item yeras, sex, skinColor: Campos relacionados con la informaci\'on \'etnica del paciente. Estos campos su principal funcionalidad es brindar m\'as informaci\'on para obtener un mejor diagn\'ostico asistido por parte de los modelos ML integrados en la nueva versi\'on.
+    \item years, sex, skinColor: Campos relacionados con la informaci\'on \'etnica del paciente. Estos campos su principal funcionalidad es brindar m\'as informaci\'on para obtener un mejor diagn\'ostico asistido por parte de los modelos ML integrados en la nueva versi\'on.
     \item addres, city, state, jobProfession: Campos para reflejar la direcci\'on y profesi\'on laboral del paciente. Todos son de tipo varchar sin l\'imites. Estas propiedades son importantes para saber el nivel exposici\'on de la piel al sol, debido la heterogeneidad del clima en diferentes sitios del pa\'is.
     \item registerData: Campo de tipo Date para tener control de cuando fue que el paciente fue registrado por primera vez en el sistema de DermaUH.
 \end{itemize}
@@ -483,9 +482,9 @@ de los atributos de dicha entidad.
 \subsubsection{Dermat\'ologo}
 Esta es una entidad fuerte, ya que no depende de otras entidades para instanciarse. El modelo
 \textbf{Dermat\'ologo}, es el responsable de representar la informaci\'on de los usaurios del 
-sistema. En pocas palabras, un dermat\'ologo es un usuario de DermaUH 3.0.
+sistema. Dicho de otro modo, un dermat\'ologo es un usuario de DermaUH 3.0.
 \begin{itemize}
-    \item idDermatologo: Llave primaria (PK), identificador \'unico de tipo entero. Es generado auto\'aticamente por el sistema de manera incremental.
+    \item idDermatologo: Llave primaria (PK), identificador \'unico de tipo entero. Es generado autom\'aticamente por el sistema de manera incremental.
     \item name, lastName1, lastName2: Campos para obtener el nombre completo del dermat\'ologo. Todos son de tipo varchar, con una longitud m\'axima de cien caracteres por cada campo.
     \item email: Campo de tipo text, se usa para guardar el email del dermat\'ologo. En el sistema este campo es utilizado como username (nombre de usuario) y como el identificador para hacer inicio de sesi\'on.
     \item ci: Carnet de Identidad del Usuario, campo de tipo varchar.
@@ -505,7 +504,7 @@ ende si un paciente es eliminado del sistema, se eliminar\'an todas sus lesiones
     \item idLesion: Llave primaria (PK), identificador \'unico de tipo entero. Es generado auto\'aticamente por el sistema de manera incremental.
     \item date: Fecha en la que se registra la lesi\'on. Es un campo de tipo date, no editable.
     \item phototype: Campo de tipo entero, solo puede tomar valores en el intervalo $[1;6]$ que se usa para almacenar el fototipo de la piel donde se encuentra ubicada la lesi\'on. El fototipo no es m\'as que la reacci\'on de la piel ante la exposici\'on a la luz solar.
-    \item localizarion: Campo de tipo entero, toma valores en el intervalo $[1;10]$ y almacena la parte del cuerpo donde se encuentra la lesi\'on. 
+    \item localization: Campo de tipo entero, toma valores en el intervalo $[1;10]$ y almacena la parte del cuerpo donde se encuentra la lesi\'on. 
     \item histopathologicalDiagnosis: Campo de tipo bool. Indica si la lesi\'on fue diagnosticada histopat\'ologicamente, en otras palabras, afirma que se utilizaron equipos m\'edicos para obtener el diagn\'ostico.
     \item injuryType: Llave for\'anea (FK) que referencia a la entidad \textbf{Tipo de Lesi\'on}. Es un campo de tipo entero.
     \item patientId: Llave for\'anea (FK) que referencia a la entidad \textbf{Paciente}. Es un campo de tipo entero.
@@ -518,8 +517,9 @@ esta tambi\'en se configur\'o con eliminaci\'on \textbf{Cascada}, es decir si un
 es eliminada del sistema por alg\'un motivo, todas las im\'agenes asociadas ser\'an eliminadas tambi\'en.
 \begin{itemize}
     \item idImagen: Llave primaria (PK), identificador \'unico de tipo entero. Es generado auto\'aticamente por el sistema de manera incremental.
-    \item Imagen: Campo donde se almacenan los metadatos de la imagen en cuesti\'on.
-    \item ImageType: Campo de tipo bool que indica True si una Imagen es dermatoc\'opica
+    \item imagen: Campo donde se almacenan los metadatos de la imagen en cuesti\'on.
+    \item imagePath: ruta del archivo de imagen en el servidor.
+    \item imageType: Campo de tipo bool que indica True si una Imagen es dermatoc\'opica
     \item commentary: Campo de tipo texto, donde el usuario podr\'a exponer, si desea, una breve descripci\'on de la imagen. 
     \item injuryId: Llave for\'anea (FK) que referencia a la entidad \textbf{Lesi\'on}
 \end{itemize}
