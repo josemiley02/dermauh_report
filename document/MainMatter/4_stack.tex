@@ -1,0 +1,429 @@
+\chapter{Detalles de Implementaci\'on}
+Para este momento, ya se tienen definidos los requerimientos funcionales y la
+arquitectura de software que mejor se adec\'ua a la aplicaci\'on DermaUH 3.0. 
+En este cap\'itulo se abordar\'an cuestiones relacionadas concretamente con la 
+implementaci\'on de la aplicaci\'on.
+
+\section{Stack Tecnol\'ogico}
+Como se ha mencionado a lo largo de este documento, DermaUH 3.0 es una aplicaci\'on
+web, la cual tendr\'a integrado un modelo de Aprendizaje de M\'aquinas (ML por sus
+siglas en ingl\'es). Por tal motivo se decidi\'o optar por un conjunto de tecnolog\'ias
+ideales para el desarrollo web y que se puedan combinar sin problemas con t\'ecnicas de ML.
+En el cap\'itulo anterior se seleccion\'o la arquitectura por capas como patr\'on principal
+dise\~no, dividiendo la aplicaci\'on en tres niveles: Presentaci\'on (UI, frontend), L\'ogica
+y Reglas de Negocio (backend) y Base de Datos (BD). Cada nivel tiene implementado con 
+su propia tecnolog\'ia, seleccionada luego de analizar los requerimientos de la aplicaci\'on,
+la experiencia del desarrollador y el tiempo disponible para la implementaci\'on. 
+
+\subsection*{React}
+\begin{figure}[ht] 
+    \centering
+    \includegraphics[width=0.2\textwidth]{Graphics/react.png}
+    \caption{Logo de React} 
+    \label{React}
+\end{figure}
+Para la capa de presentación se ha seleccionado React, una biblioteca de JavaScript 
+desarrollada por Meta para la construcción de interfaces de usuario basadas en componentes 
+reactivos \cite{react2021}. React ofrece ventajas determinantes para DermaUH 3.0, como el 
+renderizado eficiente mediante el DOM virtual, que garantiza tiempos de respuesta rápidos 
+incluso en dispositivos con recursos limitados, y la capacidad de crear una interfaz 
+responsive que se adapta a resoluciones de 320px a 1920px, tal como exige el requisito no 
+funcional RNF4. Su ecosistema permite integrar fácilmente gestores de estado como Redux o 
+contextos nativos, lo que facilita la gestión de las sesiones de usuario autenticado con 
+JWT y la visualización de historiales clínicos, lesiones y diagnósticos, adaptándose 
+perfectamente a los casos de uso identificados para los actores Doctor y Administrador.
+
+\subsection*{Django}
+\begin{figure}[ht] 
+    \centering
+    \includegraphics[width=0.2\textwidth]{Graphics/django.png}
+    \caption{Logo de Django} 
+    \label{Django}
+\end{figure}
+Para la capa de lógica de negocio se ha elegido Django, un framework de desarrollo web en 
+Python que sigue el patrón MTV (Model-Template-View) y que incluye un potente sistema de 
+rutas, autenticación y un ORM integrado \cite{django2022}. Django proporciona ventajas 
+críticas para DermaUH 3.0, como su módulo de autenticación que permite implementar de 
+forma nativa el control de acceso basado en roles (administrador, doctor, residente) y la 
+generación de JSON Web Tokens para cumplir con RNF1. Además, su arquitectura basada en 
+aplicaciones reutilizables facilita la organización de los servicios de gestión de pacientes, 
+lesiones, diagnósticos y la comunicación con el modelo de inteligencia artificial, permitiendo 
+cumplir con los requisitos funcionales RF1 a RF5 y mantener un tiempo de respuesta 
+inferior a dos segundos (RNF3) mediante el uso de vistas asíncronas y caché.
+
+\subsection*{PostgreSQL}
+\begin{figure}[ht] 
+    \centering
+    \includegraphics[width=0.2\textwidth]{Graphics/postgres.png}
+    \caption{Logo de PostgreSQL} 
+    \label{PostgreSQL}
+\end{figure}
+Para la capa de persistencia se ha optado por PostgreSQL, un sistema gestor de bases de 
+datos relacional de código abierto reconocido por su solidez, cumplimiento de estándares 
+SQL y soporte de tipado avanzado \cite{postgresql2023}. PostgreSQL se adapta a DermaUH 3.0 
+porque permite implementar exactamente el modelo entidad-relación definido en la figura 
+\ref{MER}, incluyendo claves foráneas con reglas ON DELETE CASCADE para mantener la 
+integridad referencial entre pacientes, lesiones e imágenes, así como campos específicos 
+como fototipos (enteros acotados) y rutas de archivos. Su soporte para conexiones cifradas 
+mediante SSL/TLS garantiza el cumplimiento de RNF2, y su motor de consultas optimizado 
+asegura que las operaciones de listado, búsqueda y filtrado de pacientes 
+(con índices adecuados) respondan en los márgenes exigidos por RNF3 incluso con 50 
+usuarios concurrentes.
+
+\section{Implementaciones}
+En el apartado anterior, se definieron las tecnolog\'ias utilizadas para el desarrollo de la 
+aplicaci\'on web DermaUH 3.0. En este apartado se explicar\'a de cara de al desarrollador, la
+implementaci\'on concreta utilizada en cada capa, atendiendo al stack seleccionado en el apartado
+anterior. Se mostrar\'an adem\'as ejemplos de c\'odigo y como se resolvieron ``problemas''
+que fueron surgiendo durante el proceso de desarrollo.
+
+\subsection{Backend}
+Como se mencion\'o en el cap\'itulo anterior, la arquitectura por capas posee un alto dinamismo,
+por tanto se pueden adoptar enfoques h\'ibridos y cada nivel puede tener su propia implementaci\'on.
+Para organizar el backend, se optó por dividir la lógica en varias aplicaciones Django 
+independientes (auth\_service, email\_service, medical\_service, image\_service). 
+Cada una se encarga de un dominio específico, lo que facilita el mantenimiento y la 
+evolución por separado. Aunque todas comparten la misma base de datos y se ejecutan en 
+el mismo servidor (por lo que no se trata de una arquitectura de microservicios completa),
+esta modularidad permite, por ejemplo, reemplazar o actualizar el servicio de imágenes 
+sin afectar al resto, siempre que se respeten las interfaces de comunicación. La Figura~\ref{microserviciosDjango} 
+muestra como fue dividido el backend en aplicaciones m\'as peque\~nas y de responsabilidad \'unica.
+Se opt\'o por este enfoce separatista por cuestiones de optimizaciones en las peticiones,
+ahora en vez de existir una sola aplicaci\'on que consuma todas las solicitudes, existen varias 
+que leen y responden a solicitudes m\'as concretas.
+
+\begin{figure}[ht] 
+    \centering
+    \includegraphics[width=0.4\textwidth]{Graphics/microservicios.png}
+    \caption{Servicios Django, la carpeta logs es para almacenar informaci\'on de cada servicio} 
+    \label{microserviciosDjango}
+\end{figure}
+
+A continuaci\'on una breve explicaci\'on de cada servicio y que tareas cumple:
+\begin{itemize}
+    \item \textbf{auth\_service}: Las tareas de este servicio son las relacionadas con registro e inicio de sesi\'on. Adem\'as maneja todas las operaciones CRUD sobre los usarios y es donde se aceptan o rechazan las solicitudes. Tambi\'en genera el JWT correspondiente una vez que un usuario incie sesi\'on en el sistema.
+    \item \textbf{email\_service}: Es donde se almacena el cliente de correo y donde se generan los gmails que reciben los usuarios en relaci\'on a su solicitud.
+    \item \textbf{medical\_service}: Controla toda la gesti\'on de pacientes, lesiones y diagn\'osticos. Es el servicio que procesa las solicitudes provenientes de usuarios con el rol de Doctor.
+    \item \textbf{image\_service}: Controla la parte de la aplicaci\'on dedicada a las imagenes: vincularlas a las lesiones y subirlas al sistema. En este servicio tambi\'en se manejan las peticiones al modelo de ML vinculado a la aplicacion.
+\end{itemize}
+
+Antes de comenzar el an\'alisis detallado de cada servicio, es v\'alido esclarecer
+conceptos que son muy habituales en el desarrollo web con Django como framework. Se 
+incluir\'an tambi\'en im\'agenes de c\'odigo para un mejor entendimiento al lector.
+Toda la informaci\'on se extrajo de la \href{https://docs.djangoproject.com/en/6.0/}
+{Documentaci\'on oficial de Django} y del foro \href{https://www.django-rest-framework.org/}{Django Rest-Framework}\footnote{Django RestFramework es una extensi\'on de Django muy utilizada para la construcci\'on de Web APIs a base de Django}.
+
+\subsubsection*{Model}
+La clase Model de Django, es un objeto que se usa para modelar las entidades de la base 
+de datos de un sistema. Todo Model debe estar vinculado con una \'unica tabla. Adem\'as
+se deben regir por los siguientes fundamentos:
+\begin{enumerate}
+    \item Cada modelo es una clase Python que hereda de la clase \texttt{django.db.models.Model}.
+    \item Cada atributo del modelo representa un campo de base de datos.
+    \item Con todo esto, Django ofrece una generación automática API de acceso a bases de datos.
+\end{enumerate}
+
+La Figura~\ref{modelDermatologist} muestra un ejemplo de como definir una entidad en Django,
+concretamente la entidad derm\'atologo. En la figura se muestra que la clase \texttt{Dermatologist}
+hereda de AbstractUser y PermissionMixin\footnote{Estas clases definen que el modelo en cuesti\'on la aplicaci\'on debe tratarlo como usuarios y que puede tener uno o varios permisos respectivamente}
+ambas heredan de la clase Model de Django, por lo tanto Dermatologist hereda de Model.
+\begin{figure}[ht] 
+    \centering
+    \includegraphics[width=0.6\textwidth]{Graphics/modelDermatologist.png}
+    \caption{Modelo Dermatolgist, implementado en Django} 
+    \label{modelDermatologist}
+\end{figure}
+
+\subsubsection*{Serializer}
+Los serializers (serializadores) en Django, funcionan como un traductor de informaci\'on. Permiten
+que datos complejos como consultas e instancias de modelos, se conviertan en datos nativos de Python.
+La forma en que se utilizaron en el desarrollo de DermaUH 3.0 fue para manejar las peticiones
+de tipo POST\footnote{Peticiones de crear nuevas instancias de modelos para la BD}, PUT\footnote{Peticiones para actualizar valores de instancias guardadas en BD}
+y como DTO\footnote{Data Transfer Object, como su nombre indican, se utilizan para extraer informaci\'on de la BD sin necesidad de devolver toda la instancia\cite{DTO}}.
+La Figura~\ref{serializerDTO} evidencia el uso como DTO de un serializer, mientras que la
+Figura~\ref{serializerPost} muestra un ejemplo de un serializer usado para ``atender'' una solicitud
+de tipo POST.
+
+\begin{figure}[ht] 
+    \centering
+    \includegraphics[width=0.6\textwidth]{Graphics/dtoSerializer.png}
+    \caption{Serializer utilizado como DTO} 
+    \label{serializerDTO}
+\end{figure}
+
+\begin{figure}[ht] 
+    \centering
+    \includegraphics[width=0.6\textwidth]{Graphics/postSerializer.png}
+    \caption{Serializer para crear una solicitud de dermat\'ologo} 
+    \label{serializerPost}
+\end{figure}
+
+Como se muestra adem\'as en la figura anterior, con el serializer se puede hacer validaci\'on
+de datos (funci\'on validate) y adem\'as se pueden crear y guardar instancias. Esto es muy ventajoso
+en el desarrollo de aplicaciones, los serializers tiene la capacidad tanto de traducir datos, validarlos y crear o actualizar instancias.
+
+\subsection*{View}
+Las Views (vistas) en Django son el portal de la comunicaci\'on con aplicaciones externas, como el frontend.
+Su principal funci\'on es recibir las solicitudes y luego tomar la decisi\'on de consular un serializer o no. 
+Generalmente las views que reciben peticiones de tipo GET o DELETE, no requieren de un serializer,
+tiene sentido ya no tienen que actualizar ni escribir en BD. Django aporta la clase \texttt{APIView}
+que es la m\'as utilizada en el desarrollo, sin embargo existen otras como ListAPIView o DestroyAPIView
+que tambi\'en pueden usarse para listar o eliminar elementos respectivamente. La Figura~\ref{postView}
+muestra una vista que maneja una petici\'on POST, n\'otese como en el apartado ``request'' (cuerpo de la petici\'on)
+se hace referencia al serializer mostrado en la Figura~\ref{serializerPost}, evidenciando
+que el cuerpo de la solicitud en cuesti\'on debe ser igual al de la clase \texttt{Meta} en el serializer
+
+\begin{figure}[ht] 
+    \centering
+    \includegraphics[width=0.6\textwidth]{Graphics/postView.png}
+    \caption{View para peticiones Post} 
+    \label{postView}
+\end{figure}
+
+La Figura~\ref{listView} muestra una view para peticiones GET, concretamente, el listado con
+filtro de los dermat\'ologos (usuarios) del sistema. En esta view se definen los diferentes tipos
+de filtros, se prepara el conjunto de datos a los cuales se les har\'a la consulta y finalmente s
+se devuelven los usuarios correspondientes. Todo ese proceso lo realiza la clase \texttt{ListAPIView},
+su funcionamiento puede ser consultado en la documentaci\'on oficial de RestFramework.\newpage
+
+\begin{figure}[ht] 
+    \centering
+    \includegraphics[width=0.6\textwidth]{Graphics/getView.png}
+    \caption{View para listado de usuarios} 
+    \label{listView}
+\end{figure}
+
+Una vez entendido los conceptos claves de la programaci\'on con Django, a continuaci\'on
+se har\'a una explicaci\'on m\'as detallada de cada uno de los servicios que componen el
+backend de la aplicaci\'on. 
+
+\subsubsection{Servicio de Autenticaci\'on (auth\_service)}
+Como se mencionó al inicio de este apartado, las tareas del auth\_service son aquellas 
+relacionadas con la autenticación, registro y solicitudes de los usuarios del sistema, 
+incluyendo la generación del JWT tras un inicio de sesión exitoso. Para garantizar la 
+seguridad de las credenciales, las contraseñas se almacenan aplicando el algoritmo bcrypt 
+con un factor de costo 12, nunca en texto plano. El JWT generado incluye los claims 
+user\_id, role (admin, doctor o residente) y un tiempo de expiración de 8 horas; las 
+sesiones prolongadas se soportan mediante un token de refresco almacenado en una cookie 
+HttpOnly, con renovación automática. El servicio también valida las solicitudes de 
+registro comprobando la unicidad del email y del carnet de identidad, persistiendo la 
+solicitud en estado pendiente y notificando al administrador por correo. La Figura~\ref{tokenGen}
+muestra como se genera un token personalizado para poder establecer comunicaci\'on
+entre los distintos servicios.
+
+\begin{figure}[ht] 
+    \centering
+    \includegraphics[width=0.6\textwidth]{Graphics/token.png}
+    \caption{Generaci\'on del token} 
+    \label{tokenGen}
+\end{figure}
+
+\subsubsection{Servicio de Correo Electrónico (email\_service)}
+El servicio de correo electrónico se ocupa de la notificación asíncrona a los actores del 
+sistema, sin requerir autenticación previa para recibir las peticiones. Este servicio 
+gestiona tres tipos de envíos. En primer lugar, cuando un nuevo dermatólogo o residente 
+completa el formulario de registro, el servicio notifica al administrador con los datos 
+básicos del solicitante; si se trata de un residente, además se envía una notificación al 
+tutor indicado para que conozca la petición. En segundo lugar, tras la revisión del 
+administrador, el servicio informa al usuario si su solicitud ha sido aceptada o rechazada,
+adaptando el mensaje al resultado. Por último, cuando un usuario olvida su contraseña, 
+el servicio genera y remite un enlace seguro para restablecerla. Todos los 
+correos se entregan mediante la función \texttt{send\_mail} de Django, y la configuración 
+del remitente se obtiene de las variables de entorno, garantizando así la separación 
+entre configuración y código.
+
+\subsubsection{Servicio Clínico (medical\_service)}
+El servicio clínico constituye el núcleo funcional de la aplicación para los dermatólogos, 
+ya que encapsula todas las operaciones relacionadas con la gestión de pacientes, 
+lesiones y diagnósticos. A través de este servicio, el doctor autenticado puede 
+registrar nuevos pacientes, consultar sus datos personales y de contacto, filtrar la 
+lista de pacientes mediante búsquedas y eliminar aquellos que ya no estén bajo su 
+seguimiento, dando cumplimiento al requisito funcional RF1. Sobre las lesiones, el 
+servicio permite registrar su localización anatómica y fototipo cutáneo, 
+y almacenar los diagnósticos definitivos emitidos por el médico, manteniendo siempre la 
+integridad referencial mediante las reglas de eliminación en cascada definidas en el 
+modelo de datos. Además, implementa la funcionalidad de compartir lesiones con otros 
+doctores, lo que permite que un especialista autorizado acceda a la información 
+clínica de un paciente que no está directamente bajo su cargo, cumpliendo así el 
+requisito RF2.
+
+\subsubsection{Servicio de Imágenes e Inteligencia Artificial (image\_service)}
+El servicio de imágenes se especializa en la recepción, validación y procesamiento de 
+las fotografías clínicas y dermatoscópicas enviadas por los dermatólogos. Una vez que el 
+usuario autenticado sube una imagen asociada a una lesión, este servicio se encarga de 
+almacenar los metadatos correspondientes (ruta del archivo, tipo de imagen, comentarios) 
+en la base de datos y de gestionar el archivo físico en el servidor. Su funcionalidad más 
+relevante consiste en actuar como puente hacia el modelo de inteligencia artificial: 
+cuando el médico solicita una sugerencia de clasificación, el image\_service envía la 
+imagen al modelo previamente entrenado, recibe el resultado (tipo de lesión y nivel de 
+confianza) y lo persiste como un diagnóstico automático pendiente de validación. 
+De esta forma se satisface el requisito funcional RF3, garantizando que el especialista 
+reciba una ayuda inmediata sin que el sistema reemplace su criterio clínico, 
+y todo ello respetando el tiempo máximo de respuesta exigido en RNF3.
+
+\subsubsection{Comunicaci\'on entre Servicios}
+Cada servicio se comporta como una WebApi implementada con Django. Aunque no exista
+una dependencia directa entre estos, durante la etapa de desarrollo, surgieron inconvenientes
+que obligaron establecer de alguna forma comunicaci\'on entre los servicios. Un ejemplo 
+de ello es la creaci\'on de un paciente, si se observa la descripci\'on de esta entidad
+(P\'ag 37-38), se observa que tiene una llave for\'anea referenciando a la entidad Dermat\'ologo.
+Sin embargo, el servicio medical\_service (donde se registran pacientes) no tiene conocimiento
+de la existencia de esta entidad. La soluci\'on est\'a dada por el JWT generado en el auth\_service,
+como se explic\'o anteriormente: el token generado guarda el claim del user\_id, que es el
+identificador en base de datos del usuario actual. Por tanto cuando el usuario actual registre
+un paciente, el valor de la llave for\'anea a la entidad dermat\'ologo ser\'a ese user\_id
+proveniente del token generado. La Figura~\ref{postPatient} muestra como el user\_id proveniente
+de la solicitud es enviado al serializer.
+
+\begin{figure}[ht] 
+    \centering
+    \includegraphics[width=0.6\textwidth]{Graphics/postPatient.png}
+    \caption{Uso de user\_id proveniente del JWT} 
+    \label{postPatient}
+\end{figure}
+
+\subsection{Frontend}
+La capa de presentaci\'on, fue desarrollada con el framework React. Para ello se opt\'o
+por un patr\'on propio del framework: La Arquitectura basada en Caracter\'isticas (Feature Architecture)\cite{reactArchitecture}
+que consiste en dividir la aplicaci\'on frontend, en subaplicaciones m\'as peque\~nas, permitiendo
+una mayor capacidad de escalabilidad. Para el caso de DermaUH cada feature
+(caracter\'stica) es una de las entidades principales del proyecto (Paciente, Dermat\'ologos, Lesiones).
+Este enfoque permite, al igual que en el backend, una separaci\'on de 
+responsabilidades, donde cada feature se encarga de tareas \'unicas y no dependen una
+de la otra para poder ejecutarse. Con esta idea se logra que si por alg\'un motivo, por ejemplo,
+el registro de pacientes deja de responder desde el backend, la aplicaci\'on contin\'ue
+funcionando en el resto de los aspectos. Al observar la Figura~\ref{arquitecturaReact}
+se puede apreciar la distribuci\'on de archivos de la arquitectura basada en caracter\'isticas.\newpage
+
+\begin{figure}[ht] 
+    \centering
+    \includegraphics[width=0.4\textwidth]{Graphics/features.png}
+    \caption{Arquitectura basada en caracter\'isticas en el frontend DermaUH} 
+    \label{arquitecturaReact}
+\end{figure}
+
+Al igual que en el apartado Backend, se realizar\'a un recorrido por diferentes conceptos
+que son importantes para entender las ideas detr\'as de la implementaci\'on del frontend
+con React.
+
+\subsubsection*{Axios}
+Axios es una biblioteca de JavaScript que ayuda a la realizaci\'on de peticiones HTTP desde
+la aplicaci\'on actual, hacia otros servidores o aplicaciones\cite{axios}. Se utiliza definiendo la 
+direcci\'on (URL) del sitio al cual se realizar\'an las peticiones. En caso de DermaUH, con backend
+en Django, este genera una URL para cada uno de los servicios\footnote{Recordar que se comportan como Web APIs independientes},
+entonces desde la capa de presentaci\'on, se define un axios para cada servicio del backend.
+La Figura~\ref{axiosFigure} muestra como se usa axios para iniciar la comunicaci\'on con el medical\_service.
+Haciendo uso del token guardado en el localStorage\footnote{Es un diccionario global en el cual se pueden almacenar todo tipo de valores, en este caso se almacena el access token devuelto por el backend y se consume en el axios para enviar autenticaci\'on al resto de servicios}
+permite autenticarse en dicho servicio y utilizarlo si el usuario cuenta con los permisos correspondientes.
+Destacar tambi\'en que axios establece comunicaci\'on de forma as\'incrona mediante Promesas (Promise)\cite{promise}.
+
+\begin{figure}[ht] 
+    \centering
+    \includegraphics[width=0.5\textwidth]{Graphics/axios.png}
+    \caption{Configuraci\'on Axios para establecer comunicaci\'on} 
+    \label{axiosFigure}
+\end{figure}
+
+\subsubsection*{Services}
+Los Services (servicios) en React son funciones de corta extensión, normalmente no superior
+a las diez líneas de código, cuya responsabilidad exclusiva es realizar peticiones al 
+backend utilizando el mensajero Axios previamente configurado. Actúan como una capa de 
+abstracción que aísla la lógica de comunicación HTTP del resto de la aplicación, de modo 
+que los componentes y hooks no necesitan conocer los detalles de las URLs, los métodos 
+HTTP ni los encabezados de autenticación. En DermaUH 3.0 se ha organizado un servicio por 
+cada entidad principal (Paciente, Lesión, Diagnóstico, Autenticación) y por cada servicio 
+del backend (auth\_service, medical\_service, image\_service, email\_service). 
+Cada servicio exporta funciones asíncronas que, utilizando la palabra clave \texttt{await},
+invocan a Axios y retornan directamente la respuesta (generalmente en formato JSON) 
+sin aplicar transformaciones adicionales, manteniendo así el principio de responsabilidad 
+única. 
+
+La Figura~\ref{services} muestra como se configuran las funciones correspondientes a los servicios de la entidad Paciente,
+todas ellas añaden automáticamente el token JWT almacenado en \texttt{localStorage} a la cabecera 
+\texttt{Authorization}, gracias a un interceptor configurado globalmente en Axios. 
+Además, estos servicios incorporan un manejo básico de errores: si la petición falla 
+(por problemas de red, autenticación o validación), lanzan una excepción que será 
+capturada por el hook o componente que invocó al servicio, permitiendo mostrar 
+mensajes claros al usuario como exige el requisito no funcional RNF5. 
+De esta forma, los servicios actúan como el puente perfecto entre la interfaz de usuario 
+y la lógica de negocio remota, facilitando las pruebas unitarias (pueden ser mockeados 
+fácilmente) y la evolución independiente de cada recurso.
+
+\begin{figure}[ht] 
+    \centering
+    \includegraphics[width=0.6\textwidth]{Graphics/patientService.png}
+    \caption{Servicios de la entidad Paciente} 
+    \label{services}
+\end{figure}
+
+\subsubsection*{Hooks}
+Los Hooks son funciones introducidas en React 16.8 que permiten a los componentes 
+funcionales gestionar estado interno, efectos secundarios y contexto. Es una buena forma
+de encapsular los servicios definidos. La Figure~\ref{patientHook} muestra como 
+en un solo Hook se pueden configurar y guardar todos los servicios de la entidad 
+paciente, como un diccionario en cualquier otro lenguaje de programaci\'on. Debido a su extensi\'on
+solo muestran las funciones que invocan a los servicios de crear y listar pacientes.
+
+\begin{figure}[ht] 
+    \centering
+    \includegraphics[width=0.6\textwidth]{Graphics/hooks.png}
+    \caption{Hook para los servicios de pacientes} 
+    \label{patientHook}
+\end{figure}
+
+Llama a la atenci\'on la funci\'on \texttt{useState}. Esta funci\'on tambi\'en es un hook
+que se utiliza para manejar el estado local de los componentes o funciones. En la imagen
+se utiliza para asignar un valor incial a las constantes \texttt{loading} y \texttt{error},
+pero tambi\'en se puede utilizar para formularios u objetos m\'as complejos. En s\'intesis
+useState permite a los componentes funcionales tener su propio estado interno. Otro hook muy 
+utilizado es \texttt{useEffect} fundamental en peticiones que requieren de 
+forma necesaria un car\'acter as\'incrono, como cargar listas o detalles de un paciente (o
+cualquier entidad). \newpage
+
+\subsubsection*{Components}
+Los componentes son los bloques de construcción fundamentales de cualquier interfaz en 
+React; cada componente es una pieza de UI independiente y reutilizable que puede recibir 
+datos de entrada (props) y mantener su propio estado interno\cite{reactComponents}. 
+En DermaUH 3.0 se ha adoptado una arquitectura basada en características (Feature 
+Architecture), lo que significa que los componentes se agrupan por dominio funcional: 
+Paciente, Dermatólogo, Lesión y Diagnóstico. Por ejemplo, dentro de la característica 
+Paciente existen componentes como \texttt{PatientList} (tabla o tarjeta de pacientes con 
+botones de acción), \texttt{PatientForm} (formulario de registro y edición) y 
+\texttt{PatientDetails} (vista detallada con pestañas para lesiones e historial). 
+Cada uno de estos componentes se comunica con los servicios definidos en la capa inferior 
+(los que utilizan axios) para solicitar o enviar datos al backend, y utilizan hooks para 
+manejar el estado de carga, los errores y la respuesta. La separación en componentes 
+pequeños y con una única responsabilidad facilita las pruebas unitarias, el mantenimiento 
+y la evolución independiente de cada funcionalidad, de modo que si en el futuro se 
+desea modificar el aspecto visual de la lista de pacientes, no es necesario alterar el 
+formulario de registro ni los componentes de lesiones.
+
+\section{Modelos Machine Learning}
+Como se ha hablado a lo largo de este documento, uno de los objetivos fundamentales de 
+la versi\'on 3.0 de DermaUH es la incorporaci\'on de nuevos modelos de procesamiento de 
+im\'agenes entrenados con un conjunto de im\'agenes cubanas. Los modelos que se utilizaron
+fueron los desarrollados por el Licenciado en Ciencias de la Computaci\'on Daniel Abad, 
+para m\'as referencia puede consultar su tesis de diploma\cite{tesisDaniel}. Se siguieron
+rigurosamente todas las instrucciones expuestas en el documento relacionada con las transformaciones
+del dataset en caso de ser necesarias. Los modelos en cuesti\'on son:
+\begin{itemize}
+    \item Se le ha realizado Fine Tuning a un Vision Transformer preentrenado.
+    \item Se ha utilizado DINO-V2 para realizar extracción automática de características, estos vectores de características fueron posteriormente utilizados para entrenar modelos de SVM, XGBoost y LightGBM como clasificadores.
+\end{itemize}
+
+El dataset utilizado tiene un total de 4576 im\'agenes. Fue dividido en cuatro clases 
+fundamentales Melanoma, Carcinaoma Basal, Carcinoma Escamoso y Otros. La distribuci\'on 
+por cantidad de im\'agenes para el es la siguiente. 
+\begin{itemize}
+    \item Melanoma: 1000 para entrenamiento, 100 para pruebas y 100 para validaci\'on.
+    \item Carcinoma Basal: 1000 para entrenamiento, 100 para pruebas y 100 para validaci\'on.
+    \item Carcinoma Escamoso: 500 para entrenamiento, 64 para pruebas y 62 para validaci\'on.
+    \item Otras lesiones: 1200 para entrenamiento, 200 para pruebas y 150 para validaci\'on.
+\end{itemize}
+
+Se expandi\'o el conjunto de Carcinoma Escamoso para hacer que la cantidad de im\'agenes por 
+categor\'ias tenga la misma cantidad y evitar sesgos. La t\'ecnica utilizada fue tomar la imagen original
+y su versi\'on rotada 90 grados. Por tanto la cantidad de im\'agenes de Carcinoma Escamoso se 
+duplic\'o, teniendo as\'i 1000 im\'agenes de esta categor\'ia.
+
+\section{Me quede Aqui}

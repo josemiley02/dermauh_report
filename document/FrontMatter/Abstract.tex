@@ -1,7 +1,64 @@
 \begin{resumen}
-	Resumen en español
+	El presente trabajo de diploma presenta la propuesta de aplicación web DermaUH 3.0, 
+	desarrollada con el objetivo de suplir diversas dificultades de la versión anterior e 
+	incluir mejoras tanto de rendimiento como en sus modelos de clasificación de imágenes.
+
+	Para el proceso de investigación se analizaron las diferentes herramientas existentes 
+	en el mercado que utilizan inteligencia artificial para los diagnósticos asistidos, 
+	atendiendo a sus ventajas y desventajas para los doctores cubanos, y se tomaron ideas 
+	para el desarrollo de la interfaz de usuario. Posteriormente se revisaron diferentes 
+	sitios académicos especializados en la colección de imágenes dermatoscópicas, 
+	argumentando por qué estos no podían ser utilizados para entrenar los nuevos modelos 
+	de aprendizaje de máquinas. Finalmente se realizó un estudio de diferentes usos de los 
+	modelos explicativos de inteligencia artificial (XAI) para obtener experiencia sobre 
+	cómo integrarlos a una aplicación web.
+
+	A raíz de la investigación descrita anteriormente, se llegó a una propuesta de 
+	solución que cubre las necesidades planteadas para la nueva versión de DermaUH 
+	haciendo uso de Django, React y PostgreSQL como tecnologías principales. Se siguió el 
+	patrón de Arquitectura por Capas para el desarrollo de la aplicación, donde cada nivel 
+	presenta su propia propuesta de diseño. Para el frontend se utilizó una arquitectura 
+	basada en características y para el backend se implementaron varias aplicaciones 
+	Django almacenadas en un mismo servidor.
+
+	El entrenamiento de los nuevos modelos se realizó con un conjunto de imágenes de 
+	pieles cubanas proporcionado por las autoridades del ministerio de Salud Pública de 
+	Cuba (MINSAP). Esta acción fue llevada a cabo con la herramienta Kaggle para ganar 
+	en tiempo de ejecución debido al potente procesador que brinda dicha herramienta.
+
+	Finalizado el proceso de desarrollo, el principal resultado fue la obtención de una 
+	aplicación web capaz de brindar diagnóstico asistido por Inteligencia Artificial. 
+	El modelo utilizado fue entrenado con pieles cubanas y se vinculó con un modelo 
+	explicativo para justificar los diagnósticos brindados.
 \end{resumen}
 
 \begin{abstract}
-	Resumen en inglés
+	This diploma thesis presents the proposed web application DermaUH 3.0, developed to 
+	address various shortcomings of the previous version and include improvements in 
+	both performance and image classification models.
+
+	For the research process, the different existing tools
+	on the market that use artificial intelligence for computer-assisted diagnoses 
+	were analyzed, considering their advantages and disadvantages for Cuban physicians, 
+	and ideas were gathered for the development of the user interface. Subsequently, 
+	various academic websites specializing in the collection of dermatoscopic 
+	images were reviewed, and arguments were presented as to why these could not be used 
+	to train the new machine learning models. Finally, a study of different uses of
+	explanatory models of artificial intelligence (XAI) was conducted to gain experience
+	on how to integrate them into a web application.
+
+	As a result of the research described above, a proposed solution was developed 
+	that addresses the needs identified for the new version of DermaUH, using Django, 
+	React, and PostgreSQL as the main technologies. The Layered Architecture pattern was 
+	followed for the application's development, where each layer presents its own design 
+	proposal. A feature-based architecture was used for the frontend, and several Django 
+	applications stored on the same server were implemented for the backend.
+
+	The training of the new models was performed using a set of Cuban skin images provided
+	by the Cuban Ministry of Public Health (MINSAP). This was done using the Kaggle tool 
+	to improve execution time due to its powerful processor capabilities.
+
+	Upon completion of the development process, the main result was a web application 
+	capable of providing AI-assisted diagnosis. The model used was trained with Cuban 
+	skins and was linked to an explanatory model to justify the diagnoses provided.
 \end{abstract}

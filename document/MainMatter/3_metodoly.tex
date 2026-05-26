@@ -41,8 +41,11 @@ primeras computadoras. Hoy en d\'ia existen dos tipos de metodolog\'ias, tradici
 Para el desarrollo de DermaUH 3.0 se decidi\'o utilizar Scrum, debido a que es una metodología ágil que 
 se adapta bien a proyectos complejos y con requisitos cambiantes, como es el caso de DermaUH. Además, Scrum permite entregas rápidas y 
 frecuentes, lo que facilita la retroalimentación constante del cliente y la adaptación a sus necesidades.
-Para ello se dividi\'o el proceso de desarrollo en seis sprints, con una duraci\'on promedio de entre dos y tres semanas cada uno.
-Al final de cada sprint se realiz\'o una evaluaci\'on y validaci\'on de los resultados obtenidos. Los sprints en los que se dividi\'o el proceso
+Por otro lado, el desarrollador tiene experiencia previa con esta metodolog\'ia. Aunque se menciona requisitos cambiantes
+DermaUH est\'a pensado para mantenerse ``plana'' (es decir sin cambios sobresalientes) a largo plazo,
+lo cual no hace necesario el uso de Kanban o XP que est\'an enfocadas en aplicaciones con requisitos vol\'atiles.
+Para ello el proceso de desarrollo fue dividido en seis sprints, con una duraci\'on promedio de entre dos y tres semanas cada uno.
+Al final de cada sprint el equipo (dermat\'ologos y desarrollador) realiz\'o una evaluaci\'on y validaci\'on de los resultados obtenidos. Los sprints en los que se dividi\'o el proceso
 son los siguientes:
 
 \begin{enumerate}
@@ -55,8 +58,8 @@ son los siguientes:
 \end{enumerate}
 
 \section{Levantamiento de Requerimientos}
-El levantamiento de requerimientos es el proceso mediante el cual se identifican, 
-documentan y acuerdan las necesidades, expectativas y restricciones que debe cumplir un 
+El levantamiento de requerimientos es el proceso mediante el cual el analista identifica, 
+documenta y acuerdan las necesidades, expectativas y restricciones que debe cumplir un 
 sistema de software. Incluye tanto los requerimientos funcionales (qué debe hacer el sistema) 
 como los no funcionales (cómo debe hacerlo: rendimiento, seguridad, usabilidad, etc.). 
 Este proceso involucra a los stakeholders (clientes, usuarios finales, desarrolladores) y 
@@ -79,9 +82,9 @@ gran parte del código del sistema. Siguiendo este concepto, los requerimientos 
 \begin{enumerate}
     \item[RF1] El usuario autenticado puede hacer \textbf{CRUD} sobre las entidades Paciente, Lesi\'on y diagn\'ostico.
     \item[RF2] Los usuarios podr\'an obtener informaci\'on de lesiones registradas, solo de sus propios pacientes, podr\'an acceder a otras lesiones si estas se hacen p\'ublicas o se comparten con el mismo.
-    \item[RF3] El usuario puede enviar una imagen dermatosc\'opica o cl\'inica al sistema y recibir una sugerencia de clasificaci\'on automatizada con nivel de confianza, la cual debe ser validada por un especialista m\'edico antes de cualquier decisi\'on cl\'inica. En ningún caso el diagnóstico automático reemplaza al especialista; su función es únicamente de apoyo.
+    \item[RF3] El usuario puede enviar una imagen dermatosc\'opica\footnote{La dermatoscopia es una técnica de imagen no invasiva que amplía las estructuras de la piel, permitiendo observar patrones no visibles a simple vista.} o cl\'inica al sistema y recibir una sugerencia de clasificaci\'on automatizada con nivel de confianza, la cual debe ser validada por un especialista m\'edico antes de cualquier decisi\'on cl\'inica. En ningún caso el diagnóstico automático reemplaza al especialista; su función es únicamente de apoyo.
     \item[RF4] Solamente el administrador tiene permiso para eliminar cuentas y activar usuarios en el sistema y consultar detalles de cualquier cuenta.
-    \item[RF5] Cualquier persona puede enviar una solicitud de registro a la aplicaci\'on, la cual deber\'a aportar datos profesionales como el hospital y el carnet de identidad para despu\'es ser\'a aprobada por el Administrador.
+    \item[RF5] Cualquier persona puede enviar una solicitud de registro a la aplicaci\'on, la cual deber\'a aportar datos profesionales como el hospital y el carnet de identidad para despu\'es ser\'a aprobada por el Administrador, el cual tiene acceso a las base de datos del Ministerio de Salud P\'ublica (MINSAP).
 \end{enumerate}
 
 \subsection{Requerimientos No Funcionales}
@@ -108,7 +111,7 @@ de software seleccionada así como estructura, dise\~no y modelaci\'on de las en
 la base de datos. 
 
 \subsection{Diagrama de Casos de Uso}
-Los diagramas de casos de uso se utilizan durante la fase de análisis de un proyecto para
+Los diagramas de casos de uso son utilizados durante la fase de análisis de un proyecto para
 identificar y dividir la funcionalidad del sistema. Normalmente contienen: casos de uso,
 actores y relaciones entre ellos: de asociación, de dependencia y/o de generalización\cite{diagramaUML}. 
 En otras palabras es una forma de esquematizar y representar los requerimientos funcionales planteados
@@ -148,7 +151,7 @@ En la pestaña \textit{Solicitudes}:
 \begin{itemize}
     \item \textbf{Rechazar Solicitud de Usuario:} Con esta opci\'on el administrador rechaza, lo cual es sin\'onimo de eliminar, al menos en este contexto, la solicitud de registro enviada por un usuario.
     \item \textbf{Aceptar Solicitud de Usuario:} Permite al administrador aceptar la solicitud de registro de un usuario y este ya podrá utilizar la aplicación en dependencia de los permisos asignados por el administrador.
-    \item \textbf{Asignar Roles al Usuario:} Una vez aceptada la solicitud de registro, el adminsitrador debe asignarle permisos a dicho usuario. Los permisos permitidos son administrador y/o doctor.
+    \item \textbf{Asignar Roles al Usuario:} Una vez aceptada la solicitud de registro, el administrador debe asignarle permisos a dicho usuario. Los permisos permitidos son administrador y/o doctor.
     \item \textbf{Enviar correo:} La acción de aceptar o rechazar una solicitud incluye automáticamente el envío de un correo al solicitante, por lo que se modeló como una relación de inclusión (<<include>>)
 \end{itemize}
 
@@ -182,67 +185,80 @@ desarrollo de sistemas, estableciendo los componentes, sus relaciones y los prin
 que guían su evolución. Su importancia radica en proporcionar un marco de trabajo para 
 cumplir con los requisitos funcionales y no funcionales (rendimiento, seguridad, 
 escalabilidad), así como para tomar decisiones tecnológicas fundamentadas\cite{architecture}. En este 
-apartado se realizar\'a un an\'alisis de las arquitecturas de software m\'as conocidas
+apartado se analizar\'an los patrones estructurales m\'as conocidos
 atendiendo a su capacidad de escalabilidad, implementaci\'on para solucionar el problema en cuesti\'on
 y los conocimientos adquiridos en la carrera de Licenciatura en Ciencias de la Computaci\'on.
 
-\subsubsection{Arquitectura en Capas (Layers Architecture)}
+Antes de analizar las alternativas, conviene distinguir tres niveles conceptuales:
+\begin{itemize}
+    \item \textbf{Estilo arquitectónico}: define una familia de sistemas con una estructura común (ej. capas, microservicios).
+    \item \textbf{Patrón de arquitectura}: resuelve un problema específico dentro de un estilo (ej. MVC, Hexagonal).
+    \item \textbf{Arquitectura de software}: la organización concreta de un sistema particular, incluyendo decisiones tecnológicas.
+\end{itemize}
+En esta sección se analizan tanto estilos (capas) como patrones (hexagonal, cebolla, limpia) bien conocidos en la literatura.
+
+\subsubsection{Estilo arquitectónico por capas}
 Según un art\'iculo publicado en el blog del sitio \href{https://reactiveprogramming.io/blog/es/estilos-arquitectonicos/capas}{ReactiveProgramming},
 dedicado a la publicaciones relacionadas con el mundo de la programaci\'on y espec\'ificamente la Ingenier\'ia de Software
 la arquitectura en capas consta en dividir la aplicaci\'on en niveles (capas), haciendo que cada uno
-tenga un rol muy definidio\cite{capas}. Un ejemplo de esta divisi\'on podr\'ia ser una capa de presentaci\'on (UI),
-una capa de reglas de negocio (servicios) y una capa de acceso a datos (DB). Cabe recalcar que este estilo arquitect\'onico
-no delimita el n\'umero de capas que el programador puede utilizar y/o implementar, su idea fundamental la basa
+tenga un rol muy definido\cite{capas}. Un ejemplo de esta divisi\'on por niveles podr\'ia ser:
+\begin{enumerate}
+    \item Presentaci\'on (Interfaz de Usuario)
+    \item Reglas de negocio (Servicios)
+    \item Acceso a datos (Base de Datos)
+\end{enumerate}
+Una ventaja de este estilo arquitect\'onico es que no delimita el n\'umero de 
+capas que el desarrollador puede utilizar y/o implementar, su idea fundamental la basa
 en la aplicaci\'on del Principio de Separaci\'on de Responsabilidades\cite{separation}. En la práctica, la mayoría de las veces 
-este estilo arquitectónico es implementado en 4 capas, presentación, negocio, persistencia 
-y base de datos, sin embargo, es habitual ver que la capa de negocio y persistencia se 
-combinan en una solo capa, sobre todo cuando la lógica de persistencia está incrustada 
+este estilo arquitectónico es implementado en 4 m\'odulos: presentación, negocio, persistencia 
+y base de datos, sin embargo, es habitual ver que las capas de negocio y persistencia se 
+combinan en una sola, sobre todo cuando la lógica de persistencia está incrustada 
 dentro de la capa de negocio.
 
 La estructura de una arquitectura por capas determina que cada nivel debe ``colocarse'' de forma
-horizontal uno sobre el otro, provocando que un nivel determinado solo puede comunicarse con la que 
-est\'a justo ``debajo''. En s\'intesis si la capa de presentaci\'on, desea acceder a la capa de acceso a datos
-lo debe hacer \'unica y exclusivamente a trav\'es de la capa de servicios, la cual realizar\'a
-la petici\'on correspondiente a la capa de acceso a datos, luego la respuesta hace el recorrido
-inverso hasta llegar a la capa de presentaci\'on. 
+horizontal uno sobre el otro, lo que restringe la comunicación directa únicamente al nivel inmediatamente inferior. 
+En síntesis, si el nivel de presentación desea acceder al de acceso a datos, 
+debe hacerlo únicamente a través de la capa de servicios. Esta última realiza la 
+petición correspondiente a la capa de acceso a datos. Luego, la respuesta hace el 
+recorrido inverso hasta llegar al m\'odulo de presentación.
 
-Como caracteristica de esta arquitectura: las capas o niveles deben ser componentes apartes, 
+Como caracter\'istica de este dise\~no: los niveles deben ser componentes apartes, 
 es decir estar lo suficientemente desacoplados para que si se desea cambiar la l\'ogica o el 
-funcionamiento de alguna, no sea necesario aplicar cambios en otras capas. En algunas ocasiones
+funcionamiento de alguno, no sea necesario aplicar cambios en el capas. En algunas ocasiones
 estas capas se alojan en servidores distintos pero que se comunican entre s\'i. 
 
 La separación de la aplicación en capas busca cumplir con el principio de separación de 
-preocupaciones\cite{separation}, de tal forma que cada capa se encargue una tarea muy definida, por ejemplo,
-la capa de presentación solo se preocupa por presentar la información de forma agradable 
+preocupaciones\cite{separation}, de tal forma que cada nivel se encargue de una tarea muy definida, por ejemplo,
+el m\'odulo de presentación solo se preocupa por presentar la información de forma agradable (en algunos casos se usa el t\'ermino interfaz amigable)
 al usuario, pero no le interesa de donde viene la información ni la lógica de negocio que 
-hay detrás, en su lugar, solo sabe que existe una capa de negocio que le proporcionará la 
-información. Por otra parte, la capa de negocio solo se encarga de aplicar todas las 
+hay detrás, en su lugar, solo sabe que existe un estrato de negocio que le proporcionará la 
+información. El nivel de abstracci\'on de negocio solo se encarga de aplicar todas las 
 reglas de negocio y validaciones, pero no le interesa como recuperar los datos, guardarlos
 o borrarlos, ya que para eso tiene una capa de persistencia que se encarga de eso. 
-Por otro lado, la capa de persistencia es la encargada de comunicarse a la base de datos,
+Por otro lado, el nivel de persistencia es el encargado de comunicarse con la base de datos,
 crear las instrucciones SQL para consultar, insertar, actualizar o borrar registros 
 y retornarlos en un formato independiente a la base de datos. De esta forma, se 
 concluye que cada capa tiene responsabilidad \'unica y no necesita conocer el estado
-de las capas inferiores para poder llevar a cabo su funci\'on principal. 
+de los niveles superiores para poder llevar a cabo su funci\'on principal. 
 A continuaci\'on veremos algunas ventajas y desventajas del uso de esta arquitectura.
 
 \paragraph{Ventajas}
 \begin{enumerate}
     \item \textbf{Separación de responsabilidades:} Permite la separación de preocupaciones (SoC), ya que cada capa tiene una sola responsabilidad.
     \item \textbf{Fácil de desarrollar:} Este estilo arquitectónico es especialmente fácil de implementar, además de que es muy conocido y una gran mayoría de las aplicaciones la utilizan.
-    \item \textbf{Fácil de probar:} Permite probar cada capa de forma aislada mediante el uso de dobles de prueba (mocks)\cite{mock} para las dependencias.
-    \item \textbf{Fácil de mantener:} Debido a que cada capa hace una tarea muy específica, es fácil detectar el origen de un bug para corregirlo, o simplemente se puede identificar donde se debe aplicar un cambio.
+    \item \textbf{Fácil de probar:} Permite probar cada nivel de forma aislada mediante el uso de dobles de prueba (mocks)\cite{mock} para las dependencias.
+    \item \textbf{Fácil de mantener:} Debido a que cada m\'odulo hace una tarea muy específica, es fácil detectar el origen de un bug para corregirlo, o simplemente se puede identificar donde se debe aplicar un cambio.
     \item \textbf{Seguridad:} La separación de capas permite el aislamiento de los servidores en subredes diferentes, lo que hace más difícil realizar ataques.
 \end{enumerate}
 
 \paragraph{Desventajas}
 \begin{enumerate}
     \item \textbf{Performance:} La comunicación por la red o internet es una de las tareas más tardadas de un sistema, incluso, en muchas ocasiones más tardado que el mismo procesamiento de los datos, por lo que el hecho de tener que comunicarnos de capa en capa genera un degrado significativo en el performance.
-    \item \textbf{Escalabilidad:} Las aplicaciones que implementan este patrón por lo general tienden a ser monolíticas, provocando dificulatades para escalarlas, aunque es posible replicar la aplicación completa en varios nodos, lo que provoca un escalado monolítico.
+    \item \textbf{Escalabilidad:} Las aplicaciones que implementan este patrón por lo general tienden a ser monolíticas, lo que dificulta su escalabilidad, aunque es posible replicar la aplicación completa en varios nodos, lo que provoca un escalado monolítico.
     \item \textbf{Tolerancia a los fallos:} Si una capa falla, todas las capas superiores comienzan a fallar en cascada.
 \end{enumerate}
 
-\subsubsection{Arquitectura Hexagonal (Puertos y Adaptadores)}
+\subsubsection{Patrón Hexagonal (Puertos y Adaptadores)}
 
 La arquitectura hexagonal, también conocida como arquitectura de puertos y adaptadores, 
 fue propuesta por Alistair Cockburn en 2005 como una evolución de los patrones de arquitectura 
@@ -318,26 +334,25 @@ A pesar de sus beneficios, la arquitectura hexagonal no está exenta de inconven
 \end{figure}
 \newpage
 
-\subsubsection{Onion Architecture}
+\subsubsection{Patrón de Arquitectura Cebolla (Onion)}
 La Onion Architecture (o en capas de cebolla) fue implementada y presentada por Jeffrey
 Palermo en 2008. Como todo patr\'on de arquitectura, este hace hincapi\'e en la divisi\'on
 de funciones y el desarrollo de componentes interconectados. Desde que vio la luz en el a\~no
 2008 ha ganado popularidad entre los ingenieros de software que buscan crear aplicaciones
 escalables, mantenibles y probadas. 
 
-Seg\'un el art\'iculo Onion Architecture Used in Software Development\cite{onion} publicado
-en \href{https://www.researchgate.net}{ResearchGate}, plataforma dedicada a la publicaci\'on 
-de art\'iculos de ind\'ole cient\'ifico: En la Onion Architecture, Los componentes del 
-software se organizan en capas concéntricas mediante la arquitectura de cebolla, 
-un patrón de arquitectura en capas en el que cada capa depende exclusivamente de la capa 
-inmediatamente posterior. La lógica central de la aplicación se ubica en el centro de la 
+Según el artículo 'Onion Architecture Used in Software Development' \cite{onion}, 
+publicado en ResearchGate (plataforma dedicada a la publicación de artículos científicos), 
+la Onion Architecture organiza los componentes del software en capas concéntricas. 
+Cada capa depende exclusivamente de la capa inmediatamente posterior.
+La lógica central de la aplicación se ubica en el centro de la 
 arquitectura, rodeada por varias capas que la encierran y la protegen del exterior, razón 
 por la cual este patrón se denomina ``cebolla''. La principal idea es que las aplicaciones
 sean divididas en cuatro capas:
 
 \begin{enumerate}
     \item \textbf{Dominio:} Esta capa actúa como el cerebro de la aplicación y representa los conceptos, entidades y reglas de negocio. No puede depender de otras capas, ya que es el centro de la arquitectura y tecnol\'ogicamente independiente.
-    \item \textbf{Infraestructura:} En esta capa se implementan las interfaces definidas por la capa de dominio. Adem\'as proporciona los elementos de infracestructura como mensajer\'ia, registro de eventos y acceso a datos.
+    \item \textbf{Infraestructura:} En esta capa se implementan las interfaces definidas por la capa de dominio. Adem\'as proporciona los elementos de infraestructura como mensajer\'ia, registro de eventos y acceso a datos.
     \item \textbf{Aplicaci\'on:} La lógica de negocio relevante para la aplicación se encuentra en la capa de aplicación, que también actúa como enlace entre las capas de dominio y presentación. Convierte los casos de uso y las reglas de negocio de la capa de dominio en acciones que la capa de presentación puede comprender.
     \item \textbf{Presentaci\'on:} Esta capa ofrece la interfaz para que el usuario interactúe con la aplicación. Una aplicación web, una aplicación de escritorio o una aplicación móvil pueden conformar esta capa.
 \end{enumerate}
@@ -372,15 +387,15 @@ y de manera resumida.
     \item Sobrecarga de rendimiento: La sobrecarga de rendimiento puede deberse a las capas e interfaces adicionales de la arquitectura de cebolla, especialmente en aplicaciones que requieren alto rendimiento o procesamiento en tiempo real.
 \end{enumerate}
 
-\subsubsection{Clean Architecture}
+\subsubsection{Patrón de Arquitectura Limpia (Clean)}
 La Arquitectura Limpia (Clean Architecture) es un enfoque de dise\~no de software propuesto
 por Robert C. Martin que busca la independencia de los sistemas con respecto a frameworks,
 bases de datos y detalles de implementaci\'on\cite{cleanArchitecture}. A través de la separación 
 de responsabilidades, Clean Architecture permite que los sistemas sean adaptables a 
 cambios tecnológicos sin alterar la lógica de negocio principal. 
 
-Clean Architecture se basa en conceptos previos como la Arquitectura en Capas, 
-la Arquitectura Hexagonal (Ports and Adapters) de Alistair Cockburn y la Arquitectura en 
+Clean Architecture se basa en conceptos previos como el estilo por Capas, 
+el patr\'on Hexagonal (Ports and Adapters) de Alistair Cockburn y la Arquitectura en 
 Cebolla (Onion Architecture) de Jeffrey Palermo, pero con un enfoque más claro en la 
 independencia de los componentes y la testabilidad del código. Clean Architecture
 se gu\'ia por cuatro principios fundamentales\cite{cleanArchitecturePrincipios} los cuales
@@ -393,9 +408,9 @@ ser\'an explicados a continuaci\'on:
     \item \textbf{Base de datos independiente:} Al igual que en el punto anterior, esta capa debe ser tan modular como para agregar múltiples fuentes de datos e incluso múltiples fuentes del mismo tipo de datos.
 \end{enumerate}
 
-Como se mencion\'o anteriormente, Clean Architecture toma fundamentos de la arquitectura
-Hexagonal y la Onion, ambas explicadas en este ep\'igrafe. Por tanto tiene una divisi\'on
-por capas. Existen bibliograf\'ias en las que el esquema para presentar a esta arquitectura
+Como se mencion\'o anteriormente, Clean Architecture toma fundamentos de los patrones
+Hexagonal y Onion, ambos explicados en este ep\'igrafe. Por tanto tambi\'en  presenta
+una divisi\'on por niveles. Existen bibliograf\'ias en las que el esquema para representar a este patr\'on
 es similar al esquema Onion, (figura~\ref{onionArchitecture}) y en otras se representa mediante
 un cono, como se muestra en la figura~\ref{cleanArchitecture}
 
@@ -423,14 +438,12 @@ Esta decisión se fundamenta en cuatro criterios principales:
 \begin{enumerate}
     \item \textbf{Simplicidad y curva de aprendizaje:} La arquitectura en capas es ampliamente conocida y utilizada en la industria del software, lo que reduce la complejidad inicial del desarrollo y facilita la incorporación de nuevos desarrolladores al proyecto en el futuro\cite{layeredCommon}.
     \item \textbf{Experiencia previa del equipo:} El equipo de desarrollo cuenta con experiencia previa en la implementación de sistemas basados en capas, lo que acelera el desarrollo y minimiza riesgos técnicos.
-    \item \textbf{Rendimiento:} Patrones como Onion o Clean Architecture introducen una sobrecarga adicional debido a la inversión de dependencias y la inyección de dependencias, lo que puede afectar negativamente los tiempos de respuesta. Como se estableció en el requisito no funcional RNF3 (tiempo de respuesta inferior a dos segundos), la arquitectura por capas, al ser más directa en la comunicación entre capas, contribuye a cumplir con esta métrica\cite{layeredPerformance}.
+    \item \textbf{Rendimiento:} Patrones como Onion o Clean Architecture introducen una sobrecarga adicional debido a la inversión e inyección de dependencias, lo que puede afectar negativamente los tiempos de respuesta. Como se estableció en el requisito no funcional RNF3 (tiempo de respuesta inferior a dos segundos), la arquitectura por capas, al ser más directa en la comunicación entre capas, contribuye a cumplir con esta métrica\cite{layeredPerformance}. Se deja como trabajo, hacer una verificaci\'on real del rendimiento.
     \item \textbf{Flexibilidad para evoluciones futuras:} Aunque la arquitectura por capas puede tender al monolito, su organización permite extraer componentes específicos hacia microservicios con modificaciones mínimas. Por ejemplo, si en el futuro se decide externalizar el servicio de inteligencia artificial (modelo de clasificación de imágenes) como un microservicio independiente, la capa de negocio actual ya encapsula dicha lógica en componentes específicos (servicios de inferencia). De esta forma, solo sería necesario sustituir la llamada interna por una comunicación vía API REST, sin reescribir el resto del sistema\cite{layeredEvolution}.
 \end{enumerate}
 
 Además, la arquitectura en capas es permisiva en cuanto a los patrones internos de cada 
-capa. La capa de presentación puede implementarse con React y hooks, la capa de negocio 
-con Django y servicios REST, y la capa de datos con PostgreSQL, sin que las decisiones de 
-una capa condicionen rígidamente a las demás. Esto permite adoptar incluso enfoques h\'ibridos
+capa. Esto permite adoptar incluso enfoques h\'ibridos
 como por ejemplo, implementar el modelo ML en un servicio independiente (microservicio)
 y solamente modificar un poco la capa de negocio.
 
@@ -472,16 +485,16 @@ El modelo de datos, \textbf{Paciente}, es la entidad m\'as importante, ya que es
 de una de las principales funcionalidades de DermaUH 3.0. A continuaci\'on una descripci\'on 
 de los atributos de dicha entidad.
 \begin{itemize}
-    \item idPaciente: Llave primaria (PK), identificador \'unico de tipo entero. Es generado auto\'aticamente por el sistema de manera incremental.
+    \item idPaciente: Llave primaria (PK), identificador \'unico de tipo entero. Es generado autom\'aticamente por el sistema de manera incremental.
     \item name, lastName1, lastName2: Campos para obtener el nombre completo del paciente. Todos son de tipo varchar, con una longitud m\'axima de cien caracteres por cada campo.
     \item years, sex, skinColor: Campos relacionados con la informaci\'on \'etnica del paciente. Estos campos su principal funcionalidad es brindar m\'as informaci\'on para obtener un mejor diagn\'ostico asistido por parte de los modelos ML integrados en la nueva versi\'on.
-    \item addres, city, state, jobProfession: Campos para reflejar la direcci\'on y profesi\'on laboral del paciente. Todos son de tipo varchar sin l\'imites. Estas propiedades son importantes para saber el nivel exposici\'on de la piel al sol, debido la heterogeneidad del clima en diferentes sitios del pa\'is.
+    \item address, city, state, jobProfession: Campos para reflejar la direcci\'on y profesi\'on laboral del paciente. Todos son de tipo varchar sin l\'imites. Estas propiedades son importantes para saber el nivel exposici\'on de la piel al sol, debido la heterogeneidad del clima en diferentes sitios del pa\'is.
     \item registerData: Campo de tipo Date para tener control de cuando fue que el paciente fue registrado por primera vez en el sistema de DermaUH.
 \end{itemize}
 
 \subsubsection{Dermat\'ologo}
 Esta es una entidad fuerte, ya que no depende de otras entidades para instanciarse. El modelo
-\textbf{Dermat\'ologo}, es el responsable de representar la informaci\'on de los usaurios del 
+\textbf{Dermat\'ologo}, es el responsable de representar la informaci\'on de los usuarios del 
 sistema. Dicho de otro modo, un dermat\'ologo es un usuario de DermaUH 3.0.
 \begin{itemize}
     \item idDermatologo: Llave primaria (PK), identificador \'unico de tipo entero. Es generado autom\'aticamente por el sistema de manera incremental.
@@ -498,12 +511,13 @@ sistema. Dicho de otro modo, un dermat\'ologo es un usuario de DermaUH 3.0.
 \subsubsection{Lesi\'on}
 Modela el comportamiento de las lesiones que puede presentar un paciente. Un
 paciente puede presentar una o muchas lesiones, por tanto el modelo \textbf{Lesi\'on}
-depende de que exista un paciente. Se configur\'o con eliminaci\'on \textbf{Cascada}\cite{cascada}, por 
-ende si un paciente es eliminado del sistema, se eliminar\'an todas sus lesiones asociadas.
+depende de que exista un paciente. Se configuró con la regla de integridad referencial 
+\texttt{ON DELETE CASCADE} (eliminación en cascada)\cite{cascada}, de modo que si un paciente es 
+eliminado del sistema, todas sus lesiones asociadas se eliminan automáticamente.
 \begin{itemize}
     \item idLesion: Llave primaria (PK), identificador \'unico de tipo entero. Es generado auto\'aticamente por el sistema de manera incremental.
     \item date: Fecha en la que se registra la lesi\'on. Es un campo de tipo date, no editable.
-    \item phototype: Campo de tipo entero, solo puede tomar valores en el intervalo $[1;6]$ que se usa para almacenar el fototipo de la piel donde se encuentra ubicada la lesi\'on. El fototipo no es m\'as que la reacci\'on de la piel ante la exposici\'on a la luz solar.
+    \item phototype: Campo de tipo entero, solo puede tomar valores en el intervalo $[1;6]$ que se usa para almacenar el fototipo\footnote{El fototipo cutáneo, según la escala de Fitzpatrick, clasifica la piel del tipo I (siempre se quema, nunca se broncea) al VI (nunca se quema, piel muy pigmentada).} de la piel donde se encuentra ubicada la lesi\'on. El fototipo no es m\'as que la reacci\'on de la piel ante la exposici\'on a la luz solar.
     \item localization: Campo de tipo entero, toma valores en el intervalo $[1;10]$ y almacena la parte del cuerpo donde se encuentra la lesi\'on. 
     \item histopathologicalDiagnosis: Campo de tipo bool. Indica si la lesi\'on fue diagnosticada histopat\'ologicamente, en otras palabras, afirma que se utilizaron equipos m\'edicos para obtener el diagn\'ostico.
     \item injuryType: Llave for\'anea (FK) que referencia a la entidad \textbf{Tipo de Lesi\'on}. Es un campo de tipo entero.
@@ -513,8 +527,7 @@ ende si un paciente es eliminado del sistema, se eliminar\'an todas sus lesiones
 \subsubsection{Imagen}
 Modelo utilizado para guardar los metadatos\cite{metadato} de las im\'agenes de las lesiones.
 Cada lesi\'on puede tener muchas im\'agenes o no tener ninguna, al igual que la relaci\'on Paciente~Lesi\'on,
-esta tambi\'en se configur\'o con eliminaci\'on \textbf{Cascada}, es decir si una lesi\'on
-es eliminada del sistema por alg\'un motivo, todas las im\'agenes asociadas ser\'an eliminadas tambi\'en.
+esta tambi\'en se configur\'o con la regla \texttt{ON DELETE CASCADE}.
 \begin{itemize}
     \item idImagen: Llave primaria (PK), identificador \'unico de tipo entero. Es generado auto\'aticamente por el sistema de manera incremental.
     \item imagen: Campo donde se almacenan los metadatos de la imagen en cuesti\'on.

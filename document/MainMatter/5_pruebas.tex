@@ -1,0 +1,67 @@
+\chapter{Pruebas Funcionales}
+Las pruebas funcionales son escenciales en el desarrollo de software, ya que permiten
+mostrar y evidenciar el correcto funcionamiento de la aplicaci\'on. En este cap\'itulo 
+se realizar\'an distintas pruebas con el objetivo de verificar si todos los requisitos, 
+casos de uso y objetivos de esta tesis, se lograron resolver. 
+
+\section{Pruebas de Flujo}
+En este apartado se llevar\'an a cabo pruebas de flujo para comprobar el correcto funcionamiento
+de la aplicaci\'on, mostrando im\'agenes reales. 
+
+\subsection{Solicitud de Registro}
+Con esta prueba se busca mostrar el correcto funcionamiento de la solicitud de registro,
+y luego su posterior activac\'on. Para ello se cuenta con un usuario que tiene permisos de administraci\'on,
+es decir, como se mencion\'on al hablar de los diagramas UML, el actor Admin, es quien puede
+realizar las operaciones CRUD sobre los usarios. La Figure~\ref{formularioRegistro}, muestra
+como se ve un formulario de registro en DermaUH 3.0 \newpage
+\begin{figure}[ht] 
+    \centering
+    \includegraphics[width=0.6\textwidth]{Graphics/registro.png}
+    \caption{Formulario de Registro} 
+    \label{formularioRegistro}
+\end{figure}
+
+Una vez relleno el formulario, la solicitud es enviada al administrador, quien recibe un correo
+alertando que tiene un nuevo usuario pendiente de respuesta. Acto seguido el administrador entra
+al sistema con las credenciales correspondientes. La Figura~\ref{adminPage} muestra como se ve
+la p\'agina principal de los usarios, tiene un contador de solicitudes pendientes, doctores activos
+y residentes activos. Al presionar el bot\'on ``Pendientes'', se muestra la lista de usuarios que 
+esperan confirmaci\'on para entrar al sistema, Figura~\ref{pendientes}. 
+\begin{figure}[ht] 
+    \centering
+    \includegraphics[width=0.8\textwidth]{Graphics/adminPage.png}
+    \caption{P\'agina del Administrador} 
+    \label{adminPage}
+\end{figure}
+\begin{figure}[ht] 
+    \centering
+    \includegraphics[width=0.8\textwidth]{Graphics/pendientes.png}
+    \caption{Usuarios Pendientes} 
+    \label{pendientes}
+\end{figure}
+
+Si se fija, en el listado de usuarios pendientes, cada tarjeta posee un bot\'on ``Activar'',
+al presionarlo se muestra el formulario de la Figure~\ref{formularioActivar}, el cual decide
+que permisos tendr\'a el usuario en cuesti\'on. Solo se puede tener un permiso a la vez,
+el front se configur\'o de tal forma que solo se puede escoger uno.\newpage
+
+\begin{figure}[ht] 
+    \centering
+    \includegraphics[width=0.6\textwidth]{Graphics/activarFormulario.png}
+    \caption{Formulario Activar Usuario} 
+    \label{formularioActivar}
+\end{figure}
+
+Una vez escogido el rol del usuario, para este caso, se seleccion\'o doctor, se pulsa el bot\'on
+activar. Si no hay ning\'un problema, deber\'ia aparecer un mensaje de usuario activado correctamente
+como se muestra en la Figure~\ref{usuarioActivo}. Una vez activado el usuario, este recibe un correo 
+electr\'onico v\'ia gmail de que puede utilizar los servicios de DermaUH 3.0.
+
+\begin{figure}[ht] 
+    \centering
+    \includegraphics[width=0.6\textwidth]{Graphics/seActivoBien.png}
+    \caption{Mensaje de que el usuario fue activado con \'exito} 
+    \label{usuarioActivo}
+\end{figure}
+
+\section{Me quede aqui}

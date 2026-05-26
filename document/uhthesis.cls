@@ -22,9 +22,9 @@
 \RequirePackage{footmisc}
 \RequirePackage{csquotes}
 \RequirePackage[
-	style=apa,
-	citestyle=authoryear,
-  hyperref=true,
+	style=ieee,
+	sorting=none,
+	hyperref=true,
 	backref=true
 	]{biblatex}
 \RequirePackage[linktocpage,breaklinks,colorlinks,%
@@ -72,59 +72,6 @@
 \setcounter{bottomnumber}{2}
 \setcounter{totalnumber}{4}
 \renewcommand{\textfraction}{0.07}
-
-% Whole biblatex hyperref to bibliography
-\DeclareCiteCommand{\cite}
-  {\usebibmacro{prenote}}
-  {\usebibmacro{citeindex}%
-   \printtext[bibhyperref]{\usebibmacro{cite}}}
-  {\multicitedelim}
-  {\usebibmacro{postnote}}
-
-\DeclareCiteCommand*{\cite}
-  {\usebibmacro{prenote}}
-  {\usebibmacro{citeindex}%
-   \printtext[bibhyperref]{\usebibmacro{citeyear}}}
-  {\multicitedelim}
-  {\usebibmacro{postnote}}
-
-\DeclareCiteCommand{\parencite}[\mkbibparens]
-  {\usebibmacro{prenote}}
-  {\usebibmacro{citeindex}%
-    \printtext[bibhyperref]{\usebibmacro{cite}}}
-  {\multicitedelim}
-  {\usebibmacro{postnote}}
-
-\DeclareCiteCommand*{\parencite}[\mkbibparens]
-  {\usebibmacro{prenote}}
-  {\usebibmacro{citeindex}%
-    \printtext[bibhyperref]{\usebibmacro{citeyear}}}
-  {\multicitedelim}
-  {\usebibmacro{postnote}}
-
-\DeclareCiteCommand{\footcite}[\mkbibfootnote]
-  {\usebibmacro{prenote}}
-  {\usebibmacro{citeindex}%
-  \printtext[bibhyperref]{ \usebibmacro{cite}}}
-  {\multicitedelim}
-  {\usebibmacro{postnote}}
-
-\DeclareCiteCommand{\footcitetext}[\mkbibfootnotetext]
-  {\usebibmacro{prenote}}
-  {\usebibmacro{citeindex}%
-   \printtext[bibhyperref]{\usebibmacro{cite}}}
-  {\multicitedelim}
-  {\usebibmacro{postnote}}
-
-\DeclareCiteCommand{\textcite}
-  {\boolfalse{cbx:parens}}
-  {\usebibmacro{citeindex}%
-   \printtext[bibhyperref]{\usebibmacro{textcite}}}
-  {\ifbool{cbx:parens}
-     {\bibcloseparen\global\boolfalse{cbx:parens}}
-     {}%
-   \multicitedelim}
-  {\usebibmacro{textcite:postnote}}
 
 % % Backreferences in the bibliography.
 % \backrefspanish
