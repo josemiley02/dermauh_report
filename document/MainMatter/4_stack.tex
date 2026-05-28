@@ -405,15 +405,11 @@ im\'agenes entrenados con un conjunto de im\'agenes cubanas. Los modelos que se 
 fueron los desarrollados por el Licenciado en Ciencias de la Computaci\'on Daniel Abad, 
 para m\'as referencia puede consultar su tesis de diploma\cite{tesisDaniel}. Se siguieron
 rigurosamente todas las instrucciones expuestas en el documento relacionada con las transformaciones
-del dataset en caso de ser necesarias. Los modelos en cuesti\'on son:
-\begin{itemize}
-    \item Se le ha realizado Fine Tuning a un Vision Transformer preentrenado.
-    \item Se ha utilizado DINO-V2 para realizar extracción automática de características, estos vectores de características fueron posteriormente utilizados para entrenar modelos de SVM, XGBoost y LightGBM como clasificadores.
-\end{itemize}
+del dataset en caso de ser necesarias.
 
 El dataset utilizado tiene un total de 4576 im\'agenes. Fue dividido en cuatro clases 
-fundamentales Melanoma, Carcinaoma Basal, Carcinoma Escamoso y Otros. La distribuci\'on 
-por cantidad de im\'agenes para el es la siguiente. 
+Melanoma, Carcinaoma Basal, Carcinoma Escamoso y Otras. La distribuci\'on 
+por im\'agenes por categor\'ias es la siguiente:
 \begin{itemize}
     \item Melanoma: 1000 para entrenamiento, 100 para pruebas y 100 para validaci\'on.
     \item Carcinoma Basal: 1000 para entrenamiento, 100 para pruebas y 100 para validaci\'on.
@@ -422,8 +418,53 @@ por cantidad de im\'agenes para el es la siguiente.
 \end{itemize}
 
 Se expandi\'o el conjunto de Carcinoma Escamoso para hacer que la cantidad de im\'agenes por 
-categor\'ias tenga la misma cantidad y evitar sesgos. La t\'ecnica utilizada fue tomar la imagen original
+categor\'ias sea la misma y evitar sesgos. La t\'ecnica utilizada fue tomar la imagen original
 y su versi\'on rotada 90 grados. Por tanto la cantidad de im\'agenes de Carcinoma Escamoso se 
-duplic\'o, teniendo as\'i 1000 im\'agenes de esta categor\'ia.
+duplic\'o, teniendo as\'i 1000 im\'agenes de esta categor\'ia. Si se analiza la tesis de Daniel\cite{tesisDaniel}
+se explica que tener un dataset descompensado puede provocar overfooting y malos resultados, 
+por ese motivo en esta tesis, no se hablar\'a de experimentos con el dataset sin configuraci\'on.
 
-\section{Me quede Aqui}
+El modelo utilizado es un h\'ibrido que combina clasificaci\'on binaria (melanoma o no melanoma)
+y posteriormente clasificaci\'on multiclase (Carcinoma Basal, Carcinoma Escamoso, Otras lesiones).
+El an\'alisis realizado en la tesis de Daniel\cite{tesisDaniel} determina que esta combinaci\'on
+tiene una alta sensibilidad a la detecci\'on del melanoma, con un $99.7\%$, lo cual en su momento
+(versiones anteriores de DermaUH) fue un objetivo de vital importancia. Al entrenar este modelo
+con el dataset mencionado y modificado se obtuvieron las m\'etricas expuestas en la tabla 
+\ref{tab:comparativa_metricas} y la matriz de confusi\'on de la Figura~\ref{matrix}.
+
+\begin{table}[ht]
+    \centering
+    \footnotesize
+    \caption{M\'etricas obtenidas con el modelo}
+    \label{tab:comparativa_metricas}
+    \begin{tabularx}{\textwidth}{|>{\raggedright\arraybackslash}X|>{\raggedright\arraybackslash}X|>{\raggedright\arraybackslash}X|>{\raggedright\arraybackslash}X|>{\raggedright\arraybackslash}X|>{\raggedright\arraybackslash}X|>{\raggedright\arraybackslash}X|}
+        \hline
+        \textbf{Clase} & \textbf{Presici\'on} & \textbf{Sensibilidad} & \textbf{F1} \\
+        \hline
+        Melanoma & 0.788 & 0.820 & 0.804 \\
+        \hline
+        Carcinoma Basal & 0.811 & 0.900 & 0.853 \\
+        \hline
+        Carcinoma Escamoso & 0.833 & 0.781 & 0.806 \\
+        \hline
+        Otras lesiones & 0.697 & 0.620 & 0.656 \\
+        \hline
+    \end{tabularx}
+\end{table}
+
+\begin{figure}[ht] 
+    \centering
+    \includegraphics[width=0.6\textwidth]{Graphics/Matrix.png}
+    \caption{Matriz de confusi\'on del modelo} 
+    \label{matrix}
+\end{figure}
+
+Estos resultados se deben a la poca cantidad de im\'agenes del dataset, en la versi\'on original del modelo
+se us\'o un dataset de mas de 50000 mil im\'agenes para entrenamiento y pruebas. Las m\'etricas
+expresan una sensibilidad no baja al melanoma. Aunque sea menor que la anterior, es un buen n\'umero
+cuando se habla en el contexto m\'edico, de cada 100 casos reales de melanoma, el modelo logra 
+detectar 82. La categor\'ia de otras lesiones es normal que se mantenga ``baja'', ya que estas
+im\'agenes son muy heter\'ogeneas y no siguen siempre un patr\'on visual como puede ser el caso 
+de los carcinomas. La matriz de confusi\'on es la explicaci\'on perfecta de lo anterior, ya que 
+muchas im\'agenes que deber\'ian ser calificadas como ``otras'' son confundidas con melanomas y 
+carcinomas basales.
