@@ -14,7 +14,7 @@ capacidades que debe ofrecer la plataforma y las condiciones de calidad que debe
 Finalmente, se aborda el análisis y diseño del sistema, incluyendo el modelado del negocio 
 mediante diagramas de casos de uso UML, el diseño arquitectónico (capas, cliente-servidor, 
 MVC) acompañado de su diagrama de componentes, y el diseño detallado con diagramas de 
-secuencia, diagrama de clases UML, y el modelo de base de datos (diagrama entidad-relación 
+secuencia y el modelo de base de datos (diagrama entidad-relación 
 y modelo relacional normalizado). De esta forma, se sientan las bases técnicas para la 
 implementación de una solución que responda a las necesidades específicas de los 
 dermatólogos cubanos.
@@ -176,6 +176,23 @@ usuario y las solicitudes de registro.
     \item \textbf{Solicitar diagn\'ostico a trav\'es de la imagen:} Esta opci\'on permite al doctor tomar una fotograf\'ia, ya sea con el m\'ovil o con el dermatoscopio y solicitar un diagn\'ostico aproximado de confianza proporcionado por un modelo de ML especializado en procesamiento de im\'agenes.
 \end{itemize}
 
+\subsection{Diagramas de Secuencia}
+\begin{figure}[ht] 
+    \centering
+    \includegraphics[width=0.8\textwidth]{Graphics/diagrama_secuencia_admin.png}
+    \caption{Diagrama de Secuencia del actor Admin} 
+    \label{adminSecuencia}
+\end{figure}
+
+La Figura~\ref{doctorSecuencia} muestra el diagrama de secuencia para el actor doctor.
+
+\begin{figure}[ht] 
+    \centering
+    \includegraphics[width=0.8\textwidth]{Graphics/diagrama_secuencia_doctor.png}
+    \caption{Diagrama de Secuencia del actor Doctor} 
+    \label{doctorSecuencia}
+\end{figure}
+
 \subsection{An\'alisis y propuesta arquitect\'onica}
 Una vez modelados los casos de uso que describen el comportamiento funcional del 
 sistema desde la perspectiva de los actores, el siguiente paso consiste en definir 
@@ -254,7 +271,7 @@ A continuaci\'on veremos algunas ventajas y desventajas del uso de esta arquitec
 \paragraph{Desventajas}
 \begin{enumerate}
     \item \textbf{Performance:} La comunicación por la red o internet es una de las tareas más tardadas de un sistema, incluso, en muchas ocasiones más tardado que el mismo procesamiento de los datos, por lo que el hecho de tener que comunicarnos de capa en capa genera un degrado significativo en el performance.
-    \item \textbf{Escalabilidad:} Las aplicaciones que implementan este patrón por lo general tienden a ser monolíticas, lo que dificulta su escalabilidad, aunque es posible replicar la aplicación completa en varios nodos, lo que provoca un escalado monolítico.
+    \item \textbf{Escalabilidad:} Las aplicaciones que implementan este patrón por lo general tienden a ser monolíticas, lo que dificulta su escalabilidad.
     \item \textbf{Tolerancia a los fallos:} Si una capa falla, todas las capas superiores comienzan a fallar en cascada.
 \end{enumerate}
 
@@ -271,7 +288,7 @@ de mensajería. Para lograr este aislamiento, Cockburn introduce dos conceptos c
 Un \textbf{puerto} es una interfaz que define un conjunto de operaciones que el dominio 
 ofrece o requiere. No contiene implementación alguna, solo la especificación de cómo 
 comunicarse con el dominio. Por ejemplo, un puerto podría ser \texttt{RepositorioPaciente} 
-(interfaz para guardar y recuperar pacientes), o \texttt{ServicioNotificaciones} 
+(interfaz para guardar y recuperar pacientes), otro podr\'ia ser \texttt{ServicioNotificaciones} 
 (interfaz para enviar correos electrónicos). Por otro lado, un \textbf{adaptador} 
 es una implementación concreta de un puerto que conecta el dominio con una tecnología 
 específica. Un adaptador concreto sería \texttt{RepositorioPacientePostgreSQL}, 
@@ -313,7 +330,7 @@ lógica de negocio (solo se escribe un nuevo adaptador), y retrasar decisiones t
 \paragraph{Ventajas específicas}
 Además de la independencia tecnológica, la arquitectura hexagonal ofrece:
 \begin{itemize}
-    \item \textbf{Testabilidad extrema}: Los casos de uso se pueden probar sin necesidad de levantar una base de datos real o un servidor web. Basta con inyectar adaptadores falsos (mocks) que simulen el comportamiento esperado. Esto acelera las pruebas unitarias y de integración.
+    \item \textbf{Comprobabilidad extrema}: Los casos de uso se pueden probar sin necesidad de levantar una base de datos real o un servidor web. Basta con inyectar adaptadores falsos (mocks) que simulen el comportamiento esperado. Esto acelera las pruebas unitarias y de integración.
     \item \textbf{Evolución incremental}: Permite añadir nuevos puertos y adaptadores a medida que el sistema crece, sin modificar el núcleo existente. Por ejemplo, si inicialmente solo se necesita una interfaz web, luego se puede agregar una API REST sin afectar el dominio.
     \item \textbf{Adaptabilidad a cambios tecnológicos}: Si un framework web queda obsoleto o se decide migrar de base de datos relacional a NoSQL, solo se deben reescribir los adaptadores correspondientes; el dominio permanece intacto.
 \end{itemize}
@@ -339,7 +356,7 @@ La Onion Architecture (o en capas de cebolla) fue implementada y presentada por 
 Palermo en 2008. Como todo patr\'on de arquitectura, este hace hincapi\'e en la divisi\'on
 de funciones y el desarrollo de componentes interconectados. Desde que vio la luz en el a\~no
 2008 ha ganado popularidad entre los ingenieros de software que buscan crear aplicaciones
-escalables, mantenibles y probadas. 
+escalables, con capacidad de mantenimiento y probadas. 
 
 Según el artículo 'Onion Architecture Used in Software Development' \cite{onion}, 
 publicado en ResearchGate (plataforma dedicada a la publicación de artículos científicos), 
@@ -374,9 +391,9 @@ y de manera resumida.
 \paragraph{Ventajas:}
 \begin{enumerate}
     \item Separaci\'on de responsabilidades: La arquitectura de capas fomenta una clara división de responsabilidades entre las múltiples capas de la aplicación. Esto aumenta la modularidad de la aplicación y facilita su comprensión y mantenimiento.
-    \item Testibilidad: Debido a que las capas de la arquitectura de cebolla están conectadas de forma flexible y pueden probarse por separado, escribir pruebas automatizadas para la aplicación resulta más sencillo.
+    \item Comprobabilidad: Debido a que las capas de la arquitectura de cebolla están conectadas de forma flexible y pueden probarse por separado, escribir pruebas automatizadas para la aplicación resulta más sencillo.
     \item Escalabilidad:Gracias a que las capas de la arquitectura cebolla pueden escalarse independientemente unas de otras, las aplicaciones pueden escalarse horizontalmente. A medida que la aplicación se expande, esto ofrece mayor rendimiento y fiabilidad.
-    \item Mantenibilidad: Los cambios en una capa no deberían afectar a las demás, ya que cada capa se encarga de una tarea específica. Esto simplifica la actualización y el mantenimiento de la aplicación a lo largo del tiempo.
+    \item Capacidad de Mantenimiento: Los cambios en una capa no deberían afectar a las demás, ya que cada capa se encarga de una tarea específica. Esto simplifica la actualización y el mantenimiento de la aplicación a lo largo del tiempo.
 \end{enumerate}
 
 \paragraph{Desventajas:}
@@ -397,14 +414,14 @@ cambios tecnológicos sin alterar la lógica de negocio principal.
 Clean Architecture se basa en conceptos previos como el estilo por Capas, 
 el patr\'on Hexagonal (Ports and Adapters) de Alistair Cockburn y la Arquitectura en 
 Cebolla (Onion Architecture) de Jeffrey Palermo, pero con un enfoque más claro en la 
-independencia de los componentes y la testabilidad del código. Clean Architecture
+independencia de los componentes y la comprobabilidad del código. Clean Architecture
 se gu\'ia por cuatro principios fundamentales\cite{cleanArchitecturePrincipios} los cuales
 ser\'an explicados a continuaci\'on:
 
 \begin{enumerate}
     \item \textbf{Independencia de cualquier framework:} La arquitectura limpia debe poder aplicarse a cualquier sistema, independientemente del lenguaje de programación o las bibliotecas/frameworks que utilice. Las capas deben estar tan bien separadas que puedan sobrevivir individualmente, sin necesidad de elementos externos.
-    \item \textbf{Testeable:} Cada módulo, tanto UI, base de datos, conexión API Rest, etc., debe poder probarse individualmente.
-    \item \textbf{Interfaz de usuario (UI) independiente:} La interfaz de usuario debe poder cambiar sin interrumpir todo el sistema. Esta capa debería vivir de forma tan independiente como para ser desmontada y sustituida por otra.
+    \item \textbf{Comprobabilidad:} Cada módulo, tanto UI, base de datos, conexión API Rest, etc., debe poder probarse individualmente.
+    \item \textbf{Interfaz de usuario (UI) independiente:} La interfaz de usuario debe poder cambiar sin interrumpir todo el sistema (Esta capa debería vivir de forma tan independiente como para ser desmontada y sustituida por otra).
     \item \textbf{Base de datos independiente:} Al igual que en el punto anterior, esta capa debe ser tan modular como para agregar múltiples fuentes de datos e incluso múltiples fuentes del mismo tipo de datos.
 \end{enumerate}
 
@@ -463,8 +480,8 @@ el Modelo Entidad-Relación, tambi\'en conocido como Diagrama de Entidad Relaci\
 
 Seg\'un un art\'iculo obtenido del sitio web UNIR\cite{MERX}, herramienta elaborada, desarrollada
 y dise\~nada con el prop\'osito de ayudar a los estudiantes de universidades europeas,
-El modelo entidad relación (ERD o modelos ER) es una herramienta que permite representar 
-de manera simplificada cómo personas, objetos o conceptos se relacionan entre sí. 
+el modelo entidad relación (ERD o modelos ER) es una herramienta que permite representar 
+de manera simplificada personas, objetos o conceptos que se relacionan entre sí. 
 Se utiliza para exponer cómo se organiza la información en una base de datos. 
 La creación del modelo entidad relación para su aplicación en el diseño de bases de 
 datos se le atribuye a Peter Chen, profesor del MIT, quien publicó en 1976 el documento  
@@ -515,11 +532,11 @@ depende de que exista un paciente. Se configuró con la regla de integridad refe
 \texttt{ON DELETE CASCADE} (eliminación en cascada)\cite{cascada}, de modo que si un paciente es 
 eliminado del sistema, todas sus lesiones asociadas se eliminan automáticamente.
 \begin{itemize}
-    \item idLesion: Llave primaria (PK), identificador \'unico de tipo entero. Es generado auto\'aticamente por el sistema de manera incremental.
+    \item idLesion: Llave primaria (PK), identificador \'unico de tipo entero. Es generado autom\'aticamente por el sistema de manera incremental.
     \item date: Fecha en la que se registra la lesi\'on. Es un campo de tipo date, no editable.
     \item phototype: Campo de tipo entero, solo puede tomar valores en el intervalo $[1;6]$ que se usa para almacenar el fototipo\footnote{El fototipo cutáneo, según la escala de Fitzpatrick, clasifica la piel del tipo I (siempre se quema, nunca se broncea) al VI (nunca se quema, piel muy pigmentada).} de la piel donde se encuentra ubicada la lesi\'on. El fototipo no es m\'as que la reacci\'on de la piel ante la exposici\'on a la luz solar.
     \item localization: Campo de tipo entero, toma valores en el intervalo $[1;10]$ y almacena la parte del cuerpo donde se encuentra la lesi\'on. 
-    \item histopathologicalDiagnosis: Campo de tipo bool. Indica si la lesi\'on fue diagnosticada histopat\'ologicamente, en otras palabras, afirma que se utilizaron equipos m\'edicos para obtener el diagn\'ostico.
+    \item histopathologicalDiagnosis: Campo de tipo bool. Indica si la lesi\'on fue diagnosticada histopat\'ologicamente, en otras palabras, afirma que se realizó biopsia y esta fue evaluada por un patólogo
     \item injuryType: Llave for\'anea (FK) que referencia a la entidad \textbf{Tipo de Lesi\'on}. Es un campo de tipo entero.
     \item patientId: Llave for\'anea (FK) que referencia a la entidad \textbf{Paciente}. Es un campo de tipo entero.
 \end{itemize}
@@ -529,10 +546,10 @@ Modelo utilizado para guardar los metadatos\cite{metadato} de las im\'agenes de 
 Cada lesi\'on puede tener muchas im\'agenes o no tener ninguna, al igual que la relaci\'on Paciente~Lesi\'on,
 esta tambi\'en se configur\'o con la regla \texttt{ON DELETE CASCADE}.
 \begin{itemize}
-    \item idImagen: Llave primaria (PK), identificador \'unico de tipo entero. Es generado auto\'aticamente por el sistema de manera incremental.
+    \item idImagen: Llave primaria (PK), identificador \'unico de tipo entero. Es generado autom\'aticamente por el sistema de manera incremental.
     \item imagen: Campo donde se almacenan los metadatos de la imagen en cuesti\'on.
     \item imagePath: ruta del archivo de imagen en el servidor.
-    \item imageType: Campo de tipo bool que indica True si una Imagen es dermatoc\'opica
+    \item imageType: Campo de tipo bool que indica True si una Imagen es dermatosc\'opica
     \item commentary: Campo de tipo texto, donde el usuario podr\'a exponer, si desea, una breve descripci\'on de la imagen. 
     \item injuryId: Llave for\'anea (FK) que referencia a la entidad \textbf{Lesi\'on}
 \end{itemize}
@@ -543,7 +560,7 @@ a lesiones registradas de pacientes. Una lesi\'on puede tener varios diagn\'osti
 es v\'alido tener diferentes criterios, por tanto la configuraci\'on de eliminaci\'on
 tambi\'en es \textbf{Cascada}. A continuaci\'on los atributos de la entidad de Diagn\'ostico
 \begin{itemize}
-    \item idDiagnosis: Llave primaria (PK), identificador \'unico de tipo entero. Es generado auto\'aticamente por el sistema de manera incremental.
+    \item idDiagnosis: Llave primaria (PK), identificador \'unico de tipo entero. Es generado autom\'aticamente por el sistema de manera incremental.
     \item date: Fecha en la que se realiza el diagn\'ostico. Es un campo de tipo date, no editable.
     \item commentary: Campo de tipo de texto, no obligatorio, representa comentarios dejados por el dermat\'ologo respecto a su diagn\'ostico.
     \item injuryId: Llave for\'anea (FK) que referencia a la entidad \textbf{Lesi\'on}

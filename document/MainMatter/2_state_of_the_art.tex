@@ -8,18 +8,17 @@ limitaciones para su implementación en el contexto cubano. En segundo lugar, se
 sistemas académicos de referencia, incluyendo el archivo ISIC (International Skin 
 Imaging Collaboration) y el conjunto de datos HAM10000, así como los modelos de 
 aprendizaje automático derivados de ellos. A continuación, se describen las técnicas 
-más relevantes de aprendizaje de máquinas en dermatología, con énfasis en las redes 
-neuronales convolucionales (CNN), el aprendizaje por transferencia y los enfoques de 
+más relevantes de aprendizaje de máquinas en dermatología, el aprendizaje por transferencia y los enfoques de 
 inteligencia artificial explicable (XAI), estos últimos particularmente importantes 
-para el objetivo de dotar al sistema de un modelo que justifique sus diagnósticos. 
+dotar al sistema de un modelo que justifique sus diagnósticos. 
 Finalmente, se identifica una brecha clara entre las soluciones existentes y los 
-requerimientos específicos del ecosistema DermaUH 3.0, lo que justifica el desarrollo 
+requerimientos específicos que debe cumplir DermaUH, lo que justifica el desarrollo 
 de una nueva versión adaptada a las condiciones de conectividad, disponibilidad de datos 
 y necesidades de los dermatólogos cubanos.
 
 \section{Herramientas existentes}
 
-En esta sección se realizará un análisis de las principales herramientas que se utilizan
+En esta sección se realizará un análisis de algunas de las aplicaciones que se utilizan
 para brindar ayuda en los diagnósticos dermatológicos. Dicho análisis se efectuará
 atendiendo a sus funcionalidades principales, ventajas y desventajas para el contexto cubano de 
 cada aplicación móvil o web.
@@ -53,11 +52,11 @@ el cual forma parte del objetivo principal de esta tesis.
     \label{logoDermEngine}
 \end{figure}
 
-\href{https://www.dermengine.com/es/}{DermEngine} es una plataforma de software 
+\href{https://www.dermengine.com/es/}{DermEngine}\cite{dermEngine} es una plataforma de software 
 inteligente diseñada específicamente para dermatología, cuyo principal objetivo es 
 optimizar el flujo de trabajo clínico mediante la integración de inteligencia 
 artificial en el análisis de imágenes dermatoscópicas. Entre sus funcionalidades más 
-relevantes se encuentran:
+relevantes se encuentran (estudio realizado en Marzo del 2026):
 \begin{enumerate}
     \item \textbf{Búsqueda visual inteligente (Visual Search)}: Utiliza un algoritmo de inteligencia artificial que compara una imagen de una lesión con una base de datos de miles de casos etiquetados. A partir de esta comparación, el sistema genera una lista de posibles diagnósticos y ofrece una estimación del riesgo de malignidad, actuando como una segunda opinión automatizada para el especialista.
     \item \textbf{Gestión integral de pacientes y lesiones}: Permite registrar y organizar la información clínica de los pacientes, incluyendo imágenes de sus lesiones, historiales de seguimiento y notas clínicas.
@@ -79,7 +78,7 @@ relevantes se encuentran:
     \item \textbf{Dependencia de conectividad a internet}: Plataforma basada en la nube, requiere conexión estable y rápida.
     \item \textbf{Costo de acceso}: Suscripción desde 99 USD mensuales, inaccesible para dermatólogos cubanos.
     \item \textbf{Barreras idiomáticas}: Interfaz y documentación principalmente en inglés.
-    \item \textbf{Falta de adaptación a la población cubana}: Modelos entrenados mayoritariamente con pieles claras, sin validación en fototipos oscuros.
+    \item \textbf{Falta de adaptación a la población cubana}: Modelos entrenados mayoritariamente con pieles claras, sin validación en fototipos II-VI (pieles m\'as oscuras).
 \end{enumerate}
 
 \subsection{SkinVision}
@@ -139,24 +138,23 @@ secundaria por expertos en casos de riesgo alto o en revisión, y entrega de res
     \label{logoVisualDx}
 \end{figure}
 
-\href{https://www.visualdx.com/}{VisualDx} es un sistema de apoyo a la decisión clínica que combina 
+\href{https://www.visualdx.com/}{VisualDx}\cite{visualDx} es un sistema de apoyo a la decisión clínica que combina 
 inteligencia artificial con una extensa biblioteca de imágenes médicas. Asiste a médicos no 
 especialistas (atención primaria, urgencias) en el diagnóstico de enfermedades de la piel, 
 reduciendo derivaciones a dermatología entre 25\% y 45\%.
 
 \subsubsection{Ventajas}
 \begin{enumerate}
-    \item \textbf{Enfoque en atención primaria}: Útil en contextos con acceso limitado al especialista.
-    \item \textbf{Biblioteca inclusiva de pieles oscuras}: Ha trabajado durante 20 años en incluir fototipos oscuros.
+    \item \textbf{Enfoque en atención primaria}: Útil en contextos con acceso limitado al especialista. Los usuarios podr\'an realizar consultas ``menores'' en caso de no poder asistir a la consulta del doctor.
+    \item \textbf{Biblioteca inclusiva de pieles oscuras}: Ha trabajado durante 20 años en incluir fototipos II-VI.
     \item \textbf{Apoyo al diagnóstico diferencial}: Basado en síntomas y demografía del paciente.
-    \item \textbf{Integración de IA y evidencia médica}: Contenido revisado por pares.
+    \item \textbf{Integración de IA y evidencia médica}: El usuario puede tomar una fotograf\'ia con su celular, no neceseriamente con el dermatoscopio. Acto seguido rellena informaci\'on sobre el paciente, como profesi\'on, exposici\'on al sol y antecedentes. La IA de VisualDx combina la imagen, con esa informaci\'on y genera un diagn\'ostico que luego ser\'a validado por el especialista.
 \end{enumerate}
 
 \subsubsection{Desventajas}
 \begin{enumerate}
-    \item \textbf{Costo prohibitivo}: Suscripciones entre 299.99€ y 649.99€ anuales.
+    \item \textbf{Costo prohibitivo}: Suscripciones entre 299.99 y 649.99 euros anuales.
     \item \textbf{Dependencia de internet}: Requiere conexión constante para acceder a la biblioteca y la IA.
-    \item \textbf{Sesgo persistente en pieles oscuras}: Estudios recientes (2024) muestran baja precisión en fototipos oscuros a pesar de la inclusión.
     \item \textbf{No diseñada para especialistas}: Orientada a médicos generales, no a dermatólogos para su práctica diaria.
 \end{enumerate}
 
@@ -185,7 +183,7 @@ En esta sección se analizaron herramientas con fines similares a DermaUH 3.0. A
 A partir del análisis se extraen los siguientes hechos concretos:
 
 \begin{enumerate}
-    \item \textbf{Conjunto de imágenes}: VisualDx incluye pieles oscuras pero con baja precisión; DermEngine y SkinVision usan mayoritariamente pieles claras, creando sesgo en población cubana.
+    \item \textbf{Conjunto de imágenes}: VisualDx incluye pieles oscuras, pero las m\'etricas de sus modelos son muy altas cuando debe clasificarlas; DermEngine y SkinVision usan mayoritariamente pieles claras, las pieles cubanas son en su mayor\'ia mestizas u oscuras, por tanto el hecho de tener solamente etnias claras provocar\'ia un sesgo y una bajada en las m\'etricas al analizar pieles cubanas.
     \item \textbf{Costo de suscripción}: Períodos de prueba gratuitos breves (7-30 días). Las suscripciones son inaccesibles para el sistema de salud cubano.
     \item \textbf{Modelo explicativo}: Ninguna herramienta incorpora inteligencia artificial explicable (XAI) que justifique el diagnóstico.
     \item \textbf{Rendimiento}: DermEngine incluye un video de 3 minutos en su portada; SkinVision abusa de animaciones y videos, degradando el rendimiento sin conexión rápida.
@@ -196,9 +194,9 @@ A partir del análisis se extraen los siguientes hechos concretos:
 Del análisis anterior, DermaUH 3.0 debe adoptar las siguientes decisiones de diseño:
 
 \begin{itemize}
-    \item \textbf{Modelo entrenado con pieles cubanas}: El modelo de IA debe ser entrenado y validado con un conjunto de datos representativo de fototipos oscuros (IV al VI) predominantes en Cuba, para evitar el sesgo observado.
+    \item \textbf{Modelo entrenado con pieles cubanas}: Buscar m\'as representatividad de los fototipos del IV-VI para el conjunto de datos de entrenamiento, los cuales son los predominantes en la poblaci\'on cubana.
     \item \textbf{Explicabilidad diagnóstica}: Incorporar un modelo XAI que justifique cada predicción, aumentando la confianza del especialista.
-    \item \textbf{Gratuidad total}: La plataforma será completamente gratuita para los dermatólogos cubanos, eliminando la barrera económica.
+    \item \textbf{Gratuidad total}: La plataforma será completamente gratuita para el sistema de salud cubanos, eliminando la barrera económica.
     \item \textbf{Optimización de rendimiento}: Priorizar un diseño ligero, con tiempos de carga optimizados y consumo eficiente de recursos, evitando videos o animaciones pesadas.
 \end{itemize}
 
@@ -213,7 +211,7 @@ académicos que sirven como base para el entrenamiento de modelos de IA:
 
 \subsection{ISIC Archive: Repositorio académico de referencia}
 
-La \textbf{International Skin Imaging Collaboration (ISIC) Archive} es un repositorio 
+La \textbf{International Skin Imaging Collaboration (ISIC) Archive}\cite{isic} es un repositorio 
 público de acceso abierto que contiene una de las colecciones más grandes y completas 
 del mundo de imágenes dermatoscópicas y metadatos clínicos asociados. Concebido para 
 apoyar la docencia, la investigación y el desarrollo de algoritmos de inteligencia 
@@ -224,7 +222,7 @@ estándar de oro) o por consenso de múltiples expertos, lo que garantiza un alt
 de fiabilidad diagnóstica. Su impacto trasciende lo puramente científico, pues las 
 competiciones anuales conocidas como \textit{ISIC Challenges} han permitido a la 
 comunidad de ciencia de la computación contribuir activamente a la mejora de estos 
-sistemas, empujando los límites del rendimiento de los modelos de aprendizaje automático.
+sistemas, moviendo los límites del rendimiento de los modelos de aprendizaje automático.
 
 \subsubsection{Organización de los datos}
 
@@ -282,7 +280,7 @@ que incorpora la atribución de diagnóstico para problemas multiclase.
 
 Este andamiaje de datos, etiquetas y desafíos competitivos ha posicionado a la ISIC Archive 
 como el estándar de facto para la comparación de algoritmos, impulsando el progreso en la 
-detección automatizada del melanoma a nivel mundial. Adem\'as de eso existen numeros conjuntos
+detección automatizada del melanoma a nivel mundial. Adem\'as de eso existen numerosos conjuntos
 de datos (Datasets), derivados de ISIC, que han sido utilizados en art\'iculos cient\'ificos,
 proyectos de ML e investigaciones relacionadas con la IA. A continuaci\'on una menci\'on y breve
 explicaci\'on de algunos de estos datasets.
@@ -303,7 +301,7 @@ resolución\cite{Derm12345}.
 
 \subsection{HAM10000}
 Otro art\'iculo presentado en la revista Natura, referido al dataset HAM10000 expresa que
-El conjunto de datos final consta de 10015 imágenes dermatoscópicas que se publican como 
+el conjunto de datos final consta de 10015 imágenes dermatoscópicas que se publican como 
 un conjunto de capacitación para fines académicos de aprendizaje automático y están 
 disponibles públicamente a través del archivo de la ISIC. Este conjunto de datos de 
 referencia se puede utilizar para el aprendizaje automático y para comparaciones con 
@@ -325,5 +323,11 @@ el clima y las temperaturas\cite{pielClima}. Por otro lado el dataset HAM10000, 
 conformado por un alto n\'umero de pieles claras, provocando que los modelos ML 
 que se pueden entrenar tengan un alto sesgo de este tipo de piel.
 
-\section{Técnicas de inteligencia artificial explicable (XAI) en dermatología}
-\textit{TODO:} \textbf{AQUI PONDRE LO QUE VEA EN LA TESIS DE AMANDA}
+\section{Técnicas de inteligencia artificial explicable XAI en dermatología}
+Seg\'un la tesis de la Licenciada Amanda Noris\cite{tesisAmanda}, la inteligencia artificial
+explicativa (XAI) surge como respuesta al creciente uso de modelos de IA cuyos procesos de toma
+desiciones son dif\'iciles de interpretar. Los m\'etodos XAI se dividen en dos grandes enfoques:
+\begin{itemize}
+    \item Modelos intr\'insicamente explicables: Buscan dise\~nar modelos cuya estructura sea comprensible por si misma. 
+    \item T\'ecnicas de explicaci\'on post-hoc: Interpretan modelos ya entrenados.
+\end{itemize}

@@ -4,7 +4,7 @@ mostrar y evidenciar el correcto funcionamiento de la aplicaci\'on. En este cap\
 se realizar\'an distintas pruebas con el objetivo de verificar si todos los requisitos, 
 casos de uso y objetivos de esta tesis, se lograron resolver. 
 
-\section{Pruebas de Flujo}
+\section{Pruebas de Flujo Administrador}
 En este apartado se llevar\'an a cabo pruebas de flujo para comprobar el correcto funcionamiento
 de la aplicaci\'on, mostrando im\'agenes reales. 
 
@@ -64,4 +64,13 @@ electr\'onico v\'ia gmail de que puede utilizar los servicios de DermaUH 3.0.
     \label{usuarioActivo}
 \end{figure}
 
-\section{Me quede aqui}
+\section{Pruebas de Flujo Doctor}
+Una vez analizadas las pruebas para el actor Admin, se prodecer\'a a realizar pruebas funcionales
+con un usuario cuyo rol es doctor. Las pruebas que se llevar\'an a cabo ser\'an: CRUD sobre la entidad
+paciente, creaci\'on de una lesi\'on, creaci\'on de un diagn\'ostico y subida de imagen, finalmente 
+se compartir\'a la lesi\'on con otro usuario, se entrar\'a al sistema con sus credenciales y se
+verificar\'a que la lesi\'on fue compartida exitosamente.
+
+\subsection{CRUD sobre Paciente}
+Esta prueba se realiza con el objetivo de comprobar si la aplicaci\'on soluciona de forma correcta
+el RF1. Para ello se inciar\'a sesi\'on con un usuario con permisos de Doctor, como se muestra en la 

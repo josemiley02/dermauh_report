@@ -7,7 +7,7 @@ para llevar a cabo esta conexi\'on t\'ecnico-medicinal. El dermat\'ologo debe da
 a las lesiones cut\'aneas de sus pacientes, de esa forma si estos poseen una enfermedad 
 grave, ser\'a diagnosticada a tiempo, elevando las posibilidades de cura o evoluci\'on positiva.
 
-Para este seguimiento, una herramienta fundamental es el dermatoscopio, un instrumento 
+Para este diagn\'ostico y seguimiento, una herramienta fundamental es el dermatoscopio, un instrumento 
 \'optico que permite visualizar estructuras de la piel no visibles a simple vista, 
 ampliando las im\'agenes y eliminando el reflejo de la luz superficial. Las im\'agenes 
 dermatosc\'opicas resultantes son el insumo principal para el an\'alisis de lesiones 
@@ -23,8 +23,8 @@ Para comprender el fundamento de estas soluciones y su aplicación en el anális
 es necesario partir de una definición formal.
 
 Según los autores del libro de referencia en la materia, Stuart Russell y Peter Norvig, 
-la Inteligencia Artificial se define como el estudio de agentes computacionales que operan 
-de forma autónoma, perciben su entorno, se adaptan al cambio y persiguen objetivos\cite{inteligenciaArtificial}
+la Inteligencia Artificial\cite{inteligenciaArtificial} se define como el estudio de agentes computacionales que operan 
+de forma autónoma, perciben su entorno, se adaptan al cambio y persiguen objetivos
 Como un subcampo de esta, el Machine Learning (o aprendizaje automático) es el estudio 
 de algoritmos que permiten a los programas informáticos mejorar automáticamente su 
 rendimiento a través de la experiencia\cite{machineLearning}. En esencia, el aprendizaje automático dota a los 
@@ -35,7 +35,8 @@ de M\'aquinas (ML, por sus siglas en ingl\'es) se han desarrollado diversas herr
 no solo a dermat\'ologos, sino al personal de salud en general, en sus diagn\'osticos a pacientes.
 Hoy en d\'ia el procesamiento de im\'agenes ha abierto nuevas puertas que permiten a los m\'edicos
 dar un seguimiento m\'as sencillo y c\'omodo de las distintas lesiones, disminuyendo la fatiga visual y
-el uso de equipos externos, adem\'as de ser usado para adiestramiento de futuros doctores. 
+el uso de equipos externos, adem\'as de ser usado para adiestramiento de futuros doctores. Es importante
+destacar que todas estas herramientas constituyen un apoyo, no sustituyen a los especialistas.
 
 \section{Motivaci\'on}
 La medicina tiene vital importancia para la sociedad, por ese motivo,
@@ -51,7 +52,7 @@ del sitio web DermaUH, el cual era capaz de suplir todas estas necesidades menci
 comodidades planteadas. Sin embargo, con el alto crecimiento que han tenido las herramientas de IA 
 y los modelos de ML, acompa\~nado de la falta de un buen conjunto de im\'agenes de pieles cubanas para entrenar
 el modelo desarrollado en su momento, se hace necesario desarrollar una nueva versi\'on de DermaUH y 
-vincularle un nuevo modelo m\'as potente con altos porcentajes de efectividad clasificando im\'agenes
+vincularle nuevos modelos m\'as potentes con altos porcentajes de efectividad clasificando im\'agenes
 de pieles cubanas.
 
 \section{Antecedentes}
@@ -81,7 +82,7 @@ al entorno offline. Implementada con Flutter y Dart, sigue los principios de Cle
 el patrón MVVM. Utiliza Isar DB como base de datos local embebida y Riverpod para la gestión de estado. 
 La aplicación permite a los dermatólogos, en ausencia de conexión a internet, registrar pacientes, 
 capturar imágenes de lesiones (clínicas y dermatoscópicas), y ejecutar un modelo de clasificación 
-de lesiones (Melanoma, Carcinoma Basocelular, Carcinoma Escamoso) mediante TensorFlow Lite embebido 
+de lesiones (Melanoma, Carcinoma Basocelular, Carcinoma Escamoso y Otros\footnote{Se refiere a cualquier lesi\'on no incluida en las tres mencionadas}) mediante TensorFlow Lite embebido 
 en el dispositivo. Los datos se almacenan localmente con campos de sincronización (\texttt{synced}, 
 \texttt{deleted}, \texttt{remoteId}) y se transmiten de forma unidireccional al servidor central 
 de DermaUH cuando se restablece la conectividad, mediante la API REST preexistente. 
@@ -90,7 +91,7 @@ problema de la dependencia de internet, pero su modelo de IA es únicamente clas
 (sin capacidades explicativas) y el procesamiento de imágenes se limita a la inferencia del 
 modelo previamente entrenado.
 
-\section{Formulaci\'on Del Problema}
+\section{Formulaci\'on del problema}
 DermaUH pretende ser una herramienta potente de apoyo a especialistas en dermatolog\'ia para
 el diagn\'ostico de las lesiones m\'as frecuentes de c\'ancer de la piel. La versi\'on 2.0, que
 actualmente corre, ha sido evaluada y se han detectado varios problemas que implicar\'an desarrollar
@@ -123,14 +124,14 @@ diagnósticos, y mejore el rendimiento y la seguridad de la plataforma?}
 Como objetivo general se tendr\'a desarrollar la versi\'on 3.0 de DermaUH, la cual tendr\'a un nuevo
 modelo de procesamiento de im\'agenes entrenado con im\'agenes de pieles cubanas, mejorar\'a el rendimiento
 de la aplicaci\'on tanto del frontend como el backend, mejorar\'a el protocolo de seguridad y manejo de solicitudes
-y notificaciones mediante un cliente de correo Email. Adem\'as esta versi\'on ser\'a validad en 2026
+y notificaciones mediante un cliente de correo Email. Adem\'as esta versi\'on ser\'a validada en 2027
 en ensayo cl\'inico. De aqu\'i se derivan varios objetivos espec\'ificos:
 
 \begin{enumerate}
     \item Analizar herramientas existentes para el trabajo con im\'agenes dermatosc\'opicas as\'i como sus ventajas y desventajas para el contexto cubano.
     \item Lograr el desarrollo del frontend y backend que supere las deficiencias presentadas en la v2.0.
     \item Mejorar las m\'etricas de los modelos desarrollados e incorporarlos a la app una vez que sean reentrenados con el nuevo conjunto de im\'agenes de pieles cubanas.
-    \item Lograr una app web y explique al especialista la decisi\'on del diagn\'ostico mediante el modelo explicativo (XAI) desarrollado por la Lic.Amanda Noris.
+    \item Lograr una app web que clasifique y explique al especialista la decisi\'on del diagn\'ostico mediante el modelo explicativo (XAI) desarrollado por la Lic.Amanda Noris\cite{tesisAmanda}.
 \end{enumerate}
 
 \section{Justificaci\'on}
