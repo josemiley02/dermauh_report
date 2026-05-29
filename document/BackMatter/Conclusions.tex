@@ -1,3 +1,83 @@
 \begin{conclusions}
-    Conclusiones
+El presente trabajo de diploma cumplió satisfactoriamente con el objetivo general de 
+desarrollar la versión 3.0 de DermaUH, incorporando un nuevo modelo de procesamiento de 
+imágenes entrenado con un conjunto de pieles cubanas, mejorando el rendimiento de la 
+aplicación y el protocolo de seguridad, e integrando un servicio de correo para la 
+gestión de notificaciones. La plataforma resultante constituye una evolución 
+significativa respecto a la versión anterior, al abordar las tres limitaciones 
+fundamentales identificadas en el estado del arte: la ausencia de un modelo explicativo 
+(XAI), el sesgo por entrenamiento con pieles claras y las deficiencias de rendimiento en 
+el frontend. A continuación, se exponen los logros alcanzados en relación con cada uno de 
+los objetivos específicos planteados.
+
+En cuanto al análisis de herramientas existentes para el diagnóstico dermatológico 
+asistido por inteligencia artificial, se examinaron en profundidad tres plataformas 
+comerciales (DermEngine, SkinVision y VisualDx) y tres repositorios académicos de 
+referencia (ISIC Archive, DERM12345 y HAM10000). El estudio evidenció que ninguna de 
+estas soluciones se adapta a las condiciones del sistema de salud cubano, debido a 
+barreras económicas (suscripciones anuales entre 50 y 1188 USD), dependencia absoluta de 
+conectividad a internet de alta velocidad, entrenamiento mayoritario con imágenes de 
+pieles claras (fototipos I-III) y ausencia total de modelos explicativos que permitan al 
+especialista comprender el razonamiento detrás de cada diagnóstico. Este análisis 
+fundamentó la decisión de desarrollar una solución propia, gratuita, optimizada para 
+entornos con conectividad limitada y basada en un modelo XAI alineado con criterios 
+clínicos establecidos (regla ABCDE, criterio de Menzies).
+
+Respecto al desarrollo del frontend y backend que supere las deficiencias de la versión 
+2.0, se implementó una aplicación web siguiendo el estilo arquitectónico por capas, con 
+React en el nivel de presentación (arquitectura basada en características), Django REST 
+Framework en el nivel de lógica de negocio (organizado en cuatro servicios independientes:
+auth\_service, email\_service, medical\_service e image\_service) y PostgreSQL como sistema 
+gestor de base de datos. El frontend redujo significativamente el tiempo de carga, 
+superando la latencia de diez segundos reportada en la versión anterior— al eliminar 
+animaciones pesadas y optimizar las peticiones asíncronas mediante Axios y hooks 
+personalizados. El backend mejoró el protocolo de seguridad mediante autenticación con 
+JWT (expiración a 8 horas, token de refresco en cookie HttpOnly) y comunicación cifrada 
+con HTTPS (RNF2), además de incorporar un servicio de correo electrónico que gestiona 
+notificaciones de registro, activación y restablecimiento de contraseña, cumpliendo así 
+con los requisitos RF4 y RF5.
+
+En relación con la mejora de las métricas de los modelos de clasificación mediante 
+reentrenamiento con el nuevo conjunto de imágenes de pieles cubanas proporcionado por el 
+MINSAP (4576 imágenes distribuidas en cuatro clases), se integró el modelo híbrido 
+desarrollado por Daniel Abad, que combina clasificación binaria (melanoma versus no melanoma) 
+seguida de clasificación multiclase (carcinoma basal, carcinoma escamoso, otras lesiones). 
+Las métricas obtenidas —precisión de 0.788 para melanoma, sensibilidad de 0.820 y F1 de 
+0.804, aunque inferiores al $99.7\%$ de sensibilidad reportado en versiones previas 
+entrenadas con conjuntos de mayor tamaño (más de 50000 imágenes), representan un resultado 
+clínicamente aceptable en el contexto de un dataset limitado y equilibrado mediante 
+técnicas de aumentación de datos (rotación a 90 grados). La categoría “otras lesiones” 
+presentó métricas más bajas (precisión 0.697, sensibilidad 0.620, F1 0.656), lo que se 
+atribuye a la heterogeneidad visual de este grupo, como se refleja en la matriz de 
+confusión donde muchas de estas imágenes fueron clasificadas erróneamente como melanoma o 
+carcinoma basal.
+
+Finalmente, se logró que la aplicación web clasificara y explicara al especialista la 
+decisión del diagnóstico mediante la integración del modelo explicativo (XAI) desarrollado 
+por Amanda Noris. Este modelo, basado en SHAP sobre un clasificador XGBoost, extrae las 
+características más relevantes de la imagen (asimetría, bordes irregulares, variaciones 
+de color, puntos negros, velo azulado) y las presenta al usuario en tres formatos 
+complementarios: numérico (lista ordenada de contribuciones), visual (superposición de 
+ejes de simetría, paletas de colores, contornos de bordes y máscaras de velo azulado) y 
+textual (descripciones generadas alineadas con la regla ABCDE y el criterio de Menzies).
+Las pruebas funcionales realizadas (registro de usuario, activación por administrador, 
+CRUD completo sobre pacientes, lesiones, diagnósticos e imágenes, compartición de lesiones
+entre doctores) demostraron que el sistema cumple con todos los requisitos funcionales 
+(RF1 a RF5) y no funcionales (RNF1 a RNF5) definidos en el capítulo 3, quedando pendiente 
+la validación en ensayo clínico programada para 2027.
+
+En síntesis, la versión 3.0 de DermaUH constituye una respuesta integral a las brechas 
+identificadas en el estado del arte: gratuidad total, entrenamiento con pieles cubanas 
+(fototipos IV-VI), integración de un modelo explicativo alineado con la práctica clínica 
+y optimización para entornos con conectividad variable. El principal aprendizaje derivado
+del proceso de desarrollo es que la precisión de un modelo de clasificación dermatológica 
+no puede desligarse de su capacidad para justificar sus predicciones ante el especialista; 
+de nada sirve un algoritmo con alta sensibilidad si sus decisiones permanecen opacas. 
+Asimismo, se constató que el equilibrio del dataset y la representatividad de las 
+categorías menos frecuentes (carcinoma escamoso) son factores críticos que condicionan el 
+rendimiento real del modelo, más allá de las métricas globales. Como trabajo futuro, se 
+recomienda expandir el conjunto de imágenes mediante colaboraciones con hospitales 
+provinciales, implementar un chatbot basado en LLMs (BioGPT con RAG) para consultas 
+interactivas, y desplegar el modelo de IA como microservicio independiente para facilitar 
+su actualización continua sin afectar al núcleo de la aplicación.
 \end{conclusions}

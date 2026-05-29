@@ -323,11 +323,106 @@ el clima y las temperaturas\cite{pielClima}. Por otro lado el dataset HAM10000, 
 conformado por un alto n\'umero de pieles claras, provocando que los modelos ML 
 que se pueden entrenar tengan un alto sesgo de este tipo de piel.
 
-\section{Técnicas de inteligencia artificial explicable XAI en dermatología}
-Seg\'un la tesis de la Licenciada Amanda Noris\cite{tesisAmanda}, la inteligencia artificial
-explicativa (XAI) surge como respuesta al creciente uso de modelos de IA cuyos procesos de toma
-desiciones son dif\'iciles de interpretar. Los m\'etodos XAI se dividen en dos grandes enfoques:
-\begin{itemize}
-    \item Modelos intr\'insicamente explicables: Buscan dise\~nar modelos cuya estructura sea comprensible por si misma. 
-    \item T\'ecnicas de explicaci\'on post-hoc: Interpretan modelos ya entrenados.
-\end{itemize}
+\section{Técnicas de inteligencia artificial explicativa (XAI) en dermatología}
+
+La inteligencia artificial explicativa (XAI) surge como respuesta al creciente uso de 
+modelos de aprendizaje automático cuyos procesos de toma de decisiones son difíciles de 
+interpretar, especialmente en dominios críticos como la medicina. En el contexto del 
+diagnóstico dermatológico asistido por IA, la capacidad de un modelo para justificar sus 
+predicciones resulta tan importante como su precisión, pues solo así los especialistas 
+pueden confiar en la herramienta y validar clínicamente sus sugerencias. Los métodos XAI 
+se dividen en dos grandes enfoques: los modelos intrínsecamente interpretables, cuya 
+estructura es comprensible por sí misma (como los árboles de decisión o los sistemas basados en reglas), 
+y las técnicas de explicación post-hoc, que interpretan modelos ya entrenados sin 
+modificar su arquitectura interna.
+
+Entre las técnicas post-hoc más difundidas en el análisis de imágenes médicas destaca 
+\textbf{Grad-CAM} (Gradient-weighted Class Activation Mapping), que genera mapas de calor 
+superpuestos sobre la imagen original para resaltar las regiones que más influyeron en la 
+predicción de una red neuronal convolucional. Esta herramienta ha sido ampliamente 
+utilizada en radiología, histopatología y dermatología para verificar si el modelo enfoca 
+correctamente la lesión y no artefactos o fondos irrelevantes. Sin embargo, como señala la 
+literatura especializada, los dermatólogos consideran que estos mapas de calor aportan 
+poca utilidad práctica para el diagnóstico diferencial, porque lo crucial no es la 
+ubicación global de la lesión en la imagen, sino las características internas de la propia 
+lesión (bordes, colores, texturas, estructuras). Por ello, se han explorado otras técnicas 
+que ofrecen explicaciones más alineadas con el razonamiento clínico.
+
+Una de esas técnicas es \textbf{SHAP} (Shapley Additive Explanations), basada en la teoría 
+de juegos cooperativos. SHAP asigna a cada característica de entrada un valor numérico que 
+representa su contribución a la predicción, tanto a nivel local (por cada instancia) como 
+global. En dermatología, SHAP ha sido aplicado sobre modelos basados en árboles (como 
+XGBoost) que trabajan con vectores de características clínicas extraídas de imágenes 
+(asimetría, variaciones de color, bordes irregulares, presencia de puntos negros o velo 
+azulado). A diferencia de los mapas de calor, SHAP proporciona una lista ordenada de las 
+características más relevantes, junto con el sentido (positivo o negativo) de su impacto, 
+lo que resulta mucho más comprensible para un especialista porque se alinea directamente 
+con criterios diagnósticos establecidos, como la regla ABCDE o el criterio de Menzies. 
+Otra técnica agnóstica al modelo es \textbf{LIME} (Local Interpretable Model-agnostic 
+Explanations), que aproxima localmente el comportamiento del modelo complejo mediante 
+un modelo interpretable (regresión lineal o árbol de decisión) a partir de perturbaciones 
+de la entrada. LIME se ha empleado en imágenes médicas para el diagnóstico temprano de 
+Parkinson con imágenes DaTSCAN, aunque su uso en dermatología es menos frecuente debido a 
+la menor estabilidad de sus explicaciones en comparación con SHAP.
+
+En el ámbito específico de las imágenes dermatoscópicas, la literatura reporta una amplia 
+variedad de aplicaciones de XAI. Se han utilizado \textbf{Grad-CAM} combinado con t-SNE 
+para explicar modelos ResNet en láminas histopatológicas de carcinomas basocelulares, y 
+\textbf{layer-wise relevance propagation (LRP)} para analizar melanomas en el conjunto 
+TCGA, destacando áreas con relevancia biológica. También se ha aplicado \textbf{KernelSHAP}
+para mejorar la interpretabilidad de modelos en imágenes dermatoscópicas, y se han 
+desarrollado sistemas de recuperación de imágenes basada en contenido (CBIR) que utilizan 
+Grad-CAM para explicar las similitudes encontradas. Un hallazgo relevante en estudios de 
+interacción humano-máquina es que, aunque los mapas de calor aumentan la confianza de 
+usuarios no expertos, los dermatólogos tienden a ignorarlos, lo que refuerza la necesidad
+de adoptar enfoques explicativos más próximos a su práctica clínica, como las listas de 
+características ponderadas o las explicaciones textuales generadas por modelos de lenguaje 
+especializados en biomedicina (BioGPT) en combinación con técnicas de recuperación 
+aumentada (RAG).
+
+En resumen, la elección de la técnica XAI adecuada para un sistema de apoyo al diagnóstico
+dermatológico depende críticamente del destinatario de la explicación. Para los 
+desarrolladores y evaluadores de modelos, herramientas visuales como Grad-CAM son útiles 
+para depurar sesgos y verificar el enfoque de la red. Para los dermatólogos, en cambio, 
+las explicaciones numéricas (SHAP) y las textuales (generadas con LLMs ajustados) resultan
+más efectivas, siempre que estén alineadas con los criterios diagnósticos que los 
+especialistas utilizan en su práctica diaria. Esta investigación se alinea con esta 
+última aproximación, pues DermaUH 3.0 incorporará un modelo explicativo capaz de 
+justificar sus sugerencias mediante la identificación y visualización de características 
+clínicamente relevantes.
+
+\section{Conclusiones del estado del arte}
+
+El análisis de las herramientas comerciales de diagnóstico dermatológico asistido por IA 
+(DermEngine, SkinVision y VisualDx) evidencia que, aunque técnicamente sofisticadas, 
+ninguna se adapta a las condiciones del sistema de salud cubano. Las tres presentan 
+barreras insalvables: costos de suscripción anual que oscilan entre 50 y 1188 dólares, 
+dependencia absoluta de conectividad a internet de alta velocidad, entrenamiento 
+mayoritario con imágenes de pieles claras (lo que introduce sesgos significativos al 
+aplicarse sobre fototipos IV-VI, predominantes en Cuba) y ausencia total de modelos 
+explicativos (XAI) que permitan al especialista comprender las razones detrás de cada 
+diagnóstico sugerido.
+
+Por otra parte, los repositorios académicos de referencia, como ISIC Archive, DERM12345 y 
+HAM10000, constituyen recursos valiosos para la investigación, pero adolecen de 
+limitaciones equivalentes: sus imágenes provienen mayoritariamente de poblaciones europeas 
+o asiáticas con fototipos claros o, en el mejor de los casos, de zonas de transición, y 
+no reflejan las características dermatológicas de la piel cubana, influida por factores 
+climáticos, genéticos y de exposición solar específicos del Caribe.
+
+En cuanto a las técnicas de inteligencia artificial explicativa (XAI), la literatura 
+revisada muestra que herramientas visuales como Grad-CAM resultan útiles para desarrolladores, 
+pero insuficientes para la práctica clínica, mientras que enfoques como SHAP, LIME y los 
+modelos de lenguaje especializados (BioGPT con RAG) ofrecen explicaciones numéricas y 
+textuales más alineadas con el razonamiento de los dermatólogos. Sin embargo, ninguna de 
+las herramientas comerciales analizadas incorpora estas capacidades explicativas.
+
+En consecuencia, se identifican las siguientes brechas que justifican el desarrollo de 
+DermaUH 3.0: (1) inexistencia de una plataforma gratuita, sin dependencia de internet, 
+orientada al especialista cubano; (2) falta de modelos entrenados con imágenes de pieles 
+cubanas fototipos IV-VI; (3) ausencia de sistemas que integren explicaciones clínicamente 
+relevantes (numéricas, visuales y textuales) alineadas con los criterios diagnósticos 
+estándar (ABCDE, Menzies, regla de los 7 puntos). El presente trabajo de diploma se 
+propone precisamente llenar estas brechas mediante una solución web que combine un modelo 
+de clasificación eficiente, entrenamiento con imágenes representativas de la población 
+cubana y un módulo explicativo basado en XAI.

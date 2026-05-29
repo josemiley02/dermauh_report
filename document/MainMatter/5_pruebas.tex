@@ -74,3 +74,185 @@ verificar\'a que la lesi\'on fue compartida exitosamente.
 \subsection{CRUD sobre Paciente}
 Esta prueba se realiza con el objetivo de comprobar si la aplicaci\'on soluciona de forma correcta
 el RF1. Para ello se inciar\'a sesi\'on con un usuario con permisos de Doctor, como se muestra en la 
+Figura~\ref{portalDoctor} muestra una p\'agina totalmente diferente a la visualizada con permisos
+de Admin. 
+
+\begin{figure}[ht] 
+    \centering
+    \includegraphics[width=0.6\textwidth]{Graphics/DoctorPortal.png}
+    \caption{P\'agina Principal del Doctor} 
+    \label{portalDoctor}
+\end{figure}
+
+A continuaci\'on se har\'an las pruebas de crear pacientes, editar la informaci\'on y eliminar.
+La Figura~\ref{doctorDashboard} muestra el listado de los pacientes que fueron registrados por el
+usuario que est\'a usando la applicaci\'on en este momento. 
+
+\begin{figure}[ht] 
+    \centering
+    \includegraphics[width=0.5\textwidth]{Graphics/pacientes.png}
+    \caption{P\'agina de los Pacientes del Doctor} 
+    \label{doctorDashboard}
+\end{figure}
+
+Al presionar el bot\'on Agregar Paciente, se muestra el formulario de la Figura~\ref{formularioPaciente}, 
+el cual se llena con los datos del paciente y luego se pulsa el bot\'on Guardar. Si todo sale bien, la 
+p\'agina de pacientes se autorecarga y muestra el paciente creado como muestra la Figura~\ref{pacienteCreado}
+
+\begin{figure}[ht] 
+    \centering
+    \includegraphics[width=0.6\textwidth]{Graphics/formularioPaciente.png}
+    \caption{Formulario de Registro de Pacientes} 
+    \label{formularioPaciente}
+\end{figure}
+
+\begin{figure}[ht] 
+    \centering
+    \includegraphics[width=0.5\textwidth]{Graphics/paginaPacienteActualizada.png}
+    \caption{P\'agina de los Pacientes del Doctor Actulizada} 
+    \label{pacienteCreado}
+\end{figure}
+
+El siguiente paso es editar la informaci\'on del paciente, para ello se pulsa el bot\'on Editar 
+que se encuentra en la tarjeta. Aparece una vez m\'as el formulario de la Figura~\ref{formularioPaciente}, 
+pero esta vez con los datos del paciente ya colocados por defento, de esa forma el usuario
+solo actualiza lo que desee, como se muestra en la Figura~\ref{formularioPacienteA}.
+
+\begin{figure}[ht] 
+    \centering
+    \includegraphics[width=0.6\textwidth]{Graphics/formularioPacienteA.png}
+    \caption{Formulario de Registro de Pacientes Actualizado para editar} 
+    \label{formularioPacienteA}
+\end{figure}
+
+La siguiente prueba ser\'a el b\'uscado con filtros. Para ello solo se probar\'a el filtro de b\'usqueda,
+no los de selecci\'on (sexo, color de piel). La Figura~\ref{pacientesFiltrados} muestra como
+quedar\'ia la p\'agina de pacientes si se realiza una b\'usqueda. 
+
+\begin{figure}[ht] 
+    \centering
+    \includegraphics[width=0.6\textwidth]{Graphics/juan.png}
+    \caption{Pacientes Filtrados por b\'usqueda} 
+    \label{pacientesFiltrados}
+\end{figure}
+
+\subsection{Lesiones, Diagn\'osticos e Im\'agenes}
+Ahora se proceder\'a con las lesiones del paciente. La siguiente de uso, ser\'a la creaci\'on 
+de una lesi\'on. Las tarjetas de los pacientes poseen un bot\'on ``Lesiones'', al pulsarlo,
+se abre la p\'agina de lesiones del paciente en cuesti\'on. Una vez all\'i se pulsa el bot\'on
+de ``Agregar Lesi\'on'' y se muestra en pantalla el formulario de registrar una nueva lesi\'on
+para el paciente. La Figura~\ref{registrarLesion} muestra el formulario de registro en el cual
+se debe seleccionar fototipo, regi\'on del cuerpo y diagn\'ostico inicial. Al finalizar 
+se tienen dos opciones, pulsar el bot\'on ``Registrar'', que simplemente guarda la lesi\'on
+en sistema, o puede pulsar ``Registrar y Subir Imagen'' que muestra en pantall un formulario 
+para subir im\'agenes, del cual se hablar\'a m\'as adelante.
+
+\begin{figure}[ht] 
+    \centering
+    \includegraphics[width=0.6\textwidth]{Graphics/registrarLesion.png}
+    \caption{Formulario de Registrar una Lesi\'on} 
+    \label{registrarLesion}
+\end{figure}
+
+Si todo sale bien, una vez la pantalla se actualiza y muestra la lesi\'on creada, como 
+se evidencia en la Figura~\ref{lesionCreada}
+
+\begin{figure}[ht] 
+    \centering
+    \includegraphics[width=0.6\textwidth]{Graphics/lesionCreada.png}
+    \caption{Lesi\'on Creada con \'Exito} 
+    \label{lesionCreada}
+\end{figure}
+
+La siguiente prueba ser\'a la creaci\'on de un diagn\'ostico, para la lesi\'on. Como se 
+observa en la Figura~\ref{lesionCreada}, las tarjetas de lesiones tienen un bot\'on
+``Detalles''. Al pulsar dicho bot\'on se muestra en pantalla una p\'agina donde se listan
+los diagn\'osticos de la lesi\'on y las im\'agenes que esta tiene asociadas. Como se muestra 
+en la Figura~\ref{lesionDetalles}
+
+\begin{figure}[ht] 
+    \centering
+    \includegraphics[width=0.6\textwidth]{Graphics/lesionDetalles.png}
+    \caption{Detalles de la Lesi\'on} 
+    \label{lesionDetalles}
+\end{figure}
+
+Al precionar el bot\'on ``Agregar Diagn\'ostico'', se muestra un formulario para registrar un nuevo diagn\'ostico
+para la lesi\'on. La Figura~\ref{formularioDiagnostico} muestra el formulario de registro de diagn\'ostico. Una 
+vez rellenado, si todos los datos estuvieron correctos, la p\'agina se actualiza y aparece el diagn\'ostico
+creado.
+
+\begin{figure}[ht] 
+    \centering
+    \includegraphics[width=0.6\textwidth]{Graphics/formDiagnostico.png}
+    \caption{Formulario de Registro de Diagn\'ostico} 
+    \label{formularioDiagnostico}
+\end{figure}
+
+La otra parte de la p\'agina es la de agregar im\'agenes. Si se presiona el bot\'on ``Agregar Imagen''
+el usuario podr\'a subir una imagen a la aplicaci\'on y esta asociarse con la lesi\'on actual. La Figura~\ref{formularioImagen} 
+muestra el formulario para subir una imagen, en el cual se debe especificar si es sencilla o dermatosc\'opica, se hace 
+un breve comentario si lo desea y luego se sube la imagen. La Figura~\ref{final} muestra como queda la p\'agina
+luego de diagnosticar una lesi\'on y subirle una imagen.
+
+\begin{figure}[ht] 
+    \centering
+    \includegraphics[width=0.6\textwidth]{Graphics/formImagen.png}
+    \caption{Formulario para subir una Imagen} 
+    \label{formularioImagen}
+\end{figure}
+
+\begin{figure}[ht] 
+    \centering
+    \includegraphics[width=0.6\textwidth]{Graphics/final.png}
+    \caption{Estado de la p\'agina de la lesi\'on luego de diagn\'ostico e imagen} 
+    \label{final}
+\end{figure}
+
+La \'ultima prueba ser\'a compartir lesiones entre doctores en el sistema. Esta prueba se realiz\'o
+con el objetivo de comprobar el caso de uso de compartir lesiones. Al presionar el bot\'on
+compartir en la tarjeta de una lesi\'on Figura~\ref{lesionCreada}, se muestra un listado con todos 
+los usuarios activos en el sistema, ver Figura~\ref{seleccionUsuarios}, ah\'i se selecciona con quien
+se desea compartir la imagen, y posteriormente, se pulsa el bot\'on compartir.
+
+\begin{figure}[ht] 
+    \centering
+    \includegraphics[width=0.6\textwidth]{Graphics/seleccionUsuario.png}
+    \caption{Selecci\'on de Usuario para compartir lesi\'on, bot\'on de confirmaci\'on y permisos de edici\'on} 
+    \label{seleccionUsuarios}
+\end{figure}
+
+Si se regresa a la p\'agina principal Figura~\ref{portalDoctor} y hace click en la pesta\~na ``Lesiones Compartidas'',
+se muestra la p\'agina de la Figura~\ref{LesionesCompartidas}, evidenciando que la lesi\'on
+se comparti\'o de forma exitosa. 
+
+\begin{figure}[ht] 
+    \centering
+    \includegraphics[width=0.6\textwidth]{Graphics/lesionesCompartidas.png}
+    \caption{Lesiones Compartidas por el usuario} 
+    \label{LesionesCompartidas}
+\end{figure}
+
+Para finalizar, se inici\'o sesi\'on con el usuario al cual se le comparti\'o la lesi\'on,
+para comprobar que la transacci\'on fue exitosa. La Figura~\ref{lesionesRecibidas} confirma
+que en efecto el usuario recibi\'o la lesi\'on de forma correcta con sus diagn\'osticos
+y sus im\'agenes, como muestra la Figura~\ref{detallesRecibida}. 
+
+\begin{figure}[ht] 
+    \centering
+    \includegraphics[width=0.6\textwidth]{Graphics/lesionesRecibidas.png}
+    \caption{Lesiones recibidas por el usuario} 
+    \label{lesionesRecibidas}
+\end{figure}
+
+\begin{figure}[ht] 
+    \centering
+    \includegraphics[width=0.6\textwidth]{Graphics/recibida.png}
+    \caption{Detalles de las lesiones recibidas por el usuario} 
+    \label{detallesRecibida}
+\end{figure}
+
+Todas estas pruebas funcionales demuestran el correcto funcionamiento de la aplicaci\'on.
+Tambi\'en evidencia que se lograron resolver todos los casos de uso y requerimientos planteados
+en esta tesis.
+
