@@ -88,7 +88,7 @@ el mismo servidor (por lo que no se trata de una arquitectura de microservicios 
 esta modularidad permite, por ejemplo, reemplazar o actualizar el servicio de imágenes 
 sin afectar al resto, siempre que se respeten las interfaces de comunicación. La Figura~\ref{microserviciosDjango} 
 muestra como fue dividido el backend en aplicaciones m\'as peque\~nas y de responsabilidad \'unica.
-Se opt\'o por este enfoce separatista por cuestiones de optimizaciones en las peticiones,
+Se opt\'o por este enfoce modular por cuestiones de optimizaciones en las peticiones,
 ahora en vez de existir una sola aplicaci\'on que consuma todas las solicitudes, existen varias 
 que leen y responden a solicitudes m\'as concretas.
 
@@ -114,14 +114,10 @@ Toda la informaci\'on se extrajo de la \href{https://docs.djangoproject.com/en/6
 {Documentaci\'on oficial de Django} y del foro \href{https://www.django-rest-framework.org/}{Django Rest-Framework}\footnote{Django RestFramework es una extensi\'on de Django muy utilizada para la construcci\'on de Web APIs a base de Django}.
 
 \subsubsection*{Model}
-La clase Model de Django, es un objeto que se usa para modelar las entidades de la base 
-de datos de un sistema. Todo Model debe estar vinculado con una \'unica tabla. Adem\'as
-se deben regir por los siguientes fundamentos:
-\begin{enumerate}
-    \item Cada modelo es una clase Python que hereda de la clase \texttt{django.db.models.Model}.
-    \item Cada atributo del modelo representa un campo de base de datos.
-    \item Con todo esto, Django ofrece una generación automática API de acceso a bases de datos.
-\end{enumerate}
+Seg\'un la documentaci\'on oficial de Django\cite{django2022}, los Models son clases 
+que se utilizan para mapear tablas de la base de datos. En s\'intesis, son la representaci\'on
+en c\'odigo de las entidades. Si una entidad posee una propiedad de tipo entero, entonces
+el modelo en Django, tendr\'a un campo de tipo IntegerField\footnote{Campo utilizado para representar enteros}.
 
 La Figura~\ref{modelDermatologist} muestra un ejemplo de como definir una entidad en Django,
 concretamente la entidad derm\'atologo. En la figura se muestra que la clase \texttt{Dermatologist}
@@ -160,7 +156,7 @@ de tipo POST.
 
 Como se muestra adem\'as en la figura anterior, con el serializer se puede hacer validaci\'on
 de datos (funci\'on validate) y adem\'as se pueden crear y guardar instancias. Esto es muy ventajoso
-en el desarrollo de aplicaciones, los serializers tiene la capacidad tanto de traducir datos, validarlos y crear o actualizar instancias.
+en el desarrollo de aplicaciones, los serializers tiene la capacidad de traducir datos, validarlos y crear o actualizar instancias.
 
 \subsection*{View}
 Las Views (vistas) en Django son el portal de la comunicaci\'on con aplicaciones externas, como el frontend.
@@ -171,9 +167,9 @@ que es la m\'as utilizada en el desarrollo, sin embargo existen otras como ListA
 que tambi\'en pueden usarse para listar o eliminar elementos respectivamente. La Figura~\ref{postView}
 muestra una vista que maneja una petici\'on POST, n\'otese como en el apartado ``request'' (cuerpo de la petici\'on)
 se hace referencia al serializer mostrado en la Figura~\ref{serializerPost}, evidenciando
-que el cuerpo de la solicitud en cuesti\'on debe ser igual al de la clase \texttt{Meta} en el serializer
+que el cuerpo de la solicitud en cuesti\'on debe ser igual al de la clase \texttt{Meta} en el serializer.
 
-\begin{figure}[ht] 
+\begin{figure}[ht]
     \centering
     \includegraphics[width=0.6\textwidth]{Graphics/postView.png}
     \caption{View para peticiones Post} 
@@ -192,6 +188,16 @@ su funcionamiento puede ser consultado en la documentaci\'on oficial de RestFram
     \caption{View para listado de usuarios} 
     \label{listView}
 \end{figure}
+
+Existe adem\'as una alternativa de Views, que es la ModelViewSet. Este objeto proporciona
+un conjunto de vistas predefinidas, que cumplen con las operaciones CRUD. Esta opci\'on
+es totalmente v\'alida y utilizable en proyectos de programaci\'on. Sin embargo para el 
+desarrollo de DermaUH 3.0 siempre se opt\'o por un enfoque modular, en todos los sentidos,
+el ModelViewSet agrupa todas las View en un solo objeto, si por alg\'un motivo desconocido
+una de las vistas deja de responder, esto puede provocar que el resto de las operaciones que
+engloba el conjunto de Views, sean inaccesibles hasta que se solucione el error. Al separarlos
+en varias vistas, permite que si alguna est\'a desconectada, o en mantenimiento, los usuarios
+puedan seguir utilizando otras funcionalidades sin problema.
 
 Una vez entendido los conceptos claves de la programaci\'on con Django, a continuaci\'on
 se har\'a una explicaci\'on m\'as detallada de cada uno de los servicios que componen el
@@ -371,14 +377,13 @@ solo muestran las funciones que invocan a los servicios de crear y listar pacien
     \label{patientHook}
 \end{figure}
 
-Llama a la atenci\'on la funci\'on \texttt{useState}. Esta funci\'on tambi\'en es un hook
-que se utiliza para manejar el estado local de los componentes o funciones. En la imagen
-se utiliza para asignar un valor incial a las constantes \texttt{loading} y \texttt{error},
-pero tambi\'en se puede utilizar para formularios u objetos m\'as complejos. En s\'intesis
-useState permite a los componentes funcionales tener su propio estado interno. Otro hook muy 
-utilizado es \texttt{useEffect} fundamental en peticiones que requieren de 
-forma necesaria un car\'acter as\'incrono, como cargar listas o detalles de un paciente (o
-cualquier entidad). \newpage
+Este hook fue implementado para encapsular toda la l\'ogica relacionada con pacientes
+en un solo lugar, sin dispersarla entre m\'ultiples componentes. Esto permite reutilizar
+esa misma l\'ogca en diferentes partes de la aplicaci\'on (ejemplo PatientList, PatientForm y
+PatientDetails) sin duplicar c\'odigo. Además, al centralizar el manejo de estados como 
+loading, error y los datos de pacientes, se facilita el mantenimiento y las pruebas 
+unitarias, ya que los componentes solo se comunican con el hook sin conocer los detalles 
+de implementación de las peticiones HTTP.
 
 \subsubsection*{Components}
 Los componentes son los bloques de construcción fundamentales de cualquier interfaz en 
@@ -414,8 +419,9 @@ el dataset utilizado tiene un total de 4576 im\'agenes. Se extrajo de la platafo
 Kaggle\footnote{Plataforma especializada en estudios estad\'isticos y trabajos de aprendizaje de m\'aquinas},
 y es una mezcla entre varios archivos dedicados a la dermatoscop\'ia. 
 el dataset Fue dividido en cuatro clases (Ya tra\'ia una divisi\'on de 8 clases, se tomaron)
-Melanoma, Carcinaoma Basal, Carcinoma Escamoso y Otras. La distribuci\'on 
+Melanoma, Carcinoma Basal, Carcinoma Escamoso y Otras. La distribuci\'on 
 de im\'agenes por categor\'ias qued\'o de la siguiente manera:
+
 \begin{itemize}
     \item Melanoma: 1000 para entrenamiento, 100 para pruebas y 100 para validaci\'on.
     \item Carcinoma Basal: 1000 para entrenamiento, 100 para pruebas y 100 para validaci\'on.
@@ -427,11 +433,22 @@ Se expandi\'o el conjunto de Carcinoma Escamoso para hacer que la cantidad de im
 categor\'ias sea la misma y evitar sesgos. La t\'ecnica utilizada fue tomar la imagen original
 y su versi\'on rotada 90 grados. Por tanto la cantidad de im\'agenes de Carcinoma Escamoso se 
 duplic\'o, teniendo as\'i 1000 im\'agenes de esta categor\'ia. Si se analiza la tesis de Daniel\cite{tesisDaniel}
-se explica que tener un dataset descompensado puede provocar overfooting y malos resultados, 
+se explica que tener un dataset desequilibrado puede provocar sobreajuste y malos resultados, 
 por ese motivo en esta tesis, no se hablar\'a de experimentos con el dataset sin configuraci\'on.
 
-El modelo utilizado es un h\'ibrido que combina clasificaci\'on binaria (melanoma o no melanoma)
-y posteriormente clasificaci\'on multiclase (Carcinoma Basal, Carcinoma Escamoso, Otras lesiones).
+Al no utilizar un dataset de pieles cubanas, las m\'etricas obtenidas no son las esperadas y 
+el comportamiento del modelo tampoco ser\'a el deseado. Las fuentes de las que Kaggle obtiene
+conjuntos de im\'agenes, son las analizadas en el estado del arte de esta tesis (ver cap\'itulo 2).
+Por tanto presentan todas las limitaciones mencionadas en su an\'alisis, incumpliendo con 
+un requerimiento de la nueva versi\'on.
+
+El modelo utilizado es un h\'ibrido dividido en dos fases de clasificaci\'on.
+Una primera fase binaria (melanoma o no melanoma),
+realizada con una SVM (M\'aquina de Soporte Vectorial)\cite{svm} entrenada sobre vectores
+de caracter\'isticas extra\'idos con DINOv2\cite{dinov2}. La segunda fase es una 
+clasificaci\'on multiclase (Carcinoma Basal, Carcinoma Escamoso, Otras lesiones), realizada 
+con mediante un Vision Transformer\cite{visionTransformer} preentrenado en 
+ImagenNet-21k al que se aplic\'o Fine Tunin\cite{tesisDaniel}.
 El an\'alisis realizado en la tesis de Daniel\cite{tesisDaniel} determina que esta combinaci\'on
 tiene una alta sensibilidad a la detecci\'on del melanoma, con un $99.7\%$, lo cual en su momento
 (versiones anteriores de DermaUH) fue un objetivo de vital importancia. Al entrenar este modelo
