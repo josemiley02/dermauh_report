@@ -565,3 +565,6 @@ tambi\'en es \textbf{Cascada}. A continuaci\'on los atributos de la entidad de D
     \item commentary: Campo de tipo de texto, no obligatorio, representa comentarios dejados por el dermat\'ologo respecto a su diagn\'ostico.
     \item injuryId: Llave for\'anea (FK) que referencia a la entidad \textbf{Lesi\'on}
 \end{itemize}
+
+\subsubsection{Normalización del modelo}
+El modelo relacional propuesto cumple con la Tercera Forma Normal (3FN), ya que todos los atributos no clave dependen directamente de la clave primaria de su entidad y no existen dependencias transitivas. Por ejemplo, en la entidad \texttt{Lesión}, el atributo \texttt{phototype} depende exclusivamente de \texttt{idLesion} y no de \texttt{patientId}; asimismo, las claves foráneas no generan dependencias funcionales no primas. Esta normalización garantiza la integridad de los datos, evita anomalías de actualización y redundancias, lo que resulta esencial para un sistema clínico donde la consistencia de la información es prioritaria.

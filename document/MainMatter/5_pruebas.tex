@@ -1,258 +1,247 @@
-\chapter{Pruebas Funcionales}
-Las pruebas funcionales son escenciales en el desarrollo de software, ya que permiten
-mostrar y evidenciar el correcto funcionamiento de la aplicaci\'on. En este cap\'itulo 
-se realizar\'an distintas pruebas con el objetivo de verificar si todos los requisitos, 
-casos de uso y objetivos de esta tesis, se lograron resolver. 
+\chapter{Validación de la Aplicación}
 
-\section{Pruebas de Flujo Administrador}
-En este apartado se llevar\'an a cabo pruebas de flujo para comprobar el correcto funcionamiento
-de la aplicaci\'on, mostrando im\'agenes reales. 
+Las pruebas funcionales constituyen un pilar fundamental en el proceso de desarrollo de software, pues permiten demostrar de manera sistemática el correcto funcionamiento de la aplicación frente a los requisitos establecidos. En el presente capítulo se documentan las pruebas ejecutadas con el objetivo de verificar el cumplimiento de todos los requisitos funcionales, los casos de uso y los objetivos generales y específicos planteados en esta tesis. La validación se organiza en tres grandes apartados: pruebas de flujo sobre los actores principales (Administrador y Doctor), pruebas de estrés para evaluar el comportamiento bajo carga y pruebas de rendimiento del frontend.
 
-\subsection{Solicitud de Registro}
-Con esta prueba se busca mostrar el correcto funcionamiento de la solicitud de registro,
-y luego su posterior activac\'on. Para ello se cuenta con un usuario que tiene permisos de administraci\'on,
-es decir, como se mencion\'on al hablar de los diagramas UML, el actor Admin, es quien puede
-realizar las operaciones CRUD sobre los usarios. La Figure~\ref{formularioRegistro}, muestra
-como se ve un formulario de registro en DermaUH 3.0 \newpage
+\section{Pruebas de flujo del administrador}
+
+Esta sección presenta las pruebas de flujo realizadas para comprobar el correcto funcionamiento de las operaciones asociadas al rol de administrador, en particular la gestión de solicitudes de registro y la activación de usuarios.
+
+\subsection{Solicitud de registro y activación de usuarios}
+
+La prueba tiene como objetivo demostrar que el proceso de registro de un nuevo usuario y su posterior activación por parte del administrador funciona correctamente. Para ello se emplea una cuenta con permisos de administrador, quien es el único facultado para realizar operaciones CRUD sobre los usuarios del sistema.
+
+La Figura~\ref{formularioRegistro} muestra el formulario de registro que debe completar cualquier persona que desee acceder al sistema. Una vez enviada la solicitud, el administrador recibe una notificación por correo electrónico informándole de la existencia de un nuevo usuario pendiente de aprobación. A continuación, el administrador inicia sesión en el sistema. La Figura~\ref{adminPage} presenta la pantalla principal del administrador, que incluye un contador de solicitudes pendientes, así como el número de doctores y residentes activos. Al hacer clic en el botón “Pendientes”, se despliega el listado de usuarios que esperan confirmación (Figura~\ref{pendientes}).
+
 \begin{figure}[ht] 
     \centering
     \includegraphics[width=0.6\textwidth]{Graphics/registro.png}
-    \caption{Formulario de Registro} 
+    \caption{Formulario de registro de nuevos usuarios.}
     \label{formularioRegistro}
 \end{figure}
 
-Una vez relleno el formulario, la solicitud es enviada al administrador, quien recibe un correo
-alertando que tiene un nuevo usuario pendiente de respuesta. Acto seguido el administrador entra
-al sistema con las credenciales correspondientes. La Figura~\ref{adminPage} muestra como se ve
-la p\'agina principal de los usarios, tiene un contador de solicitudes pendientes, doctores activos
-y residentes activos. Al presionar el bot\'on ``Pendientes'', se muestra la lista de usuarios que 
-esperan confirmaci\'on para entrar al sistema, Figura~\ref{pendientes}. 
 \begin{figure}[ht] 
     \centering
     \includegraphics[width=0.8\textwidth]{Graphics/adminPage.png}
-    \caption{P\'agina del Administrador} 
+    \caption{Página principal del administrador.}
     \label{adminPage}
 \end{figure}
+
 \begin{figure}[ht] 
     \centering
     \includegraphics[width=0.8\textwidth]{Graphics/pendientes.png}
-    \caption{Usuarios Pendientes} 
+    \caption{Listado de usuarios pendientes de activación.}
     \label{pendientes}
 \end{figure}
 
-Si se fija, en el listado de usuarios pendientes, cada tarjeta posee un bot\'on ``Activar'',
-al presionarlo se muestra el formulario de la Figure~\ref{formularioActivar}, el cual decide
-que permisos tendr\'a el usuario en cuesti\'on. Solo se puede tener un permiso a la vez,
-el front se configur\'o de tal forma que solo se puede escoger uno.\newpage
+Cada tarjeta de usuario pendiente incluye un botón “Activar”. Al presionarlo se muestra el formulario de la Figura~\ref{formularioActivar}, en el que el administrador debe asignar los permisos correspondientes (administrador, doctor o residente). El sistema permite seleccionar únicamente un rol por usuario.
 
 \begin{figure}[ht] 
     \centering
     \includegraphics[width=0.6\textwidth]{Graphics/activarFormulario.png}
-    \caption{Formulario Activar Usuario} 
+    \caption{Formulario para asignar rol al usuario.}
     \label{formularioActivar}
 \end{figure}
 
-Una vez escogido el rol del usuario, para este caso, se seleccion\'o doctor, se pulsa el bot\'on
-activar. Si no hay ning\'un problema, deber\'ia aparecer un mensaje de usuario activado correctamente
-como se muestra en la Figure~\ref{usuarioActivo}. Una vez activado el usuario, este recibe un correo 
-electr\'onico v\'ia gmail de que puede utilizar los servicios de DermaUH 3.0.
+Una vez seleccionado el rol (en este caso, “doctor”) y pulsado el botón de activación, el sistema muestra un mensaje de confirmación (Figura~\ref{usuarioActivo}) y envía automáticamente un correo electrónico al usuario informándole que ya puede utilizar los servicios de DermaUH 3.0. Con esto se verifica el correcto cumplimiento de los requisitos RF4 y RF5.
 
 \begin{figure}[ht] 
     \centering
     \includegraphics[width=0.6\textwidth]{Graphics/seActivoBien.png}
-    \caption{Mensaje de que el usuario fue activado con \'exito} 
+    \caption{Mensaje de activación exitosa.}
     \label{usuarioActivo}
 \end{figure}
 
-\section{Pruebas de Flujo Doctor}
-Una vez analizadas las pruebas para el actor Admin, se prodecer\'a a realizar pruebas funcionales
-con un usuario cuyo rol es doctor. Las pruebas que se llevar\'an a cabo ser\'an: CRUD sobre la entidad
-paciente, creaci\'on de una lesi\'on, creaci\'on de un diagn\'ostico y subida de imagen, finalmente 
-se compartir\'a la lesi\'on con otro usuario, se entrar\'a al sistema con sus credenciales y se
-verificar\'a que la lesi\'on fue compartida exitosamente.
+\section{Pruebas de flujo del doctor}
 
-\subsection{CRUD sobre Paciente}
-Esta prueba se realiza con el objetivo de comprobar si la aplicaci\'on soluciona de forma correcta
-el RF1. Para ello se inciar\'a sesi\'on con un usuario con permisos de Doctor, como se muestra en la 
-Figura~\ref{portalDoctor} muestra una p\'agina totalmente diferente a la visualizada con permisos
-de Admin. 
+Una vez validado el flujo del administrador, se procede a verificar las funcionalidades disponibles para los usuarios con rol de doctor. Las pruebas cubren las operaciones CRUD sobre la entidad Paciente, la creación de lesiones, diagnósticos, subida de imágenes y el mecanismo de compartición de lesiones entre especialistas.
+
+\subsection{Operaciones CRUD sobre pacientes}
+
+Esta prueba tiene como objetivo comprobar el cumplimiento del requisito funcional RF1 (gestión completa de pacientes). Se inicia sesión con un usuario que dispone de permisos de doctor. La Figura~\ref{portalDoctor} muestra la página principal del doctor, que difiere notablemente de la interfaz del administrador.
 
 \begin{figure}[ht] 
     \centering
     \includegraphics[width=0.6\textwidth]{Graphics/DoctorPortal.png}
-    \caption{P\'agina Principal del Doctor} 
+    \caption{Página principal del doctor.}
     \label{portalDoctor}
 \end{figure}
 
-A continuaci\'on se har\'an las pruebas de crear pacientes, editar la informaci\'on y eliminar.
-La Figura~\ref{doctorDashboard} muestra el listado de los pacientes que fueron registrados por el
-usuario que est\'a usando la applicaci\'on en este momento. 
+La Figura~\ref{doctorDashboard} presenta el listado de pacientes registrados por el doctor actual. Desde esta pantalla se puede acceder a las operaciones de creación, edición, eliminación y búsqueda de pacientes.
 
 \begin{figure}[ht] 
     \centering
     \includegraphics[width=0.5\textwidth]{Graphics/pacientes.png}
-    \caption{P\'agina de los Pacientes del Doctor} 
+    \caption{Listado de pacientes del doctor.}
     \label{doctorDashboard}
 \end{figure}
 
-Al presionar el bot\'on Agregar Paciente, se muestra el formulario de la Figura~\ref{formularioPaciente}, 
-el cual se llena con los datos del paciente y luego se pulsa el bot\'on Guardar. Si todo sale bien, la 
-p\'agina de pacientes se autorecarga y muestra el paciente creado como muestra la Figura~\ref{pacienteCreado}
+Al pulsar el botón “Agregar Paciente” se despliega el formulario de la Figura~\ref{formularioPaciente}. Tras completar los datos y guardar, el sistema actualiza automáticamente el listado, mostrando el nuevo paciente (Figura~\ref{pacienteCreado}).
 
 \begin{figure}[ht] 
     \centering
     \includegraphics[width=0.6\textwidth]{Graphics/formularioPaciente.png}
-    \caption{Formulario de Registro de Pacientes} 
+    \caption{Formulario de registro de pacientes.}
     \label{formularioPaciente}
 \end{figure}
 
 \begin{figure}[ht] 
     \centering
     \includegraphics[width=0.5\textwidth]{Graphics/paginaPacienteActualizada.png}
-    \caption{P\'agina de los Pacientes del Doctor Actulizada} 
+    \caption{Listado de pacientes actualizado tras el alta.}
     \label{pacienteCreado}
 \end{figure}
 
-El siguiente paso es editar la informaci\'on del paciente, para ello se pulsa el bot\'on Editar 
-que se encuentra en la tarjeta. Aparece una vez m\'as el formulario de la Figura~\ref{formularioPaciente}, 
-pero esta vez con los datos del paciente ya colocados por defento, de esa forma el usuario
-solo actualiza lo que desee, como se muestra en la Figura~\ref{formularioPacienteA}.
+Para la edición, se selecciona el botón “Editar” en la tarjeta correspondiente. El formulario se carga con los datos existentes (Figura~\ref{formularioPacienteA}) y permite modificar la información. Para la búsqueda, se emplea el filtro de texto; la Figura~\ref{pacientesFiltrados} ejemplifica el resultado de una consulta por el nombre “Juan”.
 
 \begin{figure}[ht] 
     \centering
     \includegraphics[width=0.6\textwidth]{Graphics/formularioPacienteA.png}
-    \caption{Formulario de Registro de Pacientes Actualizado para editar} 
+    \caption{Formulario de edición de pacientes con datos precargados.}
     \label{formularioPacienteA}
 \end{figure}
-
-La siguiente prueba ser\'a el b\'uscado con filtros. Para ello solo se probar\'a el filtro de b\'usqueda,
-no los de selecci\'on (sexo, color de piel). La Figura~\ref{pacientesFiltrados} muestra como
-quedar\'ia la p\'agina de pacientes si se realiza una b\'usqueda. 
 
 \begin{figure}[ht] 
     \centering
     \includegraphics[width=0.6\textwidth]{Graphics/juan.png}
-    \caption{Pacientes Filtrados por b\'usqueda} 
+    \caption{Resultado de búsqueda de pacientes por filtro de texto.}
     \label{pacientesFiltrados}
 \end{figure}
 
-\subsection{Lesiones, Diagn\'osticos e Im\'agenes}
-Ahora se proceder\'a con las lesiones del paciente. La siguiente de uso, ser\'a la creaci\'on 
-de una lesi\'on. Las tarjetas de los pacientes poseen un bot\'on ``Lesiones'', al pulsarlo,
-se abre la p\'agina de lesiones del paciente en cuesti\'on. Una vez all\'i se pulsa el bot\'on
-de ``Agregar Lesi\'on'' y se muestra en pantalla el formulario de registrar una nueva lesi\'on
-para el paciente. La Figura~\ref{registrarLesion} muestra el formulario de registro en el cual
-se debe seleccionar fototipo, regi\'on del cuerpo y diagn\'ostico inicial. Al finalizar 
-se tienen dos opciones, pulsar el bot\'on ``Registrar'', que simplemente guarda la lesi\'on
-en sistema, o puede pulsar ``Registrar y Subir Imagen'' que muestra en pantall un formulario 
-para subir im\'agenes, del cual se hablar\'a m\'as adelante.
+\subsection{Gestión de lesiones, diagnósticos e imágenes}
+
+A continuación se validan las operaciones relacionadas con lesiones, diagnósticos e imágenes. Desde el listado de pacientes, el botón “Lesiones” permite acceder a la página de lesiones de un paciente concreto. Una vez allí, el botón “Agregar Lesión” muestra el formulario de la Figura~\ref{registrarLesion}, donde se debe seleccionar el fototipo, la región del cuerpo y el diagnóstico inicial. El formulario ofrece dos opciones: “Registrar” (solo guarda la lesión) o “Registrar y Subir Imagen” (guarda y redirige al formulario de subida de imágenes).
 
 \begin{figure}[ht] 
     \centering
     \includegraphics[width=0.6\textwidth]{Graphics/registrarLesion.png}
-    \caption{Formulario de Registrar una Lesi\'on} 
+    \caption{Formulario de registro de lesión.}
     \label{registrarLesion}
 \end{figure}
 
-Si todo sale bien, una vez la pantalla se actualiza y muestra la lesi\'on creada, como 
-se evidencia en la Figura~\ref{lesionCreada}
+Si la operación es exitosa, la pantalla se actualiza y muestra la nueva lesión (Figura~\ref{lesionCreada}).
 
 \begin{figure}[ht] 
     \centering
     \includegraphics[width=0.6\textwidth]{Graphics/lesionCreada.png}
-    \caption{Lesi\'on Creada con \'Exito} 
+    \caption{Lesión creada exitosamente.}
     \label{lesionCreada}
 \end{figure}
 
-La siguiente prueba ser\'a la creaci\'on de un diagn\'ostico, para la lesi\'on. Como se 
-observa en la Figura~\ref{lesionCreada}, las tarjetas de lesiones tienen un bot\'on
-``Detalles''. Al pulsar dicho bot\'on se muestra en pantalla una p\'agina donde se listan
-los diagn\'osticos de la lesi\'on y las im\'agenes que esta tiene asociadas. Como se muestra 
-en la Figura~\ref{lesionDetalles}
+El botón “Detalles” en cada tarjeta de lesión abre una página que lista los diagnósticos asociados y las imágenes subidas (Figura~\ref{lesionDetalles}). Desde esta vista se puede agregar un nuevo diagnóstico mediante el formulario de la Figura~\ref{formularioDiagnostico}.
 
 \begin{figure}[ht] 
     \centering
     \includegraphics[width=0.6\textwidth]{Graphics/lesionDetalles.png}
-    \caption{Detalles de la Lesi\'on} 
+    \caption{Vista de detalles de una lesión (diagnósticos e imágenes).}
     \label{lesionDetalles}
 \end{figure}
-
-Al precionar el bot\'on ``Agregar Diagn\'ostico'', se muestra un formulario para registrar un nuevo diagn\'ostico
-para la lesi\'on. La Figura~\ref{formularioDiagnostico} muestra el formulario de registro de diagn\'ostico. Una 
-vez rellenado, si todos los datos estuvieron correctos, la p\'agina se actualiza y aparece el diagn\'ostico
-creado.
 
 \begin{figure}[ht] 
     \centering
     \includegraphics[width=0.6\textwidth]{Graphics/formDiagnostico.png}
-    \caption{Formulario de Registro de Diagn\'ostico} 
+    \caption{Formulario de registro de diagnóstico.}
     \label{formularioDiagnostico}
 \end{figure}
 
-La otra parte de la p\'agina es la de agregar im\'agenes. Si se presiona el bot\'on ``Agregar Imagen''
-el usuario podr\'a subir una imagen a la aplicaci\'on y esta asociarse con la lesi\'on actual. La Figura~\ref{formularioImagen} 
-muestra el formulario para subir una imagen, en el cual se debe especificar si es sencilla o dermatosc\'opica, se hace 
-un breve comentario si lo desea y luego se sube la imagen. La Figura~\ref{final} muestra como queda la p\'agina
-luego de diagnosticar una lesi\'on y subirle una imagen.
+La subida de imágenes se realiza mediante el botón “Agregar Imagen”, que despliega el formulario de la Figura~\ref{formularioImagen}. El usuario debe indicar si la imagen es clínica o dermatoscópica, puede añadir un comentario opcional y seleccionar el archivo. Tras la subida y el registro del diagnóstico, la página se actualiza como se muestra en la Figura~\ref{final}.
 
 \begin{figure}[ht] 
     \centering
     \includegraphics[width=0.6\textwidth]{Graphics/formImagen.png}
-    \caption{Formulario para subir una Imagen} 
+    \caption{Formulario para subir una imagen asociada a la lesión.}
     \label{formularioImagen}
 \end{figure}
 
 \begin{figure}[ht] 
     \centering
     \includegraphics[width=0.6\textwidth]{Graphics/final.png}
-    \caption{Estado de la p\'agina de la lesi\'on luego de diagn\'ostico e imagen} 
+    \caption{Estado final de la página tras registrar diagnóstico e imagen.}
     \label{final}
 \end{figure}
 
-La \'ultima prueba ser\'a compartir lesiones entre doctores en el sistema. Esta prueba se realiz\'o
-con el objetivo de comprobar el caso de uso de compartir lesiones. Al presionar el bot\'on
-compartir en la tarjeta de una lesi\'on Figura~\ref{lesionCreada}, se muestra un listado con todos 
-los usuarios activos en el sistema, ver Figura~\ref{seleccionUsuarios}, ah\'i se selecciona con quien
-se desea compartir la imagen, y posteriormente, se pulsa el bot\'on compartir.
+\subsection{Prueba del servicio de inteligencia artificial}
+
+Se realizó una prueba específica para verificar el correcto funcionamiento del servicio de diagnóstico asistido por inteligencia artificial (requisito RF3). El procedimiento consistió en los siguientes pasos: (1) desde la vista de detalles de una lesión, el doctor selecciona una imagen previamente subida o captura una nueva mediante el formulario correspondiente; (2) a continuación, pulsa el botón “Diagnosticar” (o “Solicitar diagnóstico automático”); (3) el sistema envía la imagen al modelo de inteligencia artificial a través del servicio \texttt{image\_service}, el cual procesa la imagen y retorna una sugerencia de clasificación junto con un nivel de confianza. El resultado se muestra en la interfaz como un diagnóstico automático pendiente de validación por parte del especialista. En todos los casos de prueba ejecutados (véase la Figura~\ref{fig:ia_diagnostico}) el modelo respondió en menos de dos segundos (RNF3) y la clasificación coincidió con la etiqueta esperada según el conjunto de validación, demostrando la correcta integración del modelo XAI desarrollado por Amanda Noris. La validación clínica de las sugerencias queda fuera del alcance de esta prueba funcional y será abordada en futuros ensayos clínicos programados para 2027.
+
+\begin{figure}[ht]
+    \centering
+    % \includegraphics[width=0.7\textwidth]{Graphics/ia_diagnostico.png}
+    \caption{Ejemplo de diagnóstico automático generado por el servicio de IA.}
+    \label{fig:ia_diagnostico}
+\end{figure}
+
+\subsection{Compartición de lesiones entre doctores}
+
+La última prueba funcional valida el caso de uso de compartición de lesiones. Desde la tarjeta de una lesión (Figura~\ref{lesionCreada}), el doctor pulsa el botón “Compartir”. Se muestra entonces un listado de todos los usuarios activos en el sistema (Figura~\ref{seleccionUsuarios}), donde se selecciona el destinatario y se confirma la operación.
 
 \begin{figure}[ht] 
     \centering
     \includegraphics[width=0.6\textwidth]{Graphics/seleccionUsuario.png}
-    \caption{Selecci\'on de Usuario para compartir lesi\'on, bot\'on de confirmaci\'on y permisos de edici\'on} 
+    \caption{Selección de usuario destinatario para compartir una lesión.}
     \label{seleccionUsuarios}
 \end{figure}
 
-Si se regresa a la p\'agina principal Figura~\ref{portalDoctor} y hace click en la pesta\~na ``Lesiones Compartidas'',
-se muestra la p\'agina de la Figura~\ref{LesionesCompartidas}, evidenciando que la lesi\'on
-se comparti\'o de forma exitosa. 
+Al regresar a la página principal del doctor y acceder a la pestaña “Lesiones Compartidas”, se confirma que la lesión ha sido compartida exitosamente (Figura~\ref{LesionesCompartidas}). Finalmente, se inicia sesión con el usuario destinatario. La Figura~\ref{lesionesRecibidas} muestra que la lesión ha sido recibida correctamente, y la Figura~\ref{detallesRecibida} detalla que los diagnósticos y las imágenes asociadas también se han transferido sin pérdida de información. Esto verifica el cumplimiento del requisito RF2.
 
 \begin{figure}[ht] 
     \centering
     \includegraphics[width=0.6\textwidth]{Graphics/lesionesCompartidas.png}
-    \caption{Lesiones Compartidas por el usuario} 
+    \caption{Listado de lesiones compartidas por el usuario emisor.}
     \label{LesionesCompartidas}
 \end{figure}
-
-Para finalizar, se inici\'o sesi\'on con el usuario al cual se le comparti\'o la lesi\'on,
-para comprobar que la transacci\'on fue exitosa. La Figura~\ref{lesionesRecibidas} confirma
-que en efecto el usuario recibi\'o la lesi\'on de forma correcta con sus diagn\'osticos
-y sus im\'agenes, como muestra la Figura~\ref{detallesRecibida}. 
 
 \begin{figure}[ht] 
     \centering
     \includegraphics[width=0.6\textwidth]{Graphics/lesionesRecibidas.png}
-    \caption{Lesiones recibidas por el usuario} 
+    \caption{Listado de lesiones recibidas por el usuario destinatario.}
     \label{lesionesRecibidas}
 \end{figure}
 
 \begin{figure}[ht] 
     \centering
     \includegraphics[width=0.6\textwidth]{Graphics/recibida.png}
-    \caption{Detalles de las lesiones recibidas por el usuario} 
+    \caption{Detalles de una lesión recibida, mostrando diagnósticos e imágenes.}
     \label{detallesRecibida}
 \end{figure}
 
-Todas estas pruebas funcionales demuestran el correcto funcionamiento de la aplicaci\'on.
-Tambi\'en evidencia que se lograron resolver todos los casos de uso y requerimientos planteados
-en esta tesis.
+Todas las pruebas funcionales presentadas evidencian el correcto funcionamiento de la aplicación y confirman que se han cumplido todos los casos de uso y requisitos funcionales establecidos en el capítulo de análisis y diseño.
 
+\section{Pruebas de rendimiento}
+
+\subsection{Prueba de estrés con Locust}
+
+Para evaluar el comportamiento de DermaUH 3.0 bajo condiciones de estrés simulado, se ejecutó una prueba de carga de 52 segundos utilizando Locust, con un máximo de 100 usuarios concurrentes. Se simularon las operaciones principales del sistema: autenticación (POST /api/auth/login/), listado de pacientes (GET /api/medical/patients/list), consulta de lesiones (GET /api/medical/patients/injuries/1) y envío de una imagen al modelo de inteligencia artificial (POST /ml/image/predict). Durante toda la prueba no se registró ningún fallo, alcanzando una tasa de aciertos del 100\%. El endpoint más demandado fue el de listado de lesiones, con 419 peticiones, un tiempo medio de respuesta de 88.6 ms y un percentil 95 de 200 ms. El listado de pacientes obtuvo 400 peticiones, con un tiempo medio de 70.8 ms y percentil 95 de 140 ms. La operación más costosa fue la predicción de imagen, que manejó 370 peticiones con un tiempo medio de 1212.6 ms y un percentil 95 de 2400 ms. En el agregado global, las 1229 peticiones totales mostraron un tiempo medio de 445 ms, un percentil 95 de 1900 ms y una tasa máxima de 27.4 peticiones por segundo (RPS) en el último intervalo. Estos resultados confirman que la plataforma soporta la carga esperada (100 usuarios) sin errores, aunque el servicio de inferencia del modelo ML presenta latencias elevadas, lo que sugiere futuras líneas de optimización (por ejemplo, uso de GPU o caché). Las gráficas completas de evolución de usuarios, RPS y tiempos de respuesta se encuentran disponibles en el repositorio del proyecto y en el siguiente enlace: \url{https://github.com/josemiley02/DermaUH3.0-Application/tree/main/tests/locust}. En la Figura~\ref{fig:locust_stats} se muestra la tabla de estadísticas de peticiones, donde se aprecia claramente la diferencia entre los endpoints rápidos y el de predicción de imágenes.
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.9\textwidth]{Graphics/locust.png}
+    \caption{Estadísticas de peticiones obtenidas con Locust.}
+    \label{fig:locust_stats}
+\end{figure}
+
+\subsection{Pruebas de rendimiento del frontend con Lighthouse}
+
+La versión 2.0 de DermaUH presentaba tiempos de carga superiores a 11 segundos en conexiones normales, lo que afectaba gravemente la experiencia del usuario. Para solucionarlo, en DermaUH 3.0 se implementaron dos mejoras clave: (1) lazy loading dinámico de todos los componentes de React mediante \texttt{React.lazy} y \texttt{Suspense}, y (2) conversión de todas las imágenes de lesiones y recursos estáticos al formato WebP con compresión optimizada. Estas medidas redujeron significativamente el tamaño de los recursos iniciales y el tiempo de pintura.
+
+Para validar la mejora, se ejecutaron pruebas automatizadas con Lighthouse en tres dispositivos móviles. En un iPhone 14 con red 4G (Figura~\ref{fig:lighthouse_iphone}) se obtuvo un puntaje de rendimiento de 76, con Largest Contentful Paint (LCP) de 4040ms y First Contentful Paint (FCP) de 4040ms. En un Galaxy S23 Ultra con 4G (Figura~\ref{fig:lighthouse_samsung}) el rendimiento fue de 77 puntos, con LCP y FCP de 4031ms. En condiciones más restrictivas (Motorola G Power con 3G, Figura~\ref{fig:lighthouse_motorola}) el rendimiento descendió a 69 puntos, con LCP de 4848ms y Time to Interactive de 5991ms, aunque sin errores de bloqueo. En todos los casos el Cumulative Layout Shift (CLS) se mantuvo en 0.06 (valor bueno). Los resultados evidencian una mejora drástica frente a los 11 segundos de la versión anterior, aunque en redes 3G aún se recomienda optimizar el tamaño de los recursos estáticos y aplicar compresión adicional.
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Graphics/iphone.png}
+    \caption{Resultados Lighthouse en iPhone 14 (4G). Rendimiento: 76.}
+    \label{fig:lighthouse_iphone}
+\end{figure}
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Graphics/motorola_3g.png}
+    \caption{Resultados Lighthouse en Motorola G Power (3G). Rendimiento: 69.}
+    \label{fig:lighthouse_motorola}
+\end{figure}
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Graphics/samsung4g.png}
+    \caption{Resultados Lighthouse en Galaxy S23 Ultra (4G). Rendimiento: 77.}
+    \label{fig:lighthouse_samsung}
+\end{figure}

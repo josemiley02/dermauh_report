@@ -491,3 +491,26 @@ im\'agenes son muy heter\'ogeneas y no siguen siempre un patr\'on visual como pu
 de los carcinomas. La matriz de confusi\'on es la explicaci\'on perfecta de lo anterior, ya que 
 muchas im\'agenes que deber\'ian ser calificadas como ``otras'' son confundidas con melanomas y 
 carcinomas basales.
+
+\subsection{Integraci\'on del Modelo ML en la Aplicaci\'on}
+Kaggle, no es solo una plataforma donde extraer y encontrar datasets de inter\'es. En los \'ultimos
+a\~nos ha servido de ayuda para desarrolladores e investigadores del campo ``Aprendizaje de M\'aquina'',
+permitiendo que estos implementen y entrenen sus modelos utilizando memoria RAM virtual m\'as potente
+y navegadores en Internet con velocidades superiores a los 300 MB/s. Para el entrenamiento del modelo
+utilizado para DermaUH, se us\'o la platoforma Kaggle como asistencia de GPU e Internet, provocando
+que un entrenamiento previsto para d\'ias, se llevara a cabo en cuesti\'on de minutos. 
+
+Una vez finalizado el proceso de entrenamiento, Kaggle genera los archivos correspondientes al 
+modelo, los cuales son perfectamente descargables. Una vez descargados, se pueden integrar a 
+Django\footnote{Con esta tecnolog\'ia est\'a implementado el backend} utilizando la librer\'ia pytorch.
+Por cuestiones de optimizaci\'on, los modelos solamente se cargan una vez iniciada por primera
+vez la aplicaci\'on, despu\'es de eso se mantiene activo durante toda la sesi\'on del usuario. 
+La Figura~\ref{torchLoadModel} muestra el uso de la librer\'ia torch para consumir los archivos 
+del modelo y dejarlos listo para su uso.
+
+\begin{figure}[ht] 
+    \centering
+    \includegraphics[width=0.6\textwidth]{Graphics/torch.png}
+    \caption{Uso de la librer\'ia pytorch para cargar el modelo y dejarlo listo para ejecuci\'on} 
+    \label{torchLoadModel}
+\end{figure}
